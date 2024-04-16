@@ -1,95 +1,146 @@
-import Image from "next/image";
 import styles from "./page.module.css";
+import { Card, Stack, Image, Heading, CardBody, Text, CardFooter, Button, extendTheme } from "@chakra-ui/react";
 
 export default function Home() {
+  const cardui = {} 
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Stack  width="1000px" alignItems="center" mt="80px" margin={"80px auto auto auto"} spacing="0">
+      <Card
+      direction={{ base: 'column', sm: 'row' }}
+      alignItems="end"
+      overflow='hidden'
+      variant='outline'
+      height={"400px"}
+      width="100%"
+      backgroundRepeat={"no-repeat"}
+      backgroundSize="cover"
+      backgroundImage={"linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_0.webp')"}
+      backgroundPosition="right 50% bottom -50px"
+      color="white"
+      borderRadius={"0"}
+      border="0px solid black"
+      margin="0"
+      >
+      <Stack>
+        <CardBody>
+          <Heading size='md'>Chapter I:</Heading>
+          <Text py='2' fontFamily={"Arial"} fontWeight="800" fontSize={"48"} lineHeight="1.1">
+            Enter Cartesia World
+          </Text>
+        </CardBody>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      </Stack>
+    </Card>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+    <Card
+      direction={{ base: 'column', sm: 'row' }}
+      alignItems="end"
+      overflow='hidden'
+      variant='outline'
+      height={"400px"}
+      width="100%"
+      background={"linear-gradient(180deg, #ffffff00 20%, #000000da 80%), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_1.webp')"}
+      backgroundRepeat={"no-repeat"}
+      backgroundSize="cover"
+      backgroundPosition="right 50% bottom -400px"
+      color="white"
+      borderRadius={"0"}
+      border="0px solid black"
+      margin="0"
+      >
+      <Stack>
+        <CardBody>
+          <Heading size='md'>Chapter II:</Heading>
+          <Text py='2' fontFamily={"Arial"} fontWeight="800" fontSize={"48"} lineHeight="1.1">
+            The start of the adventure
+          </Text>
+        </CardBody>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+      </Stack>
+    </Card>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+    <Card
+      direction={{ base: 'column', sm: 'row' }}
+      alignItems="end"
+      overflow='hidden'
+      variant='outline'
+      height={"400px"}
+      width="100%"
+      backgroundRepeat={"no-repeat"}
+      backgroundSize="cover"
+      backgroundImage={"linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_2.webp')"}
+      backgroundPosition="right 50% bottom -50px"
+      color="white"
+      borderRadius={"0"}
+      border="0px solid black"
+      margin="0"
+      >
+      <Stack>
+        <CardBody>
+          <Heading size='md'>Chapter III:</Heading>
+          <Text py='2' fontFamily={"Arial"} fontWeight="800" fontSize={"48"} lineHeight="1.1">
+            The hoard, the vault, the prize
+          </Text>
+        </CardBody>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </Stack>
+    </Card>
+
+    <Card
+      direction={{ base: 'column', sm: 'row' }}
+      alignItems="end"
+      overflow='hidden'
+      variant='outline'
+      height={"400px"}
+      width="100%"
+      backgroundRepeat={"no-repeat"}
+      backgroundSize="cover"
+      backgroundImage={"linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_3.webp')"}
+      backgroundPosition="right 50% bottom -50px"
+      color="white"
+      borderRadius={"0"}
+      border="0px solid black"
+      margin="0"
+      >
+      <Stack>
+        <CardBody>
+          <Heading size='md'>Chapter IV:</Heading>
+          <Text py='2' fontFamily={"Arial"} fontWeight="800" fontSize={"48"} lineHeight="1.1">
+            Exchanges in the grand bazar
+          </Text>
+        </CardBody>
+
+      </Stack>
+    </Card>
+
+    <Card
+      direction={{ base: 'column', sm: 'row' }}
+      alignItems="end"
+      overflow='hidden'
+      variant='outline'
+      height={"400px"}
+      width="100%"
+      backgroundRepeat={"no-repeat"}
+      backgroundSize="cover"
+      backgroundImage={"linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_4.webp')"}
+      backgroundPosition="right 50% bottom -50px"
+      color="white"
+      borderRadius={"0"}
+      border="0px solid black"
+      margin="0"
+      >
+      <Stack>
+        <CardBody>
+          <Heading size='md'>Chapter V:</Heading>
+          <Text py='2' fontFamily={"Arial"} fontWeight="800" fontSize={"48"} lineHeight="1.1">
+          Interacting with other worlds
+          </Text>
+        </CardBody>
+
+      </Stack>
+    </Card>
+
+
+    </Stack>
   );
 }
