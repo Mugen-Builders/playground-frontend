@@ -39,10 +39,10 @@ export default function Home() {
       variant='outline'
       height={"400px"}
       width="100%"
-      background={"linear-gradient(180deg, #ffffff00 20%, #000000da 80%), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_1.webp')"}
       backgroundRepeat={"no-repeat"}
       backgroundSize="cover"
-      backgroundPosition="right 50% bottom -400px"
+      backgroundImage={"url('https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/chapter_images/ch_2.png?raw=true')"}
+      backgroundPosition="right 50% bottom -50px"
       color="white"
       borderRadius={"0"}
       border="0px solid black"
