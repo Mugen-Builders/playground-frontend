@@ -1,6 +1,5 @@
 import styles from "./page.module.css";
 import { Card, Stack, Image, Heading, CardBody, Text, CardFooter, Button, extendTheme } from "@chakra-ui/react";
-import Post from '@/mdx/page.mdx'
 
 export default function Home() {
   const cardui = {} 
@@ -140,10 +139,6 @@ export default function Home() {
 
       </Stack>
     </Card>
-
-    <MDXProvider components={components}>
-      <Post />
-    </MDXProvider>
     </Stack>
   );
 }

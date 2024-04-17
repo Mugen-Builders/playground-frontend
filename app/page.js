@@ -1,5 +1,4 @@
 'use client'
- 
 
 import {
   Box,
@@ -19,6 +18,9 @@ import {
   Center,
   Image
 } from '@chakra-ui/react'
+
+import Post from '@/markdown/Post.mdx'
+
 
 const NavLink = (props) => {
   const { children } = props
@@ -107,11 +109,10 @@ export default function Nav() {
 
 
       </Box>
-      <Box display={"flex"}>
+      <Box display={"flex"}
+      color={"white"}>
         <Box>
-          {/* <MDXProvider components={components}>
-            <Post />
-          </MDXProvider> */}
+        <Post />
         </Box>
         <Box></Box>
 
