@@ -1,3 +1,9 @@
+.navbar {
+  height: 60px;
+  background-color: cadetblue;
+}
+
+
 .main {
   display: flex;
   flex-direction: column;
