@@ -21,9 +21,13 @@ function removeNonUsedCode(codeString) {
     return content
 }
 
-// This returns a function that allows you to override params 
+// This returns a function that allows you to override the 
+// "existing variables out of the scope" of the function it returns
 // let foo = createDynamicFunctionBuilder(functionString)
 // will produce a function let bar = foo({wordToOverride : 3})
+// this will return a function that executes the script passed
+// if the script references a variable out of it's scope it will see the
+// value passed on the object
 // bar(x,y,z) // regular function script call
 function createDynamicFunctionBuilder(functionString) {
     return function(overrides, ...args) {
