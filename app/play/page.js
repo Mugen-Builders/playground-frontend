@@ -1,10 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation'
+import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+import { test } from './code.verifier'
 import {
   Box,
   Flex,
   Avatar,
-  Text,
   Button,
   Menu,
   MenuButton,
@@ -17,10 +19,7 @@ import {
   Image,
   ChakraProvider
 } from '@chakra-ui/react'
-import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
-import { useSearchParams } from 'next/navigation'
-import Post from '@/markdown/Post.mdx'
 
 const NavLink = (props) => {
   const { children } = props
@@ -42,7 +41,7 @@ const NavLink = (props) => {
 
 
 
-export default function Nav() {
+export default function Playground() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ code, setCode ] = useState()
   const [ md, setMd ] = useState()
@@ -50,6 +49,17 @@ export default function Nav() {
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
   const step = searchParams.get('step') | 0
+
+
+
+  function run() {
+    test("fetchOverride", code).then((result) => {
+      console.log("succeded")
+    }).catch ((error)=> {
+      console.log("BIG ERROR LOG ON TERMINAL")
+      console.log(error)
+    })
+  }
 
   useEffect(()=> {
     
@@ -125,7 +135,7 @@ export default function Nav() {
         backgroundSize="cover"
         boxShadow={"inset 0 0 0 2000px rgba(0, 0, 0, 0.85)"}
         backgroundPosition={"center bottom -70%"}
-        backgroundImage={"url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_0.webp')"}
+        backgroundImage={`url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_${chapter}.webp')`}
       >
           <Image 
             height={"90px"}
@@ -146,7 +156,7 @@ export default function Nav() {
       >
         <Box 
           className='md'
-          flex={1}
+          flex={5}
           padding={"20px"}
           height={"100%"}
           overflow={"scroll"}
@@ -159,13 +169,37 @@ export default function Nav() {
         </Box>
 
         <Box
-          flex={1}
+          flex={5}
+          display={"block"}
+          overflow={"scroll"}
         >
-          <Editor enabled="false"
+          <Box
+          minHeight={"300px"}
+          height={"calc(100vh - 384px)"}
+          >
+          <Editor
+          
           defaultLanguage="javascript" 
           defaultValue={code} 
           theme="vs-dark"
+          onChange={ (e) => setCode(e) }
           />
+          </Box>
+
+          <Box
+          minHeight={"200px"}
+          backgroundColor={"#1a1a1a"}
+          >
+            <Box
+            height={"25px"}
+            backgroundColor="#2a2a2a">
+              <Button 
+                onClick={ run }
+                height={"23px"}
+              >Run</Button>
+            </Box>
+
+          </Box>
         </Box>
 
       </Box>
