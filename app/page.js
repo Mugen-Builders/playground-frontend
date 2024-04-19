@@ -37,9 +37,7 @@ init({
   },
 });
 export default function Home() {
-  const [dappAddress, setDappAddress] = useState(
-    "0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C"
-  );
+
   const cardui = {};
   return (
     <ChakraProvider class="home-bg">

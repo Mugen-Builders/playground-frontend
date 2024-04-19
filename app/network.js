@@ -14,10 +14,15 @@ import configFile from "./config.json";
 
 const config = configFile;
 import { Input } from "./Input";
+import { useState } from "react";
+import { Inspect } from "./inspect";
+import { Notice } from "./notices";
 export const Network = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
-
+  const [dappAddress, setDappAddress] = useState(
+    "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
+  );
   return (
     <div>
       {!wallet && (
@@ -51,7 +56,17 @@ export const Network = () => {
             </select>
           )}
           <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
-          <Input />
+          <div>
+            Dapp Address: <input
+              type="text"
+              value={dappAddress}
+              onChange={(e) => setDappAddress(e.target.value)}
+            />
+            <br /><br />
+          </div>
+          <Input dappAddress={dappAddress} />
+          <Inspect />
+          <Notice />
         </div>
       )}
     </div>
