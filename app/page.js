@@ -44,6 +44,7 @@ export default function Home() {
   return (
     <ChakraProvider class="home-bg">
       <Network />
+
       <Stack
         width="1000px"
         alignItems="center"

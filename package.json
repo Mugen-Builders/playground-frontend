@@ -23,6 +23,7 @@
     "@web3-onboard/injected-wallets": "^2.10.16",
     "@web3-onboard/react": "^2.8.17",
     "@web3-onboard/transaction-preview": "^2.0.9",
+    "cartesi-client": "file:../../cartesi/cartesi-client",
     "ethers": "^6.12.0",
     "framer-motion": "^11.1.1",
     "monaco-editor": "^0.47.0",

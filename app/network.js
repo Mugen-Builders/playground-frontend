@@ -13,7 +13,7 @@ import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import configFile from "./config.json";
 
 const config = configFile;
-
+import { Input } from "./Input";
 export const Network = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
@@ -51,6 +51,7 @@ export const Network = () => {
             </select>
           )}
           <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
+          <Input />
         </div>
       )}
     </div>
