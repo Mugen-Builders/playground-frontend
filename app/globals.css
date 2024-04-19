@@ -115,6 +115,42 @@ a {
   background-color: #18191b!important;
 }
 
+.hero-stage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: transparent;
+  border: 2px solid #4ECCA3;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.flex-item {
+  position: relative; /* Needed for absolute positioning of pseudo-elements */
+  padding: 10px; /* Add padding to space out items */
+}
+
+.done {
+  background-color: #4ECCA3;
+}
+
+.line:not(:last-child) {
+  top: 50%; /* Center the line vertically */
+  height: 2px; /* Adjust based on your needs */
+  min-width: 3px;
+  background-color: #4ECCA3;
+  flex-grow: 10;
+  margin: 15px
+}
+
+
+
 .md {
   color: white;
   max-height: "300px";
