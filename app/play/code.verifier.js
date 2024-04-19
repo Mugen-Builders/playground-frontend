@@ -54,13 +54,13 @@ function createDynamicFunctionBuilder(functionString) {
 
 async function runTests(functionName, functionReference) {
     console.log(":: Running Tests")
-
+    let testResult
     switch (functionName) {
         case 'add':
-            await testAdd(functionReference)
+            testResult = await testAdd(functionReference)
             break;
         case 'fetchOverride':
-            await testFetchOverride(functionReference);
+            testResult = await testFetchOverride(functionReference);
             break;
         case 'orange':
             console.log('Orange was chosen.');
@@ -68,12 +68,15 @@ async function runTests(functionName, functionReference) {
         default:
             console.log('No valid fruit was chosen.');
     }
+    console.log(testResult)
+    return testResult
 }
 
 async function test(functionName, fullCodeString) {
     let codeString = removeNonUsedCode(fullCodeString)
     let generator = createDynamicFunctionBuilder(codeString)
-    await runTests(functionName, generator)
+    let result = await runTests(functionName, generator)
+    return result
 }
 
 export {

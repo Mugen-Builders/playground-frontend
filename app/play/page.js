@@ -17,7 +17,8 @@ import {
   Stack,
   Center,
   Image,
-  ChakraProvider
+  ChakraProvider,
+  Textarea
 } from '@chakra-ui/react'
 
 
@@ -43,8 +44,10 @@ const NavLink = (props) => {
 
 export default function Playground() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [ code, setCode ] = useState()
-  const [ md, setMd ] = useState()
+  const [ code, setCode ] = useState("Loading...")
+  const [ md, setMd ] = useState("Loading...")
+  const [ output, setOutput ] = useState("Output:")
+
   
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
@@ -54,10 +57,11 @@ export default function Playground() {
 
   function run() {
     test("fetchOverride", code).then((result) => {
-      console.log("succeded")
+      setOutput(result)
     }).catch ((error)=> {
-      console.log("BIG ERROR LOG ON TERMINAL")
-      console.log(error)
+      console.log("called error")
+      console.log(error )
+      setOutput(error)
     })
   }
 
@@ -73,6 +77,8 @@ export default function Playground() {
     .then(r => r.text())
     .then(text => {
       setCode(text)
+    }).catch(err => {
+      setCode(undefined)
     });
   
   }, [])
@@ -151,7 +157,6 @@ export default function Playground() {
         className='class-container'
         display={"flex"}
         height={"calc(100vh - 184px)"}
-
         fontFamily={"'Inter Variable', sans-serif"}
       >
         <Box 
@@ -161,10 +166,8 @@ export default function Playground() {
           height={"100%"}
           overflow={"scroll"}
         >
-          {/* <Post
-            className="mdpost"
-          /> */
-          md ? md : "notfound"
+          {
+            md ? md : "404 not found"
           }
         </Box>
 
@@ -180,7 +183,7 @@ export default function Playground() {
           <Editor
           
           defaultLanguage="javascript" 
-          defaultValue={code} 
+          defaultValue={ code ? code : "Not found"} 
           theme="vs-dark"
           onChange={ (e) => setCode(e) }
           />
@@ -198,6 +201,16 @@ export default function Playground() {
                 height={"23px"}
               >Run</Button>
             </Box>
+
+            <Textarea
+              width={"100%"}
+              height={"173px"}
+              value={ output }
+              color={ "#f4f4f4" }
+              fontSize={ "9pt" }
+              isDisabled
+              fontFamily={ '"Space Mono", monospace' }
+            />
 
           </Box>
         </Box>
