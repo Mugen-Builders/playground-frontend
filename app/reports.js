@@ -1,6 +1,6 @@
 import { getReports } from "cartesi-client";
 import { useSetChain } from "@web3-onboard/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import configFile from "./config.json";
 const config = configFile;
@@ -54,6 +54,9 @@ export const Report = () => {
         })
         );
     }
+    useEffect(() => {
+        getAllReports();
+    }, [apiURL])
     return (
         <div>
             <button onClick={() => getAllReports()}>

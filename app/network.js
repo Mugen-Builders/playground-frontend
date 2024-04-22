@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Inspect } from "./inspect";
 import { Notice } from "./notices";
 import { Report } from './reports';
+import { Voucher } from './voucher';
 export const Network = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
@@ -69,7 +70,7 @@ export const Network = () => {
           <Inspect />
           <Report />
           <Notice />
-
+          <Voucher dappAddress={dappAddress} />
         </div>
       )}
     </div>

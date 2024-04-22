@@ -1,6 +1,6 @@
 import { getNotices } from "cartesi-client";
 import { useSetChain } from "@web3-onboard/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import configFile from "./config.json";
 const config = configFile;
@@ -54,6 +54,10 @@ export const Notice = () => {
         })
         );
     }
+
+    useEffect(() => {
+        getAllNotices();
+    }, [apiURL])
     return (
         <div>
             <button onClick={() => getAllNotices()}>
