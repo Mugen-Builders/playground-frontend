@@ -17,7 +17,8 @@ import {
   Stack,
   Center,
   Image,
-  ChakraProvider
+  ChakraProvider,
+  Textarea
 } from '@chakra-ui/react'
 
 
@@ -39,13 +40,62 @@ const NavLink = (props) => {
   )
 }
 
+function HeroStage() {
+  const searchParams = useSearchParams()
+  const chapter = searchParams.get('chapter') | 0
+  const step = searchParams.get('step') | 0
+
+  const [ metadata, setMetadata ] = useState({total_steps: 1})
+
+  useEffect(()=> {
+    fetch(`/chapter_metadata/${chapter}.json`)
+    .then(r => r.text())
+    .then(text => {
+      let json = JSON.parse(text)
+      setMetadata(json)
+      console.log("chap mdtdt", json)
+    }).catch(err => {
+      console.log(err)
+      console.log("hmm")
+    });
+  
+  }, [])
+
+  return (
+    <div className="hero-stage">
+      {Array.from({ length: metadata.total_steps * 2 }, (_, i) => {
+        
+        if (i % 2 == 1) {
+          return (<div key={i} className="line"></div>)
+        }
+        if (i == step *2) {
+
+          return (
+          
+            <Image key={i}
+              height={"90px"}
+              src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true' 
+              alt='hero' 
+            />
+          )
+
+        } else if (i < step * 2) {
+          return (<div key={i} className="dot flex-item done"></div>)
+        } else {
+          return (<div key={i} className="dot flex-item"></div>)
+        }
+      })}
+    </div>
+  );
+}
 
 
 export default function Playground() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [ code, setCode ] = useState()
-  const [ md, setMd ] = useState()
-  
+  const [ code, setCode ] = useState("Loading...")
+  const [ md, setMd ] = useState("Loading...")
+  const [ output, setOutput ] = useState("Output:")
+
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
   const step = searchParams.get('step') | 0
@@ -54,15 +104,15 @@ export default function Playground() {
 
   function run() {
     test("fetchOverride", code).then((result) => {
-      console.log("succeded")
+      setOutput(result)
     }).catch ((error)=> {
-      console.log("BIG ERROR LOG ON TERMINAL")
-      console.log(error)
+      console.log("called error")
+      console.log(error )
+      setOutput(error)
     })
   }
 
   useEffect(()=> {
-    
     import(`@/markdown/chapter_${chapter}_step_${step}.mdx`).then(module => {
       setMd(module.default)
     }).catch(err => {
@@ -73,6 +123,8 @@ export default function Playground() {
     .then(r => r.text())
     .then(text => {
       setCode(text)
+    }).catch(err => {
+      setCode(undefined)
     });
   
   }, [])
@@ -137,12 +189,10 @@ export default function Playground() {
         backgroundPosition={"center bottom -70%"}
         backgroundImage={`url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_${chapter}.webp')`}
       >
-          <Image 
-            height={"90px"}
-            src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true' 
-            alt='hero' 
-          />
+        
+          
 
+          <HeroStage />
 
 
       </Box>
@@ -151,7 +201,6 @@ export default function Playground() {
         className='class-container'
         display={"flex"}
         height={"calc(100vh - 184px)"}
-
         fontFamily={"'Inter Variable', sans-serif"}
       >
         <Box 
@@ -161,10 +210,8 @@ export default function Playground() {
           height={"100%"}
           overflow={"scroll"}
         >
-          {/* <Post
-            className="mdpost"
-          /> */
-          md ? md : "notfound"
+          {
+            md ? md : "404 not found"
           }
         </Box>
 
@@ -180,7 +227,7 @@ export default function Playground() {
           <Editor
           
           defaultLanguage="javascript" 
-          defaultValue={code} 
+          defaultValue={ code ? code : "Not found"} 
           theme="vs-dark"
           onChange={ (e) => setCode(e) }
           />
@@ -198,6 +245,16 @@ export default function Playground() {
                 height={"23px"}
               >Run</Button>
             </Box>
+
+            <Textarea
+              width={"100%"}
+              height={"173px"}
+              value={ output }
+              color={ "#f4f4f4" }
+              fontSize={ "9pt" }
+              isDisabled
+              fontFamily={ '"Space Mono", monospace' }
+            />
 
           </Box>
         </Box>
