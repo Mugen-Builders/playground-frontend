@@ -1,12 +1,51 @@
+
 const { ethers } = require("ethers");
 
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 
-/* Do not change anything above this line */
+let missions = [
+  "Kill the dragon",
+  "Find a gnome",
+  "Make omellete"
+]
+
+function strToJson(payload) {
+  return JSON.parse(payload);
+}
+
+function jsonToStr(jsonString) {
+  return JSON.stringify(jsonString);
+}
+
+function hex2str(hex) {
+  return ethers.utils.toUtf8String(hex);
+}
+
+function str2hex(str) {
+  return ethers.utils.hexlify(ethers.utils.toUtf8Bytes(str));
+}
 
 async function createNotice(payload) {
-  // add your code here
+  const advance_req = await fetch(rollup_server + "/notice", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
+}
+
+/* Do not change anything above this line */
+
+function acceptMission(args, missions) {
+  // Logic to remove the selected mission
+
+  return str2hex(jsonToStr({ 
+    missionSelected: args.mission
+  }));
 }
 
 /* Do not change anything below this line */
@@ -14,30 +53,40 @@ async function createNotice(payload) {
 async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   const payload = data["payload"];
+  const { route, args } = strToJson(hex2str(payload));
 
-  let json = createNotice(payload)
+  let responsePayload;
+  if (route === "acceptMission") {
+    responsePayload = acceptMission(args, missions);
+  } else {
+    responsePayload = str2hex(jsonToStr({ success: false, message: "Invalid route" }));
+  }
+
+  let json = await createNotice(responsePayload);
   console.log(
-    `Received notice status ${advance_req.status} with body `, 
+    `Received notice status ${advance_req.status} with body `,
     JSON.stringify(json)
   );
   return "accept";
 }
 
+function listMissions() {
+  return str2hex(jsonToStr({ missions }))
+}
+
 async function handle_inspect(data) {
   console.log("Received inspect request data " + JSON.stringify(data));
   const payload = data["payload"];
-  try {
-    const payloadStr = ethers.toUtf8String(payload);
-    console.log(`Adding report "${payloadStr}"`);
-  } catch (e) {
-    console.log(`Adding report with binary value "${payload}"`);
+  const endpoint = hex2str(payload);
+  let responsePayload
+  if (endpoint == "listMissions") {
+    responsePayload = listMissions()
   }
+  
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ payload }),
+    headers: { "Content-Type": "application/json", },
+    body: JSON.stringify({ responsePayload }),
   });
   console.log("Received report status " + inspect_req.status);
   return "accept";

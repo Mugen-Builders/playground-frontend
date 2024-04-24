@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
@@ -40,6 +41,12 @@ const NavLink = (props) => {
   )
 }
 
+
+function change(e) {
+  console.log(e)
+}
+
+
 function HeroStage() {
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
@@ -71,7 +78,6 @@ function HeroStage() {
         if (i == step *2) {
 
           return (
-          
             <Image key={i}
               height={"90px"}
               src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true' 
@@ -100,10 +106,9 @@ export default function Playground() {
   const chapter = searchParams.get('chapter') | 0
   const step = searchParams.get('step') | 0
 
-
-
   function run() {
-    test("fetchOverride", code).then((result) => {
+
+    test(`test${chapter}_${step}`, code).then((result) => {
       setOutput(result)
     }).catch ((error)=> {
       console.log("called error")
@@ -141,26 +146,26 @@ export default function Playground() {
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Box>Logo</Box>
 
-          <Flex alignItems={'center'}>
-            <Stack direction={'row'} spacing={7}>
+          <Flex alignItems={ 'center' }>
+            <Stack direction={ 'row' } spacing={7}>
               <Menu>
                 <MenuButton
                   as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
+                  rounded={ 'full' }
+                  variant={ 'link' }
+                  cursor={ 'pointer' }
                   minW={0}>
                   <Avatar
-                    size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
+                    size={ 'sm' }
+                    src={ 'https://avatars.dicebear.com/api/male/username.svg' }
                   />
                 </MenuButton>
-                <MenuList alignItems={'center'}>
+                <MenuList alignItems={ 'center' }>
                   <br />
                   <Center>
                     <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
+                      size={ '2xl' }
+                      src={ 'https://avatars.dicebear.com/api/male/username.svg' }
                     />
                   </Center>
                   <br />
@@ -179,36 +184,31 @@ export default function Playground() {
         </Flex>
       </Box>
       <Box 
-        display={"flex"}
-        justifyContent={'center'}
-        alignItems={'center'}
+        display={ "flex" }
+        justifyContent={ 'center' }
+        alignItems={ 'center' }
         p={4}
-        height={"120px"} 
+        height={ "120px" } 
         backgroundSize="cover"
-        boxShadow={"inset 0 0 0 2000px rgba(0, 0, 0, 0.85)"}
-        backgroundPosition={"center bottom -70%"}
-        backgroundImage={`url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_${chapter}.webp')`}
+        boxShadow={ "inset 0 0 0 2000px rgba(0, 0, 0, 0.85)" }
+        backgroundPosition={ "center bottom -70%" }
+        backgroundImage={ `url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_${chapter}.webp')` }
       >
-        
-          
-
-          <HeroStage />
-
-
+        <HeroStage />
       </Box>
 
       <Box 
         className='class-container'
-        display={"flex"}
-        height={"calc(100vh - 184px)"}
-        fontFamily={"'Inter Variable', sans-serif"}
+        display={ "flex" }
+        height={ "calc(100vh - 184px)" }
+        fontFamily={ "'Inter Variable', sans-serif" }
       >
         <Box 
           className='md'
           flex={5}
-          padding={"20px"}
-          height={"100%"}
-          overflow={"scroll"}
+          padding={ "20px" }
+          height={ "100%" }
+          overflow={ "scroll" }
         >
           {
             md ? md : "404 not found"
@@ -217,38 +217,37 @@ export default function Playground() {
 
         <Box
           flex={5}
-          display={"block"}
-          overflow={"scroll"}
+          display={ "block" }
+          overflow={ "scroll" }
         >
           <Box
-          minHeight={"300px"}
-          height={"calc(100vh - 384px)"}
+            minHeight={ "300px" }
+            height={ "calc(100vh - 384px)" }
           >
           <Editor
-          
-          defaultLanguage="javascript" 
-          defaultValue={ code ? code : "Not found"} 
-          theme="vs-dark"
-          onChange={ (e) => setCode(e) }
+            defaultLanguage="javascript" 
+            defaultValue={ code ? code : "Not found"} 
+            theme="vs-dark"
+            onChange={ (e) => setCode(e) }
           />
           </Box>
 
           <Box
-          minHeight={"200px"}
-          backgroundColor={"#1a1a1a"}
+            minHeight={ "200px" }
+            backgroundColor={ "#1a1a1a" }
           >
             <Box
-            height={"25px"}
-            backgroundColor="#2a2a2a">
-              <Button 
-                onClick={ run }
-                height={"23px"}
-              >Run</Button>
+              height={ "25px" }
+              backgroundColor="#2a2a2a">
+                <Button 
+                  onClick={ run }
+                  height={ "23px" }
+                >Run</Button>
             </Box>
 
             <Textarea
-              width={"100%"}
-              height={"173px"}
+              width={ "100%" }
+              height={ "173px" }
               value={ output }
               color={ "#f4f4f4" }
               fontSize={ "9pt" }

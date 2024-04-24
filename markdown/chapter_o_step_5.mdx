@@ -1,0 +1,55 @@
+# Chapter 5: Queries on your outputs
+
+To query the state of a Cartesi Rollups instance, frontend clients can make use of a GraphQL API that is exposed by the Cartesi Nodes.
+
+This API allows any client to retrieve outputs produced by a dApp's backend, and to link those outputs to the corresponding inputs that triggered them. Outputs can generally come in the form of vouchers, notices and reports, and allow clients to both receive dApp updates and enforce consequences on the base layer.
+
+The Cartesi Rollups state query API is fully specified by its GraphQL schema.
+
+This specification is displayed in a more accessible and navigable way in the next sections.
+
+## Objective
+
+Your objective is to ensure that the dApp communicates effectively with users about errors or invalid actions. This involves sending detailed error reports when a mission cannot be accepted due to incorrect inputs or system failures.
+
+## Concepts
+
+Reports are stateless logs, offering a means to record read-only information without changing the state. Primarily used for logging and diagnostic purposes, reports provide valuable insights into the operation and performance of a dApp.
+
+Unlike notices, reports lack any association with proof and are therefore unsuitable for facilitating trustless interactions, such as on-chain processing or convincing independent third parties of dApp outcomes.
+
+## User Instructions
+
+- **Code Editing Guidelines**: Modify only the `createReport` function.
+- **Task**: Read the modified implementation of `handle_advance` to handle errors and return appropriate messages to the user.
+- **Task**: Read the modified implementation of `acceptMission` to see how the it returns null on case of error and how this is treaed on the `handle_advance`
+
+## Required Modification
+
+The `acceptMission` function logic was modified here to return `null` in case the mission was not selectable.
+If that happens, the handle advance will call the function `createReport`. Implement the function logic, it's similar to create notice, but the endpoint is changed.
+
+## Input
+The input of last chaper was the following:
+
+```json
+{
+  "route": "acceptMission",
+  "args": {
+    "mission": "Kill the dragon"
+  }
+}
+```
+
+Now we want to actually create a report by provoking an error, so let's send a mission that is not in the list
+
+```json
+{
+  "route": "acceptMission",
+  "args": {
+    "mission": "Fly on a pegasus"
+  }
+}
+```
+
+By implementing robust error handling and reporting, you not only prevent issues from escalating but also provide clear feedback to users, which is crucial for maintaining a positive user experience and trust in the application. This chapter sets the stage for creating a more resilient and user-friendly decentralized application.

@@ -1,77 +1,52 @@
-markdown/chapter_0_step_0.mdx markdown/Post.mdx
+# Welcome to Cartesia: A Hero's First Step
 
-# Chapter 1: Sending Inputs
+Embark on an extraordinary adventure in the mystical lands of Cartesia. You are a hero stepping into this realm for the first time, and your first task is to announce your arrival. This tutorial will guide you through using the Cartesi framework, enabling you to navigate and master the decentralized computations that define this world, and Cartesi Rollups.
 
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
+## Chapter Overview: Announcing Arrival
 
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
+In this chapter you will send a powerful message announcing your arrival in Cartesia. The task involves receving a specific input in the Cartesi rollups smartcontract and sending back to the user. An ECHO dApp if you will — It's a declaration that will mark the beginning of your adventures in this mysterious land.
+
+## Objective
+Your primary mission in this chapter is to modify the `createNotice` function to send a declaration message. This function is called inside the `handle_advance` function, which is akin to POST request received by a server.
+
+A notice is one of Cartesi's the types of outputs. 
+
+A notice is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof. 
+
+## User Instructions
+- **Code Editing Guidelines**: Only modify the sections of the code that are explicitly marked for changes. Keep the structure of the rest of the code intact to ensure the magic (code) works as intended.
+- **Task**: Implement the `createNotice` function to send the hero's arrival message to the Cartesi server.
+
+## Required Modification
+To create a notice, you will have to perform a `fetch` to the `rollup_server` `/notice` endpoint.
+
+As the body, you can send an object with the property `payload` and for it's value set the same payload the backend received.
+
+This means you will output to the notice whatever you received as input.
+
+As the hero, proclaim your arrival with this modification to the `createNotice` function:
+
+```javascript
+async function createNotice(payload) {
+  const advance_req = await fetch(rollup_server + "/notice", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
+}
 ```
 
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
+## Input
+The input that will be sent to your function is the following:
+```json
+{
+  "message": "I'm here, Cartesia!"
+}
 ```
+That means the output will be the same
 
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
+By completing this chapter, you not only declare the hero's presence in Cartesia but also unlock the potential for further adventures and challenges. Welcome, hero, to the lands where
