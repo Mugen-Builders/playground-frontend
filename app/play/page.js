@@ -42,11 +42,6 @@ const NavLink = (props) => {
 }
 
 
-function change(e) {
-  console.log(e)
-}
-
-
 function HeroStage() {
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
