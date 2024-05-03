@@ -60,10 +60,8 @@ function HeroStage() {
     .then(text => {
       let json = JSON.parse(text)
       setMetadata(json)
-      console.log("chap mdtdt", json)
     }).catch(err => {
       console.log(err)
-      console.log("hmm")
     });
   
   }, [])
@@ -111,8 +109,6 @@ export default function Playground() {
     test(`test${chapter}_${step}`, code).then((result) => {
       setOutput(result)
     }).catch ((error)=> {
-      console.log("called error")
-      console.log(error )
       setOutput(error)
     })
   }

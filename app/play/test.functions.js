@@ -58,7 +58,6 @@ async function test0_1(functionGenerator) {
     return  `Hex: ${expected} \nBody: { "message": "I'M HERE, CARTESIA!" }`
 }
 
-
 async function test0_2(functionGenerator) {
 
     function strToJson(payload) {
