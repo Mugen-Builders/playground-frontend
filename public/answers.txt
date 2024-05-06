@@ -1,0 +1,57 @@
+0-0:
+async function createNotice(payload) {
+  const advance_req = await fetch(rollup_server + "/notice", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
+}
+
+0-1:
+
+function toUpperFromPayload(payload) {
+  let strPayload = hex2str(payload)
+  let jsonPayload = strToJson(strPayload)
+  jsonPayload.message = jsonPayload.message.toUpperCase()
+  let returnStr = jsonToStr(jsonPayload)
+  let returnHex = str2hex(returnStr)
+  return returnHex
+}
+
+0-2:
+function listMissions() {
+  return str2hex(jsonToStr({ missions }))
+}
+
+
+0-3:
+function acceptMission(args, missions) {
+  console.log(missions)
+  const missionIndex = missions.findIndex(m => {
+    return m == args.mission
+  });
+  if (missionIndex !== -1) {
+    missions.splice(missionIndex, 1); 
+    return str2hex(jsonToStr({ 
+        missionSelected: args.mission
+    }));
+  }
+}
+
+0-4:
+async function createReport(decoded_payload) {
+  let payload = str2hex(decoded_payload)// remember to encode the payload!
+  const advance_req = await fetch(rollup_server + "/report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
+}

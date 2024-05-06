@@ -174,8 +174,13 @@ a {
   font-weight: normal;
   padding-left: 2px;
   padding-right: 2px;
-  margin: 0;
+  margin: 15px 0;
   font-weight: bold;
+}
+
+.md > p {
+  
+  margin-top: 10px;
 }
 
 .md > blockquote {
@@ -194,7 +199,8 @@ a {
 }
 .md > code {
   all:revert;
-  background: #232931;
+  background: #00000060;
+  border-radius: 2px;
   font-family: JetBrains Mono NL, Courier New, Monospaced;
   font-size: 0.9em;
 }
@@ -224,4 +230,8 @@ a {
   all:revert;
   margin-left-ltr: 25px;
   margin-right-rtl: 25px;
+}
+
+.input {
+  background-color: #26282a;
 }

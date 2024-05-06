@@ -1,0 +1,42 @@
+# Chapter 2: Proclaiming Presence with Power
+
+In the enchanted world of Cartesia, a hero's voice must resonate with strength and clarity. After announcing your arrival, it's time to reinforce your presence with a bold declaration. This chapter will guide you through the art of transforming and amplifying your message using the Cartesi framework, ensuring that every corner of this mystical land hears your call.
+
+## Chapter Overview: Amplifying Your Voice
+
+Your task in this chapter is to modify the `createNotice` function to not only send a message but to send it in an emphatic, loud format. You will learn how to decode the received input, transform it to uppercase, and then send this altered message back through Cartesia's decentralized system using Cartesi Rollups.
+
+## Objective
+The goal of this chapter is to enhance your ability to manipulate data within the Cartesi ecosystem. You will not modify the `createNotice` function, but an axiliar function that will decode the incoming message, change it to uppercase, and return the encoded version of the modified message. 
+So the backend will be able to send this emphatic declaration back as a notice.
+
+## User Instructions
+- **Code Editing Guidelines**: Focus your modifications on the designated sections of the code. Do not alter the overall structure to maintain the operational integrity of the application.
+- **Task**: Transform the input message to uppercase before sending it out as a notice.
+
+## Required Modification
+To effectively amplify your declaration, you will need to modify the `createNotice` function as follows:
+
+Use the auxiliar functions presented here to 
+- decode the hex to string
+- convert the string to a json
+- edit the value of this json with a toUpperCase() function
+- convert this new object to a string
+- encode it to a hex again
+- return it.
+
+## Input
+The input will continue to be:
+```json
+{
+  "message": "I'm here, Cartesia!"
+}
+```
+But now, the output will be:
+```json
+{
+  "message": "I'M HERE, CARTESIA!"
+}
+```
+
+By mastering this chapter, you will not only reinforce your presence in Cartesia but also learn the crucial skills of data manipulation and decentralized communication. Let your voice be heard far and wide, hero, as you shout your arrival and prepare for the adventures ahead in the lands of Cartesia.

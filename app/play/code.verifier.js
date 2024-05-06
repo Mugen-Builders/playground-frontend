@@ -1,7 +1,4 @@
-import { 
-    testAdd,
-    testFetchOverride
-} from "./test.functions";
+import testFunctions from "./test.functions";
 
 function executeFunction(functionString) {
 
@@ -56,17 +53,23 @@ async function runTests(functionName, functionReference) {
     console.log(":: Running Tests")
     let testResult
     switch (functionName) {
-        case 'add':
-            testResult = await testAdd(functionReference)
+        case 'test0_0':
+            testResult = await testFunctions.test0_0(functionReference)
             break;
-        case 'fetchOverride':
-            testResult = await testFetchOverride(functionReference);
+        case 'test0_1':
+            testResult = await testFunctions.test0_1(functionReference);
             break;
-        case 'orange':
-            console.log('Orange was chosen.');
+        case 'test0_2':
+            testResult = await testFunctions.test0_2(functionReference);
+            break;
+        case 'test0_3':
+            testResult = await testFunctions.test0_3(functionReference);
+            break;
+        case 'test0_4':
+            testResult = await testFunctions.test0_4(functionReference);
             break;
         default:
-            console.log('No valid fruit was chosen.');
+            console.log('No valid function was chosen.');
     }
     console.log(testResult)
     return testResult
