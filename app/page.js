@@ -12,36 +12,12 @@ import {
   extendTheme,
 } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
-import injectedModule from "@web3-onboard/injected-wallets";
-import { init } from "@web3-onboard/react";
-import configFile from "./config.json";
-import { Network } from "./network";
-import { useState } from "react";
-const config = configFile;
-const injected = injectedModule();
-init({
-  wallets: [injected],
-  chains: Object.entries(config).map(([k, v], i) => ({
-    id: k,
-    token: v.token,
-    label: v.label,
-    rpcUrl: v.rpcUrl,
-  })),
-  appMetadata: {
-    name: "Joao's playground app",
-    icon: "<svg><svg/>",
-    description: "Enter the world of Cartesia",
-    recommendedInjectedWallets: [
-      { name: "MetaMask", url: "https://metamask.io" },
-    ],
-  },
-});
+
 export default function Home() {
 
   const cardui = {};
   return (
     <ChakraProvider class="home-bg">
-      <Network />
 
       <Stack
         width="1000px"
