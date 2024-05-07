@@ -138,6 +138,23 @@ export default function Playground() {
       setOutput(error)
     })
   }
+  const sendtoBackend = async () => {
+
+    switch (chapter) {
+      case 0:
+        switch (step) {
+          case 0:
+            addInput(JSON.stringify({ method: "createNotice", Args: { data: "welcome to Cartesia" } }));
+          case 2:
+            addInput(JSON.stringify({ method: "signupforMission" }));
+          case 3:
+            addInput(JSON.stringify({ method: "acceptMission", args: { mission: 1 } })); //* To-Do change this to a dynamic variable
+          case 4:
+            addInput(JSON.stringify({ method: "createReport", Args: { data: "creating a report" } })); //* To-do change this to a dynamic payload
+
+        }
+    }
+  }
   const addInput = async (_input) => {
     const provider = new ethers.providers.Web3Provider(wallet.provider);
     console.log("adding input", _input);
@@ -313,7 +330,7 @@ export default function Playground() {
                 <Button
                   onClick={() => {
                     run();
-                    addInput("Hello Cartesi world")
+                    sendtoBackend();
                   }}
                   height={"23px"}
                 >Run</Button>
