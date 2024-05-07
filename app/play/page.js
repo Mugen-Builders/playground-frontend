@@ -22,7 +22,8 @@ import {
   Center,
   Image,
   ChakraProvider,
-  Textarea
+  Textarea,
+  Alert
 } from '@chakra-ui/react'
 import injectedModule from "@web3-onboard/injected-wallets";
 import { init } from "@web3-onboard/react";
@@ -139,7 +140,9 @@ export default function Playground() {
     })
   }
   const sendtoBackend = async () => {
-
+    if (!wallet) {
+      alert("Please connect your web3 wallet to proceed!")
+    }
     switch (chapter) {
       case 0:
         switch (step) {
