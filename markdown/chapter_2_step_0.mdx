@@ -1,0 +1,68 @@
+# Chapter 9: Looting the Dragon
+
+After a fierce battle, the dragon is defeated. As the smoke clears, you, the hero of Cartesia, approach the fallen beast. This chapter details the process of looting the dragon to collect the valuable assets it guarded. Your adventure in this chapter not only involves acquiring treasures but also understanding and implementing the transfer and ownership of assets in the decentralized application (dApp).
+
+## Chapter Overview: The Spoils of Victory
+
+This chapter teaches you how to manage the transfer of assets from the dragon to the player's inventory after a successful quest. By interacting with the blockchain, you will understand how assets are recorded in a inside the dApp, demonstrating the simplicity of asset management similar to creating variables and assigning ownership through an array or map.
+
+## Objective
+
+The objective of this chapter is to implement the functionality that allows the hero (user) to loot the dragon and add the items to their inventory, while illustrating the ease with which native assets are managed and ownership is assigned in dApps. This involves coding the `lootDragon` function and updating the state of the dApp to reflect the new asset ownership.
+
+## User Instructions
+
+- **Code Editing Guidelines**: Concentrate on coding the `lootDragon` function which will handle the asset transfer.
+- **Task**: Update the `lootDragon` when the corresponding action is called.
+- **Task**: Ensure that the looted assets are added to the player's inventory and the state update is recorded.
+- **Task**: Read the `handle_advance` to understand how the player wallet address is received from `message_sender` property of the request.
+
+
+## Required Modification
+
+Create a new function called `lootDragon`, to handle the new looting action. Here’s how you can structure these functions:
+
+### The `lootDragon` Function
+
+```javascript
+
+function lootDragon(sender, inventories, dragonAssets) {
+  if (!inventories[sender]) {
+    inventories[sender] = []
+  }
+  let inventory = inventories[sender]
+
+  let l = dragonAssets.length
+  for (let i=0; i < l; i++) {
+    let asset = dragonAssets.pop()
+    console.log(asset)
+    inventory.push(asset)
+  }
+
+  console.log("Inventory after looting: ", inventory);
+  return {
+    player: sender,
+    inventory: inventory
+  }
+}
+```
+
+### Update `handle_advance` Function
+
+Incorporate the new looting functionality into the existing `handle_advance` function:
+
+## Input
+Input to trigger the `lootDragon` function, providing the necessary details:
+
+```json
+{
+  "route": "lootDragon",
+  "args": {}
+}
+```
+
+## Educational Insights
+
+By implementing and understanding this loot mechanism, you will deepen your grasp of handling secure transactions and state changes in decentralized applications, akin to managing variables in traditional programming. This chapter emphasizes that managing native assets in a dApp is as straightforward as creating a variable and setting ownership, demonstrating the powerful simplicity of blockchain technology in creating decentralized, user-driven experiences.
+
+In this chapter, you will have successfully added to your hero’s wealth by claiming the dragon's treasures. This experience prepares you for more complex functionalities in future adventures within Cartesia, emphasizing the ease and security of managing digital assets in a decentralized environment.

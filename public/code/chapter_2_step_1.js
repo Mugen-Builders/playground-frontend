@@ -4,12 +4,6 @@ const { ethers } = require("ethers");
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 
-let missions = [
-  "Kill the dragon",
-  "Find a gnome",
-  "Make omellete"
-]
-
 function strToJson(payload) {
   return JSON.parse(payload);
 }
@@ -38,55 +32,72 @@ async function createNotice(payload) {
   return json; 
 }
 
+async function createReport(decoded_payload) {
+  let payload = str2hex(decoded_payload)
+  const advance_req = await fetch(rollup_server + "/report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
+}
+
+
+let inventories = { 
+  "<playerID>" : [
+    "Dragon Claw",
+    "Dragon Scale",
+    "Dragon Fang"
+  ]
+}
+let wallet = {}
+
 /* Do not change anything above this line */
 
-async function createReport(decoded_payload) {
-  // TIP: remember to encode the payload!
-  //let payload = ... 
+function sellAssets(sender, inventory, wallet) {
+  if (!wallet[sender]) {
+    wallet[sender] = { gold: 0 }
+  }
+
+  inventory[sender].forEach(item => {
+    wallet[sender].gold += 50
+  })
+
+  // Clear the inventory after selling
+  inventory[sender] = []
+  
+  console.log(`${sender} earned ${goldEarned} gold from selling assets.`)
+  return {
+    player: sender,
+    wallet: wallet[sender]
+  };
 }
 
 /* Do not change anything below this line */
 
-function acceptMission(args, missions) {
-  const missionIndex = missions.findIndex(m =>  m == args.mission);
-  if (missionIndex !== -1) {
-      missions.splice(missionIndex, 1); 
-      return str2hex(jsonToStr({ 
-          missionSelected: args.mission
-      }));
-  } else {
-      createReport("Mission not found")
-      return null
-  }
-}
 
 async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   const payload = data["payload"];
+  const metadata = data["metadata"];
+  const sender = metadata["msg_sender"];
   const { route, args } = strToJson(hex2str(payload));
 
   let responsePayload;
-  if (route === "acceptMission") {
-    responsePayload = acceptMission(args, missions);
-    if (!responsePayload){
-        await createReport("Mission not found");
-        return "reject"
-    }
+  if (route === "sellAssets") {
+    let salesObject = sellAssets(sender, inventories, goldPrices);
+    responsePayload = str2hex(jsonToStr(salesObject));
+    await createNotice(responsePayload);
   } else {
-    await createReport("Invalid route");
-    return "reject"
+    await createReport(jsonToStr({ error: "Invalid route" }));
+    return "reject";
   }
 
-  let json = await createNotice(responsePayload);
-  console.log(
-    `Received notice status ${advance_req.status} with body `,
-    JSON.stringify(json)
-  );
+  console.log(`Received notice status with body `, JSON.stringify(json));
   return "accept";
-}
-
-function listMissions() {
-  return str2hex(jsonToStr({ missions }))
 }
 
 async function handle_inspect(data) {

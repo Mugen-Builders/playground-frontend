@@ -38,14 +38,19 @@ async function createNotice(payload) {
   return json; 
 }
 
-/* Do not change anything above this line */
-
 async function createReport(decoded_payload) {
-  // TIP: remember to encode the payload!
-  //let payload = ... 
+  let payload = str2hex(decoded_payload)
+  const advance_req = await fetch(rollup_server + "/report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payload }),
+  });
+  const json = await advance_req.json();
+  return json; 
 }
 
-/* Do not change anything below this line */
 
 function acceptMission(args, missions) {
   const missionIndex = missions.findIndex(m =>  m == args.mission);
@@ -60,6 +65,17 @@ function acceptMission(args, missions) {
   }
 }
 
+let dragonHP = 100 // Dragon Health points
+
+/* Do not change anything above this line */
+
+function attackDragon() {
+
+}
+
+/* Do not change anything below this line */
+
+
 async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   const payload = data["payload"];
@@ -70,6 +86,12 @@ async function handle_advance(data) {
     responsePayload = acceptMission(args, missions);
     if (!responsePayload){
         await createReport("Mission not found");
+        return "reject"
+    }
+  } else if (route === "attackDragon") {
+    responsePayload = attackDragon();
+    if (!responsePayload){
+        await createReport("Dragon not found");
         return "reject"
     }
   } else {

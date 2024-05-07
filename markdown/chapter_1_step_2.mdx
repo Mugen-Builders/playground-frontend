@@ -1,0 +1,36 @@
+# Chapter 8: Killing the dragon and checking notices
+
+Now that as a hero you have taken your mission, you know how to perform actions and besides that, you know how to query the outputs of the actions you trigger let's emulate how you would do that.
+
+## Chapter Overview: Striking the dragon
+
+Your task in this chapter is to modify the `attackDragon` function which is called inside the `handle_Advance` to deal with the dragon status from alive to dead once you attack him. After that, check the notice that was created to see the dragons health status and then keep hitting until you receive the information "User : your dragon is dead"
+
+## Required Modification
+Here is how you should modify the `attackDragon` function to incorporate a new route that provides a list of missions:
+
+```javascript
+function attackDragon() {
+  dragonHP -= 20
+  if (dragonHP == 0) {
+    return createNotice(str2hex(`Your dragon is dead`));
+  }
+  return createNotice( str2hex(jsonToStr({ health: dragonHP })))
+}
+```
+
+## Input
+To attack the dragon this will be sent on your transaction data:
+```json
+{
+  "route": "attackDragon",
+}
+```
+
+By sending this you will receive an input id which you can check the notice generated for it afterward in the graphql explorer:
+http://localhost:8080/graphql
+**Remember to get it's ID from the log after click run**
+Only advance to the next step after killing the dragon!
+
+
+By successfully completing this chapter, you will understand how to retrieve the outputs for the functions you just called!

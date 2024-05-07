@@ -1,5 +1,6 @@
 let queryNotices = `
-query notices {
+query noticesByInput($inputIndex: Int!) {
+  input(index: $inputIndex) {
     notices {
       edges {
         node {
@@ -12,10 +13,12 @@ query notices {
       }
     }
   }
+}
 `
 
 let queryReports = `
-query reports {
+query reportsByInput($inputIndex: Int!) {
+  input(index: $inputIndex) {
     reports {
       edges {
         node {
@@ -28,4 +31,5 @@ query reports {
       }
     }
   }
+}
 `

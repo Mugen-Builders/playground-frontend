@@ -68,6 +68,15 @@ async function runTests(functionName, functionReference) {
         case 'test0_4':
             testResult = await testFunctions.test0_4(functionReference);
             break;
+        case 'test1_0':
+            testResult = await testFunctions.test1_0(functionReference);
+            break;
+        case 'test2_0':
+            testResult = await testFunctions.test2_0(functionReference);
+            break;
+        case 'test2_1':
+            testResult = await testFunctions.test2_1(functionReference);
+            break;
         default:
             console.log('No valid function was chosen.');
     }
