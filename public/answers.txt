@@ -55,3 +55,53 @@ async function createReport(decoded_payload) {
   const json = await advance_req.json();
   return json; 
 }
+
+1-2:
+function attackDragon() {
+  dragonHP -= 20
+  if (dragonHP == 0) {
+    return createNotice(str2hex(`Your dragon is dead`));
+  }
+  return createNotice( str2hex(jsonToStr({ health: dragonHP })))
+}
+
+2-0:
+function lootDragon(sender, inventories, dragonAssets) {
+  if (!inventories[sender]) {
+    inventories[sender] = []
+  }
+  let inventory = inventories[sender]
+
+  let l = dragonAssets.length
+  for (let i=0; i < l; i++) {
+    let asset = dragonAssets.pop()
+    console.log(asset)
+    inventory.push(asset)
+  }
+
+  console.log("Inventory after looting: ", inventory);
+  return {
+    player: sender,
+    inventory: inventory
+  }
+}
+
+2-1:
+function sellAssets(sender, inventory, wallet) {
+  if (!wallet[sender]) {
+    wallet[sender] = { gold: 0 }
+  }
+
+  inventory[sender].forEach(item => {
+    wallet[sender].gold += 50
+  })
+
+  // Clear the inventory after selling
+  inventory[sender] = []
+  
+  console.log(`${sender} earned ${wallet[sender].gold} gold from selling assets.`)
+  return {
+    player: sender,
+    wallet: wallet[sender]
+  };
+}

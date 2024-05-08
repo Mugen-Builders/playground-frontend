@@ -252,11 +252,196 @@ async function test0_4(functionGenerator) {
     \n\nCongratulations your report was sent due to an error interpreting that a wrong message was sent`
 }
 
+
+async function test1_0(functionGenerator) {
+    function strToJson(payload) {
+        return JSON.parse(payload);
+    }
+    
+    function jsonToStr(jsonString) {
+        return JSON.stringify(jsonString);
+    }
+    
+    function hex2str(hex) {
+        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
+        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+        return new TextDecoder().decode(typedArray);
+    }
+    
+    function str2hex(str) {
+        const bytes = new TextEncoder().encode(str);
+        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    let rollup_server = 'localhost:8080'
+    const fetch = async (str, body) => {
+        return {
+            json : ()=> {
+                return {str, body}
+            }
+        }
+    }
+
+    let functionReference = functionGenerator({
+        fetch, 
+        rollup_server,
+        strToJson,
+        jsonToStr,
+        hex2str,
+        str2hex
+    })
+
+    let res, url, resBody, resPayload, expected
+
+    res = await functionReference("Mission not found")
+    url = res.str
+    resBody = res.body
+    expected = "0x4d697373696f6e206e6f7420666f756e64"
+
+    assert(url != null && resBody != null, "Nothing was returned")
+    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
+    resPayload = strToJson(resBody.body).payload
+    assert(resPayload == expected, 
+        `expected: ${expected} \n${hex2str(expected)} \n\n 
+        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
+
+    res = await functionReference("Invalid route")
+    url = res.str
+    resBody = res.body    
+    expected = "0x496e76616c696420726f757465"
+
+    assert(url != null && resBody != null, "Nothing was returned")
+    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
+    resPayload = strToJson(resBody.body).payload
+    assert(resPayload == expected, 
+        `expected: ${expected} \n${hex2str(expected)} \n\n 
+        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
+
+    
+    return `received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)} 
+    \n\nCongratulations your report was sent due to an error interpreting that a wrong message was sent`
+}
+
+
+async function test2_0(functionGenerator) {
+
+    function strToJson(payload) {
+        return JSON.parse(payload);
+    }
+    
+    function jsonToStr(jsonString) {
+        return JSON.stringify(jsonString);
+    }
+    
+    function hex2str(hex) {
+        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
+        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+        return new TextDecoder().decode(typedArray);
+    }
+    
+    function str2hex(str) {
+        const bytes = new TextEncoder().encode(str);
+        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    let dragonAssets = [
+        "Dragon Claw",
+        "Dragon Scale",
+        "Dragon Fang"
+      ]
+    let inventories = {}
+
+    let functionReference = functionGenerator({
+        strToJson, 
+        jsonToStr,
+        hex2str,
+        str2hex
+    })
+
+    let result = await functionReference("sender", inventories, dragonAssets)
+    let inventory = result.inventory
+
+
+    assert(result != null, "Nothing was returned")
+    assert(!dragonAssets.includes("Dragon Claw"), "Dragon still has it's claw")
+    assert(!dragonAssets.includes("Dragon Scale"), "Dragon still has it's scale")
+    assert(!dragonAssets.includes("Dragon Fang"), "Dragon still has it's fang")
+
+    assert(inventory.includes("Dragon Claw"), `Dragon Claw not in the inventory`)
+    assert(inventory.includes("Dragon Scale"), `Dragon Scale not in the invetory`)
+    assert(inventory.includes("Dragon Fang"), `Dragon Fang not in the invetory`)
+
+    assert(result.player == "sender", `player id not added on return`)
+
+
+    return `received: ${jsonToStr(result)}  
+    \n\n`
+}
+
+async function test2_1(functionGenerator) {
+
+    function strToJson(payload) {
+        return JSON.parse(payload);
+    }
+    
+    function jsonToStr(jsonString) {
+        return JSON.stringify(jsonString);
+    }
+    
+    function hex2str(hex) {
+        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
+        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+        return new TextDecoder().decode(typedArray);
+    }
+    
+    function str2hex(str) {
+        const bytes = new TextEncoder().encode(str);
+        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    let inventories = { 
+        "sender" : [
+            "Dragon Claw",
+            "Dragon Scale",
+            "Dragon Fang"
+        ]
+    }
+    let wallet = {}
+
+    let functionReference = functionGenerator({
+        strToJson, 
+        jsonToStr,
+        hex2str,
+        str2hex
+    })
+
+    let result = await functionReference("sender", inventories, wallet)
+    let inventory = result.inventory
+
+    let playerAssets = inventories["sender"]
+    assert(result != null, "Nothing was returned")
+    assert(!playerAssets.includes("Dragon Claw"), "Player still has it's claw")
+    assert(!playerAssets.includes("Dragon Scale"), "Player still has it's scale")
+    assert(!playerAssets.includes("Dragon Fang"), "Player still has it's fang")
+    console.log(wallet)
+    assert(wallet["sender"]["gold"] == 150, `Gold does not match`)
+  
+    assert(result.player == "sender", `player id not added on return`)
+
+
+    return `received: ${jsonToStr(result)}  
+    \n\n`
+}
+
 export default {
     test0_0,
     test0_1,
     test0_2,
     test0_3,
-    test0_4
+    test0_4,
+    test1_0,
+    test2_0,
+    test2_1
+
 
 }
