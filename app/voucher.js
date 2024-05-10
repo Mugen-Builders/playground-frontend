@@ -12,7 +12,7 @@ export const Voucher = (propos) => {
 
     const provider = new ethers.providers.Web3Provider(connectedWallet.provider);
 
-    const [{ connectedChain }] = useSetChain();
+    const connectedChain = propos.chain;
     const [vouchers, setVouchers] = useState([]);
     const [voucherResult, setVoucher] = useState();
     const [voucherToExecute, setVoucherToExecute] = useState();

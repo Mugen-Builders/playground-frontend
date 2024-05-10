@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput } from "cartesi-client";
+import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput, getNotice, getReport } from "cartesi-client";
 import { ethers } from 'ethers';
 import { test } from './code.verifier'
+import { Notice } from '../notices';
+import { Report } from '../reports';
+import { Voucher } from '../voucher';
 import {
   Box,
   Flex,
@@ -47,7 +50,7 @@ init({
     ],
   },
 });
-
+let apiURL = "http://localhost:8080/graphql";
 
 
 const NavLink = (props) => {
@@ -126,7 +129,9 @@ export default function Playground() {
   const [code, setCode] = useState("Loading...")
   const [md, setMd] = useState("Loading...")
   const [output, setOutput] = useState("Output:")
-
+  const [alloutputs, showallOutputs] = useState(false);
+  const [voucher, showVoucher] = useState(false);
+  const [singleOutput, showSingleOutput] = useState(false);
   const searchParams = useSearchParams()
   const chapter = searchParams.get('chapter') | 0
   const step = searchParams.get('step') | 0
@@ -139,24 +144,59 @@ export default function Playground() {
       setOutput(error)
     })
   }
+
+
   const sendtoBackend = async () => {
     if (!wallet) {
       alert("Please connect your web3 wallet to proceed!")
+      return
     }
+    console.log(chapter, step);
     switch (chapter) {
       case 0:
         switch (step) {
           case 0:
-            addInput(JSON.stringify({ method: "createNotice", Args: { data: "welcome to Cartesia" } }));
+            addInput(JSON.stringify({ method: "create_notice", args: { data: "welcome to Cartesia" } }));
+            addInput(JSON.stringify({ method: "create_user" }));
+            break;
           case 2:
-            addInput(JSON.stringify({ method: "signupforMission" }));
+            addInput(JSON.stringify({ method: "signup_formission" }));
+            break;
           case 3:
-            addInput(JSON.stringify({ method: "acceptMission", args: { mission: 1 } })); //* To-Do change this to a dynamic variable
+            addInput(JSON.stringify({ method: "accept_mission", args: { mission: 1 } })); //* To-Do change this to a dynamic variable *//
+            break;
           case 4:
-            addInput(JSON.stringify({ method: "createReport", Args: { data: "creating a report" } })); //* To-do change this to a dynamic payload
+            addInput(JSON.stringify({ method: "create_report", args: { data: "creating a report" } })); //* To-do change this to a dynamic payload *//
+            break;
 
         }
+        break
+      case 1:
+        switch (step) {
+          case 0:
+            showallOutputs(true);
+            break;
+          case 1:
+            showSingleOutput(true);
+            break;
+          case 2:
+            await addInput(JSON.stringify({ method: "fight_dragon" }));
+            break;
+        }
+        break;
+      case 2:
+        switch (step) {
+          case 0:
+            await addInput(JSON.stringify({ method: "loot_dragon" }));
+            break;
+          case 1:
+            await addInput(JSON.stringify({ method: "sell_items" }));
+            break;
+        }
+        break;
+
     }
+    return
   }
   const addInput = async (_input) => {
     const provider = new ethers.providers.Web3Provider(wallet.provider);
@@ -353,6 +393,19 @@ export default function Playground() {
           </Box>
 
         </Box>
+        {alloutputs && wallet &&
+          <div>
+
+          </div>
+        }
+
+        {singleOutput && wallet &&
+          <div>
+            <Notice chain={connectedChain} index={0} />
+            <Report chain={connectedChain} index={1} />
+
+          </div>
+        }
 
       </ChakraProvider>
 

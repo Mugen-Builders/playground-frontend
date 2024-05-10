@@ -1,12 +1,12 @@
-import { getNotices } from "cartesi-client";
+import { getNotices, getNotice } from "cartesi-client";
 import { useSetChain } from "@web3-onboard/react";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import configFile from "./config.json";
 const config = configFile;
 let apiURL = "http://localhost:8080/graphql";
-export const Notice = () => {
-    const [{ connectedChain }] = useSetChain();
+export const Notice = (props) => {
+    const connectedChain = props.chain;
     const [notices, setNotices] = useState([])
     if (config[connectedChain.id]?.graphqlAPIURL) {
         apiURL = `${config[connectedChain.id].graphqlAPIURL}/graphql`;
@@ -15,7 +15,7 @@ export const Notice = () => {
         return;
     }
     const getAllNotices = async () => {
-        const Notices = await getNotices(apiURL);
+        const Notices = await getNotices(apiURL, props.index);
         setNotices(Notices);
         setNotices(Notices.map((n) => {
             let inputPayload = n?.input.payload;

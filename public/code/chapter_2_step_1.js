@@ -29,7 +29,7 @@ async function createNotice(payload) {
     body: JSON.stringify({ payload }),
   });
   const json = await advance_req.json();
-  return json; 
+  return json;
 }
 
 async function createReport(decoded_payload) {
@@ -42,12 +42,12 @@ async function createReport(decoded_payload) {
     body: JSON.stringify({ payload }),
   });
   const json = await advance_req.json();
-  return json; 
+  return json;
 }
 
 
-let inventories = { 
-  "<playerID>" : [
+let inventories = {
+  "<playerID>": [
     "Dragon Claw",
     "Dragon Scale",
     "Dragon Fang"
@@ -57,7 +57,7 @@ let wallet = {}
 
 /* Do not change anything above this line */
 
-function sellAssets(sender, inventory, wallet) {
+function sellAssets(sender, inventory, wallet) { //internal transfer of assets (ether/erc20 with the assets)
   if (!wallet[sender]) {
     wallet[sender] = { gold: 0 }
   }
@@ -68,7 +68,7 @@ function sellAssets(sender, inventory, wallet) {
 
   // Clear the inventory after selling
   inventory[sender] = []
-  
+
   console.log(`${sender} earned ${goldEarned} gold from selling assets.`)
   return {
     player: sender,
@@ -108,7 +108,7 @@ async function handle_inspect(data) {
   if (endpoint == "listMissions") {
     responsePayload = listMissions()
   }
-  
+
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: { "Content-Type": "application/json", },

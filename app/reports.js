@@ -5,8 +5,8 @@ import { ethers } from "ethers";
 import configFile from "./config.json";
 const config = configFile;
 let apiURL = "http://localhost:8080/graphql";
-export const Report = () => {
-    const [{ connectedChain }] = useSetChain();
+export const Report = (props) => {
+    const connectedChain = props.chain;
     const [reports, setReports] = useState([])
     if (config[connectedChain.id]?.graphqlAPIURL) {
         apiURL = `${config[connectedChain.id].graphqlAPIURL}/graphql`;
