@@ -1,13 +1,21 @@
+'use client'
+
 import styles from "./page.module.css";
 import { Card, Stack, Image, Heading, CardBody, Text, CardFooter, Button, extendTheme } from "@chakra-ui/react";
 import { ChakraProvider } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation';
+
 
 export default function Home() {
   const cardui = {} 
+  const router = useRouter()
+
   return (
     <ChakraProvider class="home-bg">
     <Stack  width="1000px" alignItems="center" mt="80px" margin={"80px auto auto auto"} spacing="0" >
       <Card
+      onClick={ () => router.push(`/play`) }
+
       direction={{ base: 'column', sm: 'row' }}
       alignItems="end"
       overflow='hidden'
@@ -30,7 +38,6 @@ export default function Home() {
             Enter Cartesia World
           </Text>
         </CardBody>
-
       </Stack>
     </Card>
 
