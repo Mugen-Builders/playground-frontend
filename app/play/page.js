@@ -226,54 +226,56 @@ export default function Playground() {
   return (
     <>
       <ChakraProvider>
-        <div>
-          {!wallet && (
-            <button onClick={() => connect()}>
-              {connecting ? "connecting" : "connect"}
-            </button>
-          )}
-          {wallet && (
-            <div>
-              <label>Switch Chain</label>
-              {settingChain ? (
-                <span>Switching chain...</span>
-              ) : (
-                <select
-                  onChange={({ target: { value } }) => {
-                    if (config[value] !== undefined) {
-                      setChain({ chainId: value });
-                    } else {
-                      alert("No deploy on this chain");
-                    }
-                  }}
-                  value={connectedChain?.id}
-                >
-                  {chains.map(({ id, label }) => {
-                    return (
-                      <option key={id} value={id}>
-                        {label}
-                      </option>
-                    );
-                  })}
-                </select>
-              )}
-              <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
-              <div>
-                Dapp Address: <input
-                  type="text"
-                  value={dappAddress}
-                  onChange={(e) => setDappAddress(e.target.value)}
-                />
-                <br /><br />
-              </div>
-            </div>
-          )}
-        </div>
+        
+
         <Box
           backgroundColor={"#232931"}
           px={4}
           filter={"drop-shadow(0 0 0.25rem black)"}
         >
+          <div>
+            {!wallet && (
+              <button onClick={() => connect()}>
+                {connecting ? "connecting" : "connect"}
+              </button>
+            )}
+            {wallet && (
+              <div>
+                <label>Switch Chain</label>
+                {settingChain ? (
+                  <span>Switching chain...</span>
+                ) : (
+                  <select
+                    onChange={({ target: { value } }) => {
+                      if (config[value] !== undefined) {
+                        setChain({ chainId: value });
+                      } else {
+                        alert("No deploy on this chain");
+                      }
+                    }}
+                    value={connectedChain?.id}
+                  >
+                    {chains.map(({ id, label }) => {
+                      return (
+                        <option key={id} value={id}>
+                          {label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
+                <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
+                <div>
+                  Dapp Address: <input
+                    type="text"
+                    value={dappAddress}
+                    onChange={(e) => setDappAddress(e.target.value)}
+                  />
+                  <br /><br />
+                </div>
+              </div>
+            )}
+          </div>
           <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
             <Box>Logo</Box>
 
@@ -292,22 +294,6 @@ export default function Playground() {
                     />
                   </MenuButton>
                   <MenuList alignItems={'center'}>
-                    <br />
-                    <Center>
-                      <Avatar
-                        size={'2xl'}
-                        src={'https://avatars.dicebear.com/api/male/username.svg'}
-                      />
-                    </Center>
-                    <br />
-                    <Center>
-                      <p>Username</p>
-                    </Center>
-                    <br />
-                    <MenuDivider />
-                    <MenuItem>Your Servers</MenuItem>
-                    <MenuItem>Account Settings</MenuItem>
-                    <MenuItem>Logout</MenuItem>
                   </MenuList>
                 </Menu>
               </Stack>
