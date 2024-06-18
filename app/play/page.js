@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { IconButton } from '@chakra-ui/react'
+
+
+
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput, getNotice, getReport } from "cartesi-client";
@@ -52,34 +57,19 @@ init({
 });
 let apiURL = "http://localhost:8080/graphql";
 
-
-const NavLink = (props) => {
-  const { children } = props
-
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={'md'}
-      _hover={{
-        textDecoration: 'none',
-      }}
-      href={'#'}>
-      {children}
-    </Box>
-  )
-}
-
-
 function HeroStage() {
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const chapter = searchParams.get('chapter') | 0
-  const step = searchParams.get('step') | 0
+  const chapter = parseInt(searchParams.get('chapter')) || 0
+  const step = parseInt(searchParams.get('step')) || 0
+
+  let nextStep = step + 1
+  let prevStep = step - 1
+  let nextChapter = chapter
 
   const [metadata, setMetadata] = useState({ total_steps: 1 })
 
-  useEffect(() => {
+  useEffect(()  => {
     fetch(`/chapter_metadata/${chapter}.json`)
       .then(r => r.text())
       .then(text => {
@@ -93,18 +83,32 @@ function HeroStage() {
 
   return (
     <div className="hero-stage">
-      {Array.from({ length: metadata.total_steps * 2 }, (_, i) => {
+      <button className='prev-button' type="button" onClick={() => {
+        
+        if (prevStep < 0) { 
+          router.push(`/`)
+        } else {
+          router.push(`/play?chapter=${nextChapter}&step=${prevStep}`)
+        }
+      }}>
+      </button>
 
-        if (i % 2 == 1) {
+      {Array.from({ length: metadata.total_steps * 2 }, (_, i) => {
+        if (metadata.total_steps <= nextChapter + 1) {
+          nextStep = 0
+          nextChapter += 1
+        }
+
+        if (i % 2 === 1) {
           return (<div key={i} className="line"></div>)
         }
-        if (i == step * 2) {
+        if (i === step * 2) {
 
           return (
             <Image key={i}
               height={"90px"}
-              src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true'
-              alt='hero'
+              src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true' 
+              alt='hero' 
             />
           )
 
@@ -114,10 +118,21 @@ function HeroStage() {
           return (<div key={i} className="dot flex-item"></div>)
         }
       })}
+
+      <button className='next-button' type="button" onClick={() => {
+        
+        if (nextStep >= metadata.total_steps) { 
+          router.push(`/`)
+        } else {
+          router.push(`/play?chapter=${nextChapter}&step=${nextStep}`)
+        }
+      }}>
+        Dashboard
+      </button>
+
     </div>
   );
 }
-
 
 export default function Playground() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
@@ -125,6 +140,8 @@ export default function Playground() {
   const [dappAddress, setDappAddress] = useState(
     "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
   );
+  const router = useRouter()
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [code, setCode] = useState("Loading...")
   const [md, setMd] = useState("Loading...")
@@ -133,11 +150,10 @@ export default function Playground() {
   const [voucher, showVoucher] = useState(false);
   const [singleOutput, showSingleOutput] = useState(false);
   const searchParams = useSearchParams()
-  const chapter = searchParams.get('chapter') | 0
-  const step = searchParams.get('step') | 0
+  const chapter = parseInt(searchParams.get('chapter')) || 0
+  const step = parseInt(searchParams.get('step')) || 0
 
   function run() {
-
     test(`test${chapter}_${step}`, code).then((result) => {
       setOutput(result)
     }).catch((error) => {
@@ -220,64 +236,18 @@ export default function Playground() {
         setCode(undefined)
       });
 
-  }, [])
-
+  }, [chapter, step])  // Add chapter and step as dependencies
 
   return (
     <>
       <ChakraProvider>
-        
-
-        <Box
-          backgroundColor={"#232931"}
-          px={4}
-          filter={"drop-shadow(0 0 0.25rem black)"}
-        >
-          <div>
-            {!wallet && (
-              <button onClick={() => connect()}>
-                {connecting ? "connecting" : "connect"}
-              </button>
-            )}
-            {wallet && (
-              <div>
-                <label>Switch Chain</label>
-                {settingChain ? (
-                  <span>Switching chain...</span>
-                ) : (
-                  <select
-                    onChange={({ target: { value } }) => {
-                      if (config[value] !== undefined) {
-                        setChain({ chainId: value });
-                      } else {
-                        alert("No deploy on this chain");
-                      }
-                    }}
-                    value={connectedChain?.id}
-                  >
-                    {chains.map(({ id, label }) => {
-                      return (
-                        <option key={id} value={id}>
-                          {label}
-                        </option>
-                      );
-                    })}
-                  </select>
-                )}
-                <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
-                <div>
-                  Dapp Address: <input
-                    type="text"
-                    value={dappAddress}
-                    onChange={(e) => setDappAddress(e.target.value)}
-                  />
-                  <br /><br />
-                </div>
-              </div>
-            )}
-          </div>
-          <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-            <Box>Logo</Box>
+      <Box 
+      backgroundColor={"#232931"} 
+      px={4}
+      filter={"drop-shadow(0 0 0.25rem black)"}
+      >
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+          <Box>Logo</Box>
 
             <Flex alignItems={'center'}>
               <Stack direction={'row'} spacing={7}>
@@ -342,10 +312,10 @@ export default function Playground() {
               height={"calc(100vh - 384px)"}
             >
               <Editor
-                defaultLanguage="javascript"
-                defaultValue={code ? code : "Not found"}
+                language="javascript"
+                value={code}
                 theme="vs-dark"
-                onChange={(e) => setCode(e)}
+                onChange={(value) => setCode(value)}
               />
             </Box>
 
@@ -394,7 +364,6 @@ export default function Playground() {
         }
 
       </ChakraProvider>
-
     </>
   )
 }

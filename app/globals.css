@@ -140,16 +140,37 @@ a {
   background-color: #4ECCA3;
 }
 
-.line:not(:last-child) {
-  top: 50%; /* Center the line vertically */
-  height: 2px; /* Adjust based on your needs */
-  min-width: 3px;
+.line {
+  /* Common styles for all lines */
+  min-width: 0;
   background-color: #4ECCA3;
-  flex-grow: 10;
-  margin: 15px
+  margin: 15px;
 }
 
+.line:not(:nth-last-child(-n+2)) {
+  height: 2px; /* Adjust based on your needs */
+  min-width: 3px;
+  top: 50%; /* Center the line vertically */
+  flex-grow: 10;
+}
 
+.prev-button,
+.next-button {
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.prev-button {
+  border-width: 15px 20px 15px 0;
+  border-color: transparent #4ECCA3 transparent transparent;
+  margin-right: 30px;
+}
+
+.next-button {
+  border-width: 15px 0 15px 20px;
+  border-color: transparent transparent transparent #4ECCA3;
+}
 
 .md {
   color: white;
@@ -235,3 +256,4 @@ a {
 .input {
   background-color: #26282a;
 }
+

@@ -4,7 +4,7 @@ Embark on an extraordinary adventure in the mystical lands of Cartesia. You are 
 
 ## Chapter Overview: Announcing Arrival
 
-In this chapter you will send a powerful message announcing your arrival in Cartesia. The task involves receving a specific input in the Cartesi rollups smartcontract and sending back to the user. An ECHO dApp if you will — It's a declaration that will mark the beginning of your adventures in this mysterious land.
+In this chapter you will send a powerful message announcing your arrival in Cartesia. The task involves receiving a specific input in the Cartesi rollups smartcontract and sending back to the user. An ECHO dApp if you will — It's a declaration that will mark the beginning of your adventures in this mysterious land.
 
 ## Objective
 Your primary mission in this chapter is to modify the `createNotice` function to send a declaration message. This function is called inside the `handle_advance` function, which is akin to POST request received by a server.
@@ -20,7 +20,7 @@ A notice is a verifiable data declaration that attests to off-chain events or co
 ## Required Modification
 To create a notice, you will have to perform a `fetch` to the `rollup_server` `/notice` endpoint.
 
-As the body, you can send an object with the property `payload` and for it's value set the same payload the backend received.
+As the body, you can send an object with the property `payload` and for its value set the same payload the backend received.
 
 This means you will output to the notice whatever you received as input.
 

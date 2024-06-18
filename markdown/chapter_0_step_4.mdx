@@ -1,6 +1,6 @@
 # Chapter 5: Handling Errors and Reporting
 
-Encountering errors during a quest selection, such as choosing a quest that does not exists, is one of many scenarios that need proper handling in your cartesi dApp. This chapter will guide you through create reports to handle errors. By the end of this chapter, your dApp will be equipped to handle incorrect inputs and notify the user appropriately, improving user experience and application reliability.
+Encountering errors during a quest selection, such as choosing a quest that does not exist, is one of many scenarios that need proper handling in your cartesi dApp. This chapter will guide you through creating reports to handle errors. By the end of this chapter, your dApp will be equipped to handle incorrect inputs and notify the user appropriately, improving user experience and application reliability.
 
 ## Objective
 
@@ -16,7 +16,7 @@ Unlike notices, reports lack any association with proof and are therefore unsuit
 
 - **Code Editing Guidelines**: Modify only the `createReport` function.
 - **Task**: Read the modified implementation of `handle_advance` to handle errors and return appropriate messages to the user.
-- **Task**: Read the modified implementation of `acceptMission` to see how the it returns null on case of error and how this is treaed on the `handle_advance`
+- **Task**: Read the modified implementation of `acceptMission` to see how it returns null in case of error and how this is treated on the `handle_advance`
 
 ## Required Modification
 
@@ -24,7 +24,7 @@ The `acceptMission` function logic was modified here to return `null` in case th
 If that happens, the handle advance will call the function `createReport`. Implement the function logic, it's similar to create notice, but the endpoint is changed.
 
 ## Input
-The input of last chaper was the following:
+The input of last chapter was the following:
 
 ```json
 {
