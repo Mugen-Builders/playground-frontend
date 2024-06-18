@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
 import { IconButton } from '@chakra-ui/react'
-import { ArrowLeftIcon } from '@chakra-ui/icons'
 
 
 
@@ -155,7 +154,7 @@ export default function Playground() {
             variant='solid'
             colorScheme='teal'
             fontSize='20px'
-            icon={<ArrowLeftIcon />} 
+            icon={"Logo"} 
             onClick={ () => router.push(`/`) }/>
 
             <Flex alignItems={'center'}>
