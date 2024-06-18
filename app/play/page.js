@@ -241,33 +241,57 @@ export default function Playground() {
   return (
     <>
       <ChakraProvider>
-      <Box 
-      backgroundColor={"#232931"} 
-      px={4}
-      filter={"drop-shadow(0 0 0.25rem black)"}
-      >
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>Logo</Box>
+        <Box 
+        backgroundColor={"#232931"} 
+        px={4}
+        filter={"drop-shadow(0 0 0.25rem black)"}
+        >
+          <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+            <Box>Logo</Box>
 
-            <Flex alignItems={'center'}>
-              <Stack direction={'row'} spacing={7}>
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rounded={'full'}
-                    variant={'link'}
-                    cursor={'pointer'}
-                    minW={0}>
-                    <Avatar
-                      size={'sm'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    />
-                  </MenuButton>
-                  <MenuList alignItems={'center'}>
-                  </MenuList>
-                </Menu>
-              </Stack>
-            </Flex>
+            <div>
+            {!wallet && (
+              <button onClick={() => connect()}>
+                {connecting ? "connecting" : "connect"}
+              </button>
+            )}
+            {wallet && (
+              <div>
+                <label>Switch Chain</label>
+                {settingChain ? (
+                  <span>Switching chain...</span>
+                ) : (
+                  <select
+                    onChange={({ target: { value } }) => {
+                      if (config[value] !== undefined) {
+                        setChain({ chainId: value });
+                      } else {
+                        alert("No deploy on this chain");
+                      }
+                    }}
+                    value={connectedChain?.id}
+                  >
+                    {chains.map(({ id, label }) => {
+                      return (
+                        <option key={id} value={id}>
+                          {label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
+                <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
+                <div>
+                  Dapp Address: <input
+                    type="text"
+                    value={dappAddress}
+                    onChange={(e) => setDappAddress(e.target.value)}
+                  />
+                  <br /><br />
+                </div>
+              </div>
+            )}
+          </div>
           </Flex>
         </Box>
         <Box
