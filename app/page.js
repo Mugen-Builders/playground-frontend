@@ -41,8 +41,9 @@ export default function Home() {
           backgroundPosition="right 50% bottom -50px"
           color="white"
           borderRadius={"0"}
-          border="0px solid black"
-          margin="0"
+          border="8px solid #000"
+          className="bored" 
+
         >
           <Stack>
             <CardBody>
