@@ -14,12 +14,12 @@ export default function Stages() {
   const searchParams = useSearchParams()
   const chapter = parseInt(searchParams.get('chapter')) || 0
   const step = parseInt(searchParams.get('step')) || 0
+  const [metadata, setMetadata] = useState({ total_steps: 1 })
 
   let nextStep = step + 1
   let prevStep = step - 1
   let nextChapter = chapter
 
-  const [metadata, setMetadata] = useState({ total_steps: 1 })
 
   useEffect(()  => {
     fetch(`/chapter_metadata/${chapter}.json`)
@@ -31,7 +31,7 @@ export default function Stages() {
         console.log(err)
       });
 
-  }, [metadata])
+  }, [])
 
   return (
 
@@ -56,15 +56,9 @@ export default function Stages() {
             } else {
               router.push(`/play?chapter=${nextChapter}&step=${prevStep}`)
             }
-          }}>
-          </button>
+          }} />
 
           {Array.from({ length: metadata.total_steps * 2 }, (_, i) => {
-            if (metadata.total_steps <= nextChapter + 1) {
-              nextStep = 0
-              nextChapter += 1
-            }
-
             if (i % 2 === 1) {
               return (<div key={i} className="line"></div>)
             }
@@ -92,9 +86,8 @@ export default function Stages() {
             } else {
               router.push(`/play?chapter=${nextChapter}&step=${nextStep}`)
             }
-          }}>
-            Dashboard
-          </button>
+          }} />
+            
 
         </div>
       </Box>

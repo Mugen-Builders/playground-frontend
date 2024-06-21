@@ -11,11 +11,14 @@ import {
   Button,
   extendTheme,
 } from "@chakra-ui/react";
+import { useRouter } from 'next/navigation';
 import { ChakraProvider } from "@chakra-ui/react";
 
 export default function Home() {
 
   const cardui = {};
+  const router = useRouter()
+
   return (
     <ChakraProvider class="home-bg">
 
@@ -43,7 +46,7 @@ export default function Home() {
           borderRadius={"0"}
           border="8px solid #000"
           className="bored" 
-
+          onClick={() => router.push(`/play?chapter=${0}&step=${0}`)}
         >
           <Stack>
             <CardBody>
@@ -78,6 +81,8 @@ export default function Home() {
           borderRadius={"0"}
           border="0px solid black"
           margin="0"
+          onClick={() => router.push(`/play?chapter=${1}&step=${0}`)}
+
         >
           <Stack>
             <CardBody>
@@ -112,6 +117,8 @@ export default function Home() {
           borderRadius={"0"}
           border="0px solid black"
           margin="0"
+          onClick={() => router.push(`/play?chapter=${2}&step=${0}`)}
+
         >
           <Stack>
             <CardBody>
@@ -146,6 +153,8 @@ export default function Home() {
           borderRadius={"0"}
           border="0px solid black"
           margin="0"
+          onClick={() => router.push(`/play?chapter=${3}&step=${0}`)}
+
         >
           <Stack>
             <CardBody>
@@ -180,6 +189,8 @@ export default function Home() {
           borderRadius={"0"}
           border="0px solid black"
           margin="0"
+          onClick={() => router.push(`/play?chapter=${4}&step=${0}`)}
+
         >
           <Stack>
             <CardBody>
