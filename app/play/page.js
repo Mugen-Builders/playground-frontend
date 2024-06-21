@@ -44,7 +44,9 @@ export default function Playground() {
   const step = parseInt(searchParams.get('step')) || 0
 
   function run() {
-    test(`test${chapter}_${step}`, code).then((result) => {
+    test(`test${chapter}_${step}`, code).then(async (result) => {
+      setOutput("Sending data to backend")
+      await sendtoBackend();
       setOutput(result)
     }).catch((error) => {
       setOutput(error)
@@ -57,27 +59,31 @@ export default function Playground() {
       alert("Please connect your web3 wallet to proceed!")
       return
     }
-    console.log("hiiiii")
-    console.log(wallet)
-    console.log(chapter, step);
+    let response
     switch (chapter) {
       case 0:
         switch (step) {
           case 0:
-            addInput(JSON.stringify({ method: "create_notice", args: { data: "welcome to Cartesia" } }));
+            response = await addInput(JSON.stringify({ method: "create_notice", args: { data: "I'm here, Cartesia!" } }));
             addInput(JSON.stringify({ method: "create_user" }));
             break;
+          case 1:
+            response = await addInput(JSON.stringify({ method: "set_catchphrase", args: { data: "I'm here, Cartesia!" } }));
+            setOutput()
+            break;
           case 2:
-            addInput(JSON.stringify({ method: "signup_formission" }));
+            // response = await addInput(JSON.stringify({ method: "signup_formission" }));
+            console.log("only an inspect call")
             break;
           case 3:
-            addInput(JSON.stringify({ method: "accept_mission", args: { mission: 1 } })); //* To-Do change this to a dynamic variable *//
+            response = await addInput(JSON.stringify({ method: "accept_mission", args: { mission: 0 } })); //* To-Do change this to a dynamic variable *//
             break;
           case 4:
-            addInput(JSON.stringify({ method: "create_report", args: { data: "creating a report" } })); //* To-do change this to a dynamic payload *//
+            response = await addInput(JSON.stringify({ method: "create_report", args: { data: "creating a report" } })); //* To-do change this to a dynamic payload *//
             break;
-
         }
+        console.log("response")
+        console.log(response)
         break
       case 1:
         switch (step) {
@@ -112,14 +118,16 @@ export default function Playground() {
     console.log("adding input", _input);
     const signer = await provider.getSigner();
     console.log("signer and input is ", signer, _input);
-    advanceInput(signer, dappAddress, _input);
+    return advanceInput(signer, dappAddress, _input);
   };
+
   useEffect(() => {
 
     fetch(`/code/chapter_${chapter}_step_${step}.js`)
       .then(r => r.text())
       .then(text => {
         setCode(text)
+        setOutput("")
       }).catch(err => {
         setCode(undefined)
       });
@@ -168,7 +176,6 @@ export default function Playground() {
                 <Button
                   onClick={() => {
                     run();
-                    sendtoBackend();
                   }}
                   height={"23px"}
                 >Run</Button>

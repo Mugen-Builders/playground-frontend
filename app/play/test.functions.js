@@ -223,18 +223,6 @@ async function test0_4(functionGenerator) {
 
     let res, url, resBody, resPayload, expected
 
-    res = await functionReference("Mission not found")
-    url = res.str
-    resBody = res.body
-    expected = "0x4d697373696f6e206e6f7420666f756e64"
-
-    assert(url != null && resBody != null, "Nothing was returned")
-    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
-    resPayload = strToJson(resBody.body).payload
-    assert(resPayload == expected, 
-        `expected: ${expected} \n${hex2str(expected)} \n\n 
-        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
-
     res = await functionReference("Invalid route")
     url = res.str
     resBody = res.body    
@@ -247,6 +235,17 @@ async function test0_4(functionGenerator) {
         `expected: ${expected} \n${hex2str(expected)} \n\n 
         received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
 
+    res = await functionReference("Mission not found")
+    url = res.str
+    resBody = res.body
+    expected = "0x4d697373696f6e206e6f7420666f756e64"
+
+    assert(url != null && resBody != null, "Nothing was returned")
+    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
+    resPayload = strToJson(resBody.body).payload
+    assert(resPayload == expected, 
+        `expected: ${expected} \n${hex2str(expected)} \n\n 
+        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
     
     return `received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)} 
     \n\nCongratulations your report was sent due to an error interpreting that a wrong message was sent`

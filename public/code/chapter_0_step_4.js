@@ -66,7 +66,7 @@ async function handle_advance(data) {
   const { route, args } = strToJson(hex2str(payload));
 
   let responsePayload;
-  if (route === "acceptMission") {
+  if (route === "accept_mission") {
     responsePayload = acceptMission(args, missions);
     if (!responsePayload){
         await createReport("Mission not found");
@@ -94,7 +94,7 @@ async function handle_inspect(data) {
   const payload = data["payload"];
   const endpoint = hex2str(payload);
   let responsePayload
-  if (endpoint == "listMissions") {
+  if (endpoint == "list_missions") {
     responsePayload = listMissions()
   }
   

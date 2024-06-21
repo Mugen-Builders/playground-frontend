@@ -64,7 +64,7 @@ async function handle_inspect(data) {
   const payload = data["payload"];
   const endpoint = hex2str(payload);
   let responsePayload
-  if (endpoint == "listMissions") {
+  if (endpoint == "list_missions") {
     responsePayload = listMissions()
   }
   
