@@ -46,7 +46,7 @@ export default function Playground() {
   function run() {
     test(`test${chapter}_${step}`, code).then(async (result) => {
       setOutput("Sending data to backend")
-      await sendtoBackend();
+      // await sendtoBackend();
       setOutput(result)
     }).catch((error) => {
       setOutput(error)
