@@ -115,6 +115,44 @@ a {
   background-color: #18191b!important;
 }
 
+.navBar {
+  color: #f4f4f4;
+}
+
+.navBar select,
+.navBar input {
+  color: black;
+}
+
+.walletWrapper {
+  display: flex;
+}
+
+.walletWrapper button {
+  margin: 3px;
+}
+
+.chainBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.dappBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chainBox select,
+.dappBox input {
+  width: 235px;
+  margin-left: 5px;
+  background-color: #414c5b;
+  color: #f4f4f4;
+}
+
 .hero-stage {
   width: 100%;
   display: flex;
@@ -256,6 +294,7 @@ a {
 .input {
   background-color: #26282a;
 }
+
 
 .bored {
   border: 8px solid #000;

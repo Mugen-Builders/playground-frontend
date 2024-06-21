@@ -17,12 +17,12 @@ export const Voucher = (propos) => {
     const [voucherResult, setVoucher] = useState();
     const [voucherToExecute, setVoucherToExecute] = useState();
     const [unexVouchers, setunexVouchers] = useState([]);
-    if (config[connectedChain.id]?.graphqlAPIURL) {
+    // if (config[connectedChain.id]?.graphqlAPIURL) {
         apiURL = `${config[connectedChain.id].graphqlAPIURL}/graphql`;
-    } else {
-        console.error(`No inspect interface defined for chain ${connectedChain.id}`);
-        return;
-    }
+    // } else {
+    //     console.error(`No inspect interface defined for chain ${connectedChain.id}`);
+    //     return;
+    // }
 
 
 

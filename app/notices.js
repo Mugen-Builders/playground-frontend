@@ -8,12 +8,12 @@ let apiURL = "http://localhost:8080/graphql";
 export const Notice = (props) => {
     const connectedChain = props.chain;
     const [notices, setNotices] = useState([])
-    if (config[connectedChain.id]?.graphqlAPIURL) {
+    // if (config[connectedChain.id]?.graphqlAPIURL) {
         apiURL = `${config[connectedChain.id].graphqlAPIURL}/graphql`;
-    } else {
-        console.error(`No inspect interface defined for chain ${connectedChain.id}`);
-        return;
-    }
+    // } else {
+    //     console.error(`No inspect interface defined for chain ${connectedChain.id}`);
+    //     return;
+    // }
     const getAllNotices = async () => {
         const Notices = await getNotices(apiURL, props.index);
         setNotices(Notices);

@@ -47,50 +47,55 @@ export default function Navbar() {
         backgroundColor={"#232931"} 
         px={4}
         filter={"drop-shadow(0 0 0.25rem black)"}
+        className='navBar'
         >
           <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-            <Box>Logo</Box>
+            <Box className='title'>Playground</Box>
 
             <div>
             {!wallet && (
               <button onClick={() => connect()}>
-                {connecting ? "connecting" : "connect"}
+                {connecting ? (<Box className='title'>Connecting...</Box>) : (<Box className='title'>Connect</Box>)}
               </button>
             )}
             {wallet && (
-              <div>
-                <label>Switch Chain</label>
-                {settingChain ? (
-                  <span>Switching chain...</span>
-                ) : (
-                  <select
-                    onChange={({ target: { value } }) => {
-                      if (config[value] !== undefined) {
-                        setChain({ chainId: value });
-                      } else {
-                        alert("No deploy on this chain");
-                      }
-                    }}
-                    value={connectedChain?.id}
-                  >
-                    {chains.map(({ id, label }) => {
-                      return (
-                        <option key={id} value={id}>
-                          {label}
-                        </option>
-                      );
-                    })}
-                  </select>
-                )}
-                <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
+              <div className='walletWrapper'>
                 <div>
-                  Dapp Address: <input
-                    type="text"
-                    value={dappAddress}
-                    onChange={(e) => setDappAddress(e.target.value)}
-                  />
-                  <br /><br />
+                  <div className='chainBox'>
+                    <label>Switch Chain</label>
+                    {settingChain ? (
+                      <span>Switching chain...</span>
+                    ) : (
+                      <select
+                        onChange={({ target: { value } }) => {
+                          if (config[value] !== undefined) {
+                            setChain({ chainId: value });
+                          } else {
+                            alert("No deploy on this chain");
+                          }
+                        }}
+                        value={connectedChain?.id}
+                      >
+                        {chains.map(({ id, label }) => {
+                          return (
+                            <option key={id} value={id}>
+                              {label}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    )}                  
+                  </div>
+                  <div className='dappBox'>
+                    Dapp Address <input
+                      type="text"
+                      value={dappAddress}
+                      onChange={(e) => setDappAddress(e.target.value)}
+                    />
+                  </div>
                 </div>
+                <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
+
               </div>
             )}
           </div>
