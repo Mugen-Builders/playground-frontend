@@ -1,4 +1,4 @@
-import { getReports } from "cartesi-client";
+import { getReports } from "@mugen-builders/client";
 import { useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";

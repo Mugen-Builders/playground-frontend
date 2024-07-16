@@ -2,7 +2,7 @@
 import { BigNumber, ethers } from "ethers";
 import React, { use, useEffect, useState } from "react";
 import { useSetChain } from "@web3-onboard/react";
-import { getVoucher, getVouchers, executeVoucher, getUnexecutedVouchers } from "cartesi-client";
+import { getVoucher, getVouchers, executeVoucher, getUnexecutedVouchers } from "@mugen-builders/client";
 import { useWallets } from "@web3-onboard/react";
 import configFile from './config.json';
 const config = configFile;

@@ -46,7 +46,7 @@ export default function Stages() {
         backgroundSize="cover"
         boxShadow={"inset 0 0 0 2000px rgba(0, 0, 0, 0.85)"}
         backgroundPosition={"center bottom -70%"}
-        backgroundImage={`url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_${chapter}.webp')`}
+        backgroundImage={`url('/images/chapters/${chapter}.webp')`}
       >
         <div className="hero-stage">
           <button className='prev-button' type="button" onClick={() => {
@@ -67,7 +67,7 @@ export default function Stages() {
               return (
                 <Image key={i}
                   height={"90px"}
-                  src='https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/character/Subject.png?raw=true' 
+                  src='/images/character/walking-side.png' 
                   alt='hero' 
                 />
               )

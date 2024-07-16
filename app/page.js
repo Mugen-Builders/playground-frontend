@@ -14,6 +14,9 @@ import {
 import { useRouter } from 'next/navigation';
 import { ChakraProvider } from "@chakra-ui/react";
 
+import Navbar from './components/navbar'
+
+
 export default function Home() {
 
   const cardui = {};
@@ -21,12 +24,13 @@ export default function Home() {
 
   return (
     <ChakraProvider class="home-bg">
+      <Navbar />
 
       <Stack
         width="1000px"
         alignItems="center"
-        mt="80px"
-        margin={"80px auto auto auto"}
+        //mt="80px"
+        margin={"10px auto auto auto"}
         spacing="0"
       >
         <Card
@@ -34,18 +38,18 @@ export default function Home() {
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"400px"}
+          height={"520px"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_0.webp')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/0.webp')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
-          borderRadius={"0"}
-          border="8px solid #000"
-          className="bored" 
+          borderRadius={"15px"}
+          border="0px solid black"
+          margin="5px"
           onClick={() => router.push(`/play?chapter=${0}&step=${0}`)}
         >
           <Stack>
@@ -69,18 +73,18 @@ export default function Home() {
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"400px"}
+          height={"520"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "url('https://github.com/Mugen-Builders/playground-frontend/blob/main/assets/chapter_images/ch_2.png?raw=true')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/1.webp')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
-          borderRadius={"0"}
+          borderRadius={"15px"}
           border="0px solid black"
-          margin="0"
+          margin="5px"
           onClick={() => router.push(`/play?chapter=${1}&step=${0}`)}
 
         >
@@ -105,18 +109,19 @@ export default function Home() {
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"400px"}
+          height={"520px"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_2.webp')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/2.webp')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
-          borderRadius={"0"}
+          borderRadius={"15px"}
           border="0px solid black"
-          margin="0"
+          margin="5px"
+
           onClick={() => router.push(`/play?chapter=${2}&step=${0}`)}
 
         >
@@ -131,78 +136,6 @@ export default function Home() {
                 lineHeight="1.1"
               >
                 The hoard, the vault, the prize
-              </Text>
-            </CardBody>
-          </Stack>
-        </Card>
-
-        <Card
-          direction={{ base: "column", sm: "row" }}
-          alignItems="end"
-          overflow="hidden"
-          variant="outline"
-          height={"400px"}
-          width="100%"
-          backgroundRepeat={"no-repeat"}
-          backgroundSize="cover"
-          backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_3.webp')"
-          }
-          backgroundPosition="right 50% bottom -50px"
-          color="white"
-          borderRadius={"0"}
-          border="0px solid black"
-          margin="0"
-          onClick={() => router.push(`/play?chapter=${3}&step=${0}`)}
-
-        >
-          <Stack>
-            <CardBody>
-              <Heading size="md">Chapter IV:</Heading>
-              <Text
-                py="2"
-                fontFamily={"Arial"}
-                fontWeight="800"
-                fontSize={"48"}
-                lineHeight="1.1"
-              >
-                Exchanges in the grand bazar
-              </Text>
-            </CardBody>
-          </Stack>
-        </Card>
-
-        <Card
-          direction={{ base: "column", sm: "row" }}
-          alignItems="end"
-          overflow="hidden"
-          variant="outline"
-          height={"400px"}
-          width="100%"
-          backgroundRepeat={"no-repeat"}
-          backgroundSize="cover"
-          backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('https://raw.githubusercontent.com/Mugen-Builders/playground-frontend/main/assets/chapter_images/chapter_4.webp')"
-          }
-          backgroundPosition="right 50% bottom -50px"
-          color="white"
-          borderRadius={"0"}
-          border="0px solid black"
-          margin="0"
-          onClick={() => router.push(`/play?chapter=${4}&step=${0}`)}
-
-        >
-          <Stack>
-            <CardBody>
-              <Heading size="md">Chapter V:</Heading>
-              <Text
-                py="2"
-                fontFamily={"Arial"}
-                fontWeight="800"
-                fontSize={"48"}
-                lineHeight="1.1"
-              >
-                Interacting with other worlds
               </Text>
             </CardBody>
           </Stack>

@@ -9,7 +9,7 @@ import { init } from "@web3-onboard/react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
-import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput, getNotice, getReport } from "cartesi-client";
+import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput, getNotice, getReport } from "@mugen-builders/client";
 import { ethers } from 'ethers';
 import { test } from './code.verifier'
 import { Notice } from '../notices';

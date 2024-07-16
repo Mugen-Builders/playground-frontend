@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { ethers } from 'ethers';
 import { useWallets } from "@web3-onboard/react";
-//import { advanceInput } from "cartesi-client";
-import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput } from "cartesi-client";
+//import { advanceInput } from "@mugen-builders/client";
+import { advanceDAppRelay, advanceERC20Deposit, advanceERC721Deposit, advanceEtherDeposit, advanceInput } from "@mugen-builders/client";
 export const Input = (props) => {
   const [connectedWallet] = useWallets();
   const [input, setInput] = useState("");
