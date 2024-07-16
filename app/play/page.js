@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
 import { Box, Button, useDisclosure, Image, ChakraProvider, Textarea } from '@chakra-ui/react'
@@ -24,7 +24,7 @@ import configFile from "../config.json";
 
 const config = configFile;
 
-export default function Playground() {
+function Playground() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
   const [dappAddress, setDappAddress] = useState(
@@ -213,3 +213,13 @@ export default function Playground() {
     </>
   )
 }
+
+const Page = () => {
+  return (
+    <Suspense>
+      <Playground/>
+    </Suspense>
+  )
+}
+
+export default Page

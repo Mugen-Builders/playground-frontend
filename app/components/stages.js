@@ -91,8 +91,8 @@ export default function Stages() {
 
         </div>
       </Box>
-
+      
     </ChakraProvider>
-
+    
   );
 }
