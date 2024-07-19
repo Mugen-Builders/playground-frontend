@@ -1,14 +1,21 @@
 # Chapter 4: Choosing Your Quest
 
-As a hero in Cartesia, choosing a quest is an action that defines your path. Now that you've familiarized yourself with listing available quests, it's time to start by selecting a mission. This chapter guides you on how to modify the `handle_advance` function to include the accept a mission functionality, removing the selected one from the list of available quests.
+Ok, so you did learn how to invoke advance requests through transactions in the blockchain and how to check the machine state through inspect calls. Let's go back to the advance requests and try to change the state of the machine so it will reflect some change in the inspect.
 
-## Chapter Overview: Selecting Your Destiny
 
-Your task in this chapter is to extend the functionality of the `handle_advance` function. Unlike the `handle_inspect` function, which is passive, `handle_advance` can change the state of your dApp. You will create a sub-function that is called within it that handles the selection and removal of a quest from the available list based on user input.
+## Changing the state
 
-## Objective
+Your task in this chapter is to extend the functionality of the `handle_advance` function. Unlike the `handle_inspect` function, which is passive, `handle_advance` can change the state of your dApp.
 
-The objective is to enhance your dApp's functionality by allowing the hero (user) to pick a quest, which in turn updates the list of available missions. This dynamic change represents a core feature in decentralized applications where user actions can directly influence the app's state.
+Complete the function `acceptMission` that is called within `handle_advance` that handles the selection and removal of a quest from the available list based on user input.
+
+This is the first time you will be altering some value held in the machines memory. By removing the mission from the mission list 
+
+## Routing
+
+Sometimes you need your dApp to do more than one thing, handle more than one kind of transaction. For this you can and should implement routing, The simplest way to do so is to check for an element in the input. In this example it's called **route**. 
+
+See how it is being used inside the handle advance after the decoding of the input to decide which function will be called.
 
 ## User Instructions
 
@@ -42,4 +49,4 @@ The input to select a mission will be an object specifying the route and argumen
 }
 ```
 
-By completing this chapter, you will advance your understanding of state changes in decentralized applications. You'll learn how user actions can dynamically alter the state, preparing you for building more interactive and responsive dApps in Cartesia.
+By completing this chapter, you will advance your understanding of state changes in Cartesi dApps. You'll learn how user actions can dynamically alter the state, preparing you for building more interactive and responsive dApps.

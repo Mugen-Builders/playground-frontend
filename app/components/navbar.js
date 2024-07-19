@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 
 import {
@@ -34,6 +35,9 @@ init({
 let apiURL = "http://localhost:8080/graphql";
 
 export default function Navbar() {
+  const router = useRouter()
+
+
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
   const [dappAddress, setDappAddress] = useState(
@@ -50,7 +54,11 @@ export default function Navbar() {
         className='navBar'
         >
           <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-            <Box className='title'>Playground</Box>
+            <Box 
+              className='title podk'
+              cursor={"pointer"}
+              onClick={() => router.push(`/`)}
+            >Playground</Box>
 
             <div>
             {!wallet && (
@@ -60,13 +68,14 @@ export default function Navbar() {
             )}
             {wallet && (
               <div className='walletWrapper'>
-                <div>
+                {/* <div> */}
                   <div className='chainBox'>
                     <label>Switch Chain</label>
                     {settingChain ? (
                       <span>Switching chain...</span>
                     ) : (
                       <select
+                        className='chainPicker'
                         onChange={({ target: { value } }) => {
                           if (config[value] !== undefined) {
                             setChain({ chainId: value });
@@ -86,14 +95,14 @@ export default function Navbar() {
                       </select>
                     )}                  
                   </div>
-                  <div className='dappBox'>
+                  {/* <div className='dappBox'>
                     Dapp Address <input
                       type="text"
                       value={dappAddress}
                       onChange={(e) => setDappAddress(e.target.value)}
                     />
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
                 <button onClick={() => disconnect(wallet)}>Disconnect Wallet</button>
 
               </div>

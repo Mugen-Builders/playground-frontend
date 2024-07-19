@@ -1,12 +1,10 @@
 # Chapter 10: Trading Treasure for Gold
 
-After successfully looting the dragon's hoard, your hero is ready to convert these rare treasures into gold. This chapter will guide you through the process of selling the acquired assets from the dragon and managing the financial transactions within your decentralized application.
+Let's talk about how to deal with fungible assets then, just like token!
 
-## Chapter Overview: From Treasure to Wealth
+Think of it like this: After successfully looting the dragon's hoard, your adventurer is ready to convert these rare treasures into gold. So let's implement a function that would act like a vendor accepting to buy the assets.
 
-In this chapter, you will implement functionality to allow your hero to trade the looted dragon assets for gold. By simulating a marketplace within the dApp.
-
-## Objective
+Given all that you saw so far this exercise should be a simple one to complete. The same way you created a inventory collection, you can create a wallet object that hold different types of assets by user.
 
 The main objective of this chapter is to develop the function `sellAssets` which will handle the conversion of looted items into gold, updating the hero's total gold balance. This involves creating a simple sale logic within your dApp where items can be assigned a value and sold.
 
@@ -22,30 +20,36 @@ Develop the `sellAssets` function to calculate the total gold received from sell
 
 ### The `sellAssets` Function
 
+- Initialize the wallet for the user in case it's not already done
 ```javascript
-function sellAssets(sender, inventory, wallet) {
-  if (!wallet[sender]) {
-    wallet[sender] = { gold: 0 }
-  }
-
-  inventory[sender].forEach(item => {
-    wallet[sender].gold += 50
-  })
-
-  // Clear the inventory after selling
-  inventory[sender] = []
-  
-  console.log(`${sender} earned ${wallet[sender].gold} gold from selling assets.`)
-  return {
-    player: sender,
-    wallet: wallet[sender]
-  };
+if (!wallet[sender]) {
+  wallet[sender] = { gold: 0 }
 }
+```
+
+- Add gold for each item sold
+```javascript
+inventory[sender].forEach(item => {
+  wallet[sender].gold += 50
+})
+```
+
+- Clear the inventory
+```javascript
+inventory[sender] = []
+```
+
+- Return the adventurer wallet balances
+```javascript
+return {
+  player: sender,
+  wallet: wallet[sender]
+};
 ```
 
 ## Input
 
-Provide input to trigger the `sellAssets` function:
+This will be the input to trigger the `sellAssets` function:
 
 ```json
 {
@@ -54,8 +58,4 @@ Provide input to trigger the `sellAssets` function:
 }
 ```
 
-## Educational Insights
-
-This chapter illustrates the dynamic nature of asset management and financial transactions in decentralized applications. By converting treasures into gold, developers learn about handling economic activities in a blockchain environment, which includes secure transactions and real-time updates of financial states. This function reinforces the concept that managing financial transactions in a dApp is as straightforward as manipulating variables in traditional programming but with enhanced security and reliability.
-
-In this chapter, you will not only turn your hero's treasures into tangible wealth but also gain practical experience in the economic aspects of dApp development, preparing you for more advanced features and functionalities in future Cartesia adventures.
+With all of these steps now you understand the basic concepts of asset management with native assets inside the dApp. Of course this can be specialized, extended to multiple types of token and there can be different interactions with these assets. It's all about your application logic and how you implement it!

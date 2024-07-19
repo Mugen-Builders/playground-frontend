@@ -1,4 +1,3 @@
-
 const { ethers } = require("ethers");
 
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
@@ -57,23 +56,8 @@ let wallet = {}
 
 /* Do not change anything above this line */
 
-function sellAssets(sender, inventory, wallet) { //internal transfer of assets (ether/erc20 with the assets)
-  if (!wallet[sender]) {
-    wallet[sender] = { gold: 0 }
-  }
+function sellAssets(sender, inventory, wallet) {
 
-  inventory[sender].forEach(item => {
-    wallet[sender].gold += 50
-  })
-
-  // Clear the inventory after selling
-  inventory[sender] = []
-
-  console.log(`${sender} earned ${goldEarned} gold from selling assets.`)
-  return {
-    player: sender,
-    wallet: wallet[sender]
-  };
 }
 
 /* Do not change anything below this line */

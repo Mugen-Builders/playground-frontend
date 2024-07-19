@@ -3,12 +3,6 @@ const { ethers } = require("ethers");
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 
-let missions = [
-  "Kill the dragon",
-  "Find a gnome",
-  "Make omellete"
-]
-
 function strToJson(payload) {
   return JSON.parse(payload);
 }
@@ -34,7 +28,7 @@ async function createNotice(payload) {
     body: JSON.stringify({ payload }),
   });
   const json = await advance_req.json();
-  return json; 
+  return json;
 }
 
 async function createReport(decoded_payload) {
@@ -47,67 +41,89 @@ async function createReport(decoded_payload) {
     body: JSON.stringify({ payload }),
   });
   const json = await advance_req.json();
-  return json; 
+  return json;
 }
 
 
-function acceptMission(args, missions) {
-  const missionIndex = missions.findIndex(m =>  m == args.mission);
-  if (missionIndex !== -1) {
-      missions.splice(missionIndex, 1); 
-      return str2hex(jsonToStr({ 
-          missionSelected: args.mission
-      }));
-  } else {
-      createReport("Mission not found")
-      return null
+let inventories = {
+  "<playerID>": [
+    "Dragon Claw",
+    "Dragon Scale",
+    "Dragon Fang"
+  ]
+}
+
+let wallet = {}
+
+function sellAssets(sender, inventory, wallet) { 
+  if (!wallet[sender]) {
+    wallet[sender] = { gold: 0 }
   }
+
+  inventory[sender].forEach(item => {
+    wallet[sender].gold += 50
+  })
+
+  inventory[sender] = []
+
+  return {
+    player: sender,
+    wallet: wallet[sender]
+  };
 }
 
-let dragonHP = 100 // Dragon Health points
+function parseDeposit(payload) {
+  let senderSlice = ethers.dataSlice(payload, 0, 20);
+  let valueSlice = ethers.dataSlice(payload, 20, 52);
+
+  let sender = ethers.utils.getAddress(senderSlice)
+  let value = BigInt(valueSlice)
+
+  return {sender, value}
+}
 
 /* Do not change anything above this line */
 
-function attackDragon() {
+function deposit(payload, wallet) {
+  
+  let { sender, value } = parseDeposit(payload)
 
-}
+  // TODO: Add here the code to change balance based on deposit
+    
+  return {
+    player: sender,
+    wallet: wallet[sender]
+  };
+
+
+};
 
 /* Do not change anything below this line */
-
 
 async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   const payload = data["payload"];
-  const { route, args } = strToJson(hex2str(payload));
+  const metadata = data["metadata"];
+  const sender = metadata["msg_sender"];
 
   let responsePayload;
-  if (route === "acceptMission") {
-    responsePayload = acceptMission(args, missions);
-    if (!responsePayload){
-        await createReport("Mission not found");
-        return "reject"
-    }
-  } else if (route === "attackDragon") {
-    responsePayload = attackDragon();
-    if (!responsePayload){
-        await createReport("Dragon not found");
-        return "reject"
-    }
-  } else {
-    await createReport("Invalid route");
-    return "reject"
+  if (data.metadata.msg_sender.toLowerCase() == "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044".toLowerCase()) {
+    deposit(payload, wallet)
+    return "accept"
   }
 
-  let json = await createNotice(responsePayload);
-  console.log(
-    `Received notice status ${advance_req.status} with body `,
-    JSON.stringify(json)
-  );
-  return "accept";
-}
+  const { route, args } = strToJson(hex2str(payload));
+  if (route === "sellAssets") {
+    let salesObject = sellAssets(sender, inventories, goldPrices);
+    responsePayload = str2hex(jsonToStr(salesObject));
+    await createNotice(responsePayload);
+  } else {
+    await createReport(jsonToStr({ error: "Invalid route" }));
+    return "reject";
+  }
 
-function listMissions() {
-  return str2hex(jsonToStr({ missions }))
+  console.log(`Received notice status with body `, JSON.stringify(json));
+  return "accept";
 }
 
 async function handle_inspect(data) {
@@ -118,7 +134,7 @@ async function handle_inspect(data) {
   if (endpoint == "listMissions") {
     responsePayload = listMissions()
   }
-  
+
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: { "Content-Type": "application/json", },

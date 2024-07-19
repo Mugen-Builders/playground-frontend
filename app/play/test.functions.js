@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { assert } from "./assert";
 
 async function test0_0(functionGenerator) {
@@ -155,7 +156,10 @@ async function test0_3(functionGenerator) {
     `expected: ${expected} \n${hex2str(expected)} \n\n 
     received: ${result}, \n${hex2str(result)}`)
 
-    let r = `Hex: ${result} \nBody: ${hex2str(result)}`
+    let r = `Hex: ${result} 
+    \nBody: ${hex2str(result)}
+    \nInspect payload response: ${str2hex(JSON.stringify(missions))}
+    \nDecoded inpect payload: ${JSON.stringify(missions)}`
 
     missions = [
         "Kill the dragon",
@@ -432,6 +436,56 @@ async function test2_1(functionGenerator) {
     \n\n`
 }
 
+async function test2_2(functionGenerator) {
+
+    function strToJson(payload) {
+        return JSON.parse(payload);
+    }
+    
+    function jsonToStr(jsonString) {
+        return JSON.stringify(jsonString);
+    }
+    
+    function hex2str(hex) {
+        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
+        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+        return new TextDecoder().decode(typedArray);
+    }
+    
+    function str2hex(str) {
+        const bytes = new TextEncoder().encode(str);
+        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    function parseDeposit(payload) {
+        return { sender: "_senderWalletAddress" , value: BigInt("00000000000000000000000000000010").toString() }
+    }
+
+    let functionReference = functionGenerator({
+        strToJson, 
+        jsonToStr,
+        hex2str,
+        str2hex,
+        parseDeposit
+    })
+
+    let initialWallet = {}
+    let result = await functionReference("_senderWalletAddress00000000000000000000000000000010", initialWallet)
+    let wallet = result.wallet
+
+    assert(result != null, "Nothing was returned")
+    assert(wallet["ether"], "ether was not deposited")
+
+    console.log(wallet)
+    assert(wallet["ether"] == BigInt(10), `Gold does not match`)
+  
+    assert(result.player == "_senderWalletAddress", `player id not added on return`)
+
+
+    return `received: ${jsonToStr(wallet)}  
+    \n\n`
+}
+
 export default {
     test0_0,
     test0_1,
@@ -440,7 +494,8 @@ export default {
     test0_4,
     test1_0,
     test2_0,
-    test2_1
+    test2_1,
+    test2_2
 
 
 }

@@ -51,6 +51,7 @@ export default function Home() {
           border="0px solid black"
           margin="5px"
           onClick={() => router.push(`/play?chapter=${0}&step=${0}`)}
+          cursor={"pointer"}
         >
           <Stack>
             <CardBody>
@@ -86,6 +87,7 @@ export default function Home() {
           border="0px solid black"
           margin="5px"
           onClick={() => router.push(`/play?chapter=${1}&step=${0}`)}
+          cursor={"pointer"}
 
         >
           <Stack>
@@ -123,6 +125,7 @@ export default function Home() {
           margin="5px"
 
           onClick={() => router.push(`/play?chapter=${2}&step=${0}`)}
+          cursor={"pointer"}
 
         >
           <Stack>
