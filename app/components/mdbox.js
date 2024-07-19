@@ -26,7 +26,7 @@ export default function MdBox() {
       flex={5}
       padding={"20px"}
       height={"100%"}
-      overflow={"scroll"}
+      overflowY={"scroll"}
     >
       {
         md ? md : "404 not found"

@@ -76,6 +76,10 @@
   }
 }
 
+::-webkit-scrollbar-track {
+  background: red;
+ }
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -98,6 +102,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+
 }
 
 a {
@@ -225,11 +230,14 @@ a {
   border-color: transparent transparent transparent #4ECCA3;
 }
 
+
 .md {
   color: white;
   max-height: "300px";
   overflow: hidden;
   font-family: 'Inter', sans-serif;
+  scrollbar-color: #ffffff50 #393E46;
+
 }
 
 .mdpost {

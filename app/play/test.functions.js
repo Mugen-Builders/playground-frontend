@@ -477,7 +477,7 @@ async function test2_2(functionGenerator) {
     assert(wallet["ether"], "ether was not deposited")
 
     console.log(wallet)
-    assert(wallet["ether"] == BigInt(10), `Gold does not match`)
+    assert(wallet["ether"] == BigInt(10), `Ether does not match`)
   
     assert(result.player == "_senderWalletAddress", `player id not added on return`)
 

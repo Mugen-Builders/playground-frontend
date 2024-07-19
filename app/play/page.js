@@ -152,7 +152,7 @@ function Playground() {
           <Box
             flex={5}
             display={"block"}
-            overflow={"scroll"}
+            overflow={"hidden"}
           >
             <Box
               minHeight={"300px"}
