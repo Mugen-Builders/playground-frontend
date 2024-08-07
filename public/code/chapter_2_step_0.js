@@ -40,8 +40,7 @@ async function createReport(decoded_payload) {
     },
     body: JSON.stringify({ payload }),
   });
-  const json = await advance_req.json();
-  return json; 
+  return advance_req
 }
 
 
@@ -68,7 +67,7 @@ async function handle_advance(data) {
   const { route, args } = strToJson(hex2str(payload));
 
   let responsePayload;
-  if (route === "lootDragon") {
+  if (route === "loot_dragon") {
       let lootObject = lootDragon(sender, inventories, dragonAssets);
       responsePayload = str2hex(jsonToStr(lootObject))
   } else {
@@ -86,14 +85,14 @@ async function handle_inspect(data) {
   const payload = data["payload"];
   const endpoint = hex2str(payload);
   let responsePayload
-  if (endpoint == "listMissions") {
+  if (endpoint == "list_missions") {
     responsePayload = listMissions()
   }
   
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: { "Content-Type": "application/json", },
-    body: JSON.stringify({ responsePayload }),
+    body: JSON.stringify({ payload: responsePayload }),
   });
   console.log("Received report status " + inspect_req.status);
   return "accept";

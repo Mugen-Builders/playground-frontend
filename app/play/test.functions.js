@@ -210,9 +210,7 @@ async function test0_4(functionGenerator) {
     let rollup_server = 'localhost:8080'
     const fetch = async (str, body) => {
         return {
-            json : ()=> {
-                return {str, body}
-            }
+            str, body
         }
     }
 
@@ -256,7 +254,7 @@ async function test0_4(functionGenerator) {
 }
 
 
-async function test1_0(functionGenerator) {
+async function test1_2(functionGenerator) {
     function strToJson(payload) {
         return JSON.parse(payload);
     }
@@ -277,6 +275,11 @@ async function test1_0(functionGenerator) {
     }
 
     let rollup_server = 'localhost:8080'
+
+    function createNotice(a) {
+        return a
+    }
+
     const fetch = async (str, body) => {
         return {
             json : ()=> {
@@ -285,44 +288,35 @@ async function test1_0(functionGenerator) {
         }
     }
 
+    let res, url, resBody, resPayload, expected
+
+    let dragonHP = 100
     let functionReference = functionGenerator({
         fetch, 
         rollup_server,
         strToJson,
         jsonToStr,
         hex2str,
-        str2hex
+        str2hex,
+        createNotice,
+        dragonHP
     })
+    res = await functionReference()
+    assert(res == str2hex(jsonToStr({ health: 80 })), 'Dragon not losing 20 health')
 
-    let res, url, resBody, resPayload, expected
-
-    res = await functionReference("Mission not found")
-    url = res.str
-    resBody = res.body
-    expected = "0x4d697373696f6e206e6f7420666f756e64"
-
-    assert(url != null && resBody != null, "Nothing was returned")
-    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
-    resPayload = strToJson(resBody.body).payload
-    assert(resPayload == expected, 
-        `expected: ${expected} \n${hex2str(expected)} \n\n 
-        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
-
-    res = await functionReference("Invalid route")
-    url = res.str
-    resBody = res.body    
-    expected = "0x496e76616c696420726f757465"
-
-    assert(url != null && resBody != null, "Nothing was returned")
-    assert(url == (rollup_server + "/report"), "The route does not match. Are the requests to /report endpoint?")
-    resPayload = strToJson(resBody.body).payload
-    assert(resPayload == expected, 
-        `expected: ${expected} \n${hex2str(expected)} \n\n 
-        received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)}`)
-
-    
-    return `received: ${strToJson(resBody.body).payload}, \n${hex2str(strToJson(resBody.body).payload)} 
-    \n\nCongratulations your report was sent due to an error interpreting that a wrong message was sent`
+    dragonHP = 20
+    functionReference = functionGenerator({
+        fetch, 
+        rollup_server,
+        strToJson,
+        jsonToStr,
+        hex2str,
+        str2hex,
+        createNotice,
+        dragonHP
+    })
+    res = await functionReference()
+    assert(res == str2hex(`Your dragon is dead`), 'Message dragon killed does not show')
 }
 
 
@@ -458,7 +452,7 @@ async function test2_2(functionGenerator) {
     }
 
     function parseDeposit(payload) {
-        return { sender: "_senderWalletAddress" , value: BigInt("00000000000000000000000000000010").toString() }
+        return { sender: "_senderWalletAddress" , value: BigInt("00000000000000000100000000000000").toString() }
     }
 
     let functionReference = functionGenerator({
@@ -470,14 +464,14 @@ async function test2_2(functionGenerator) {
     })
 
     let initialWallet = {}
-    let result = await functionReference("_senderWalletAddress00000000000000000000000000000010", initialWallet)
-    let wallet = result.wallet
+    let result = await functionReference("_senderWalletAddress00000000000000000100000000000000", initialWallet)
+    let wallet = result
 
     assert(result != null, "Nothing was returned")
     assert(wallet["ether"], "ether was not deposited")
 
     console.log(wallet)
-    assert(wallet["ether"] == BigInt(10), `Ether does not match`)
+    assert(BigInt(wallet["ether"]) == BigInt("00000000000000000100000000000000"), `Ether does not match`)
   
     assert(result.player == "_senderWalletAddress", `player id not added on return`)
 
@@ -492,7 +486,7 @@ export default {
     test0_2,
     test0_3,
     test0_4,
-    test1_0,
+    test1_2,
     test2_0,
     test2_1,
     test2_2

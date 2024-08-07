@@ -45,24 +45,23 @@ function acceptMission(args, missions) {
 0-4:
 async function createReport(decoded_payload) {
   let payload = str2hex(decoded_payload)// remember to encode the payload!
-  const advance_req = await fetch(rollup_server + "/report", {
+  const req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ payload }),
   });
-  const json = await advance_req.json();
-  return json; 
+  return req
 }
 
 1-2:
-function attackDragon() {
+function attackDragon(dragonHP) {
   dragonHP -= 20
   if (dragonHP == 0) {
-    return createNotice(str2hex(`Your dragon is dead`));
+    return str2hex(`Your dragon is dead`);
   }
-  return createNotice( str2hex(jsonToStr({ health: dragonHP })))
+  return str2hex(jsonToStr({ health: dragonHP }))
 }
 
 2-0:
@@ -105,3 +104,25 @@ function sellAssets(sender, inventory, wallet) {
     wallet: wallet[sender]
   };
 }
+
+2-2: 
+function deposit(payload, wallet) {
+  console.log("pw", payload, wallet)
+  let { sender, value } = parseDeposit(payload)
+  console.log("sv", sender, value)
+  if (!wallet[sender]) {
+    wallet[sender] = { ether: BigInt(0) }
+  }
+
+  if (!wallet[sender].ether) {
+    wallet[sender].ether = BigInt(0)
+  }
+
+  wallet[sender].ether += value
+
+  return {
+    player: sender,
+    ether: wallet[sender].ether.toString()
+  };
+
+};

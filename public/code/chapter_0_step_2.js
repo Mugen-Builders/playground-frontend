@@ -71,7 +71,7 @@ async function handle_inspect(data) {
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: { "Content-Type": "application/json", },
-    body: JSON.stringify({ responsePayload }),
+    body: JSON.stringify({ payload: responsePayload }),
   });
   console.log("Received report status " + inspect_req.status);
   return "accept";

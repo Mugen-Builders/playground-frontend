@@ -13,9 +13,9 @@ Here is how you should modify the `attackDragon` function to incorporate a new r
 function attackDragon() {
   dragonHP -= 20
   if (dragonHP == 0) {
-    return createNotice(str2hex(`Your dragon is dead`));
+    return str2hex(`Your dragon is dead`);
   }
-  return createNotice( str2hex(jsonToStr({ health: dragonHP })))
+  return str2hex(jsonToStr({ health: dragonHP }))
 }
 ```
 
@@ -23,13 +23,14 @@ function attackDragon() {
 To attack the dragon this will be sent on your transaction data:
 ```json
 {
-  "route": "attackDragon",
+  "route": "attack_dragon",
 }
 ```
 
 By sending this you will receive an input id which you can check the notice generated for it afterward in the **GraphQL Playground** of in the **Cartesi Explorer**:
 - http://localhost:8080/graphql
 - http://localhost:8080/explorer
+
 **Remember to get it's ID from the log after click run**
 Only advance to the next step after killing the dragon!
 

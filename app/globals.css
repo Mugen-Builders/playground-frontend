@@ -318,3 +318,6 @@ a {
   background-color: #26282a;
 }
 
+.md pre {
+  overflow-x: scroll;
+}

@@ -46,8 +46,7 @@ async function createReport(decoded_payload) {
     },
     body: JSON.stringify({ payload }),
   });
-  const json = await advance_req.json();
-  return json; 
+  return advance_req 
 }
 
 
@@ -81,13 +80,13 @@ async function handle_advance(data) {
   const { route, args } = strToJson(hex2str(payload));
 
   let responsePayload;
-  if (route === "acceptMission") {
+  if (route === "accept_mission") {
     responsePayload = acceptMission(args, missions);
     if (!responsePayload){
         await createReport("Mission not found");
         return "reject"
     }
-  } else if (route === "attackDragon") {
+  } else if (route === "attack_dragon") {
     responsePayload = attackDragon();
     if (!responsePayload){
         await createReport("Dragon not found");
@@ -122,7 +121,7 @@ async function handle_inspect(data) {
   const inspect_req = await fetch(rollup_server + "/report", {
     method: "POST",
     headers: { "Content-Type": "application/json", },
-    body: JSON.stringify({ responsePayload }),
+    body: JSON.stringify({ payload: responsePayload }),
   });
   console.log("Received report status " + inspect_req.status);
   return "accept";

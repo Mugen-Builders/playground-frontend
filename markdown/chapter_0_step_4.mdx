@@ -26,6 +26,7 @@ Unlike notices, reports lack any association with proof and are therefore unsuit
 
 The `acceptMission` function logic was modified here to return `null` in case the mission was not selectable.
 If that happens, the handle advance will call the function `createReport`. Implement the function logic, it's similar to create notice, but the endpoint is changed.
+Also the response from the 'report' endpoint does not have a json body. So just return the response of the fetch function.
 
 ## Input
 The input of last chapter was the following:

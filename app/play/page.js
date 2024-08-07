@@ -46,8 +46,9 @@ function Playground() {
   function run() {
     test(`test${chapter}_${step}`, code).then(async (result) => {
       setOutput("Sending data to backend")
-      // await sendtoBackend();
-      setOutput(result)
+      let realRes = await sendtoBackend();
+      console.log(realRes)
+      setOutput(realRes ? realRes : result)
     }).catch((error) => {
       setOutput(error)
     })
@@ -64,22 +65,20 @@ function Playground() {
       case 0:
         switch (step) {
           case 0:
-            response = await addInput(JSON.stringify({ method: "create_notice", args: { data: "I'm here, Cartesia!" } }));
-            addInput(JSON.stringify({ method: "create_user" }));
+            response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 1:
-            response = await addInput(JSON.stringify({ method: "set_catchphrase", args: { data: "I'm here, Cartesia!" } }));
-            setOutput()
+            response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 2:
             // response = await addInput(JSON.stringify({ method: "signup_formission" }));
             console.log("only an inspect call")
             break;
           case 3:
-            response = await addInput(JSON.stringify({ method: "accept_mission", args: { mission: 0 } })); //* To-Do change this to a dynamic variable *//
+            response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Kill the dragon" } })); //* To-Do change this to a dynamic variable *//
             break;
           case 4:
-            response = await addInput(JSON.stringify({ method: "create_report", args: { data: "creating a report" } })); //* To-do change this to a dynamic payload *//
+            response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Fly on a pegasus" } })); //* To-do change this to a dynamic payload *//
             break;
         }
         console.log("response")
@@ -94,17 +93,22 @@ function Playground() {
             showSingleOutput(true);
             break;
           case 2:
-            await addInput(JSON.stringify({ method: "fight_dragon" }));
+            let response = await addInput(JSON.stringify({ route: "attack_dragon" }));
+            return JSON.stringify(response)
             break;
         }
         break;
       case 2:
         switch (step) {
           case 0:
-            await addInput(JSON.stringify({ method: "loot_dragon" }));
+            await addInput(JSON.stringify({ route: "loot_dragon" }));
             break;
           case 1:
-            await addInput(JSON.stringify({ method: "sell_items" }));
+            await addInput(JSON.stringify({ route: "sell_assets" }));
+            break;
+          case 2:
+            let response = await deposit("0.0001");
+            return JSON.stringify(response)
             break;
         }
         break;
@@ -119,6 +123,14 @@ function Playground() {
     const signer = await provider.getSigner();
     console.log("signer and input is ", signer, _input);
     return advanceInput(signer, dappAddress, _input);
+  };
+
+  const deposit = async (_amount) => {
+    const provider = new ethers.providers.Web3Provider(wallet.provider);
+    console.log("adding deposit", _amount);
+    const signer = await provider.getSigner();
+    console.log("signer and input is ", signer, _amount);
+    return advanceEtherDeposit(signer, dappAddress, _amount);
   };
 
   useEffect(() => {

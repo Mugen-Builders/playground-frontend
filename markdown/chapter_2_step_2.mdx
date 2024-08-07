@@ -17,7 +17,7 @@ For the sake of this example let's say the address of the **Ethers Portal Contra
 - **Code Editing Guidelines**: Focus on the `deposit` function that will manage the token deposits. Change the balance of the wallet based on inputs.
 - **Task**: Check the `handle_advance` function to see how the routing is implemented for a deposit that comes from a portals contract.
 
-### The `sellAssets` Function
+### The `deposit` Function
 
 - Implement the rest of the function to change wallet balance
 ```javascript
@@ -27,6 +27,8 @@ if (!wallet[sender]) {
 
 wallet[sender].ether += value
 ```
+
+Remember that the ether value uses BigInt Type and it cannot be stringified through JSON.stringify, so converting to a string is necessary.
 
 ## Input
 
