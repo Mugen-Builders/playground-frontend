@@ -1,51 +1,52 @@
-# Chapter 9: Looting the Dragon
+# Chapter 3: Conquer the Treasure Trove 
 
-That's great, you already went through 2 whole modules and understood all the basics from how to use Cartesi, but as a web3 application you still want to understand and implement the transfer and ownership of assets right?
+# Step 9: Looting the Dragon
 
-The first concept we will learn to deal with is of native assets inside your dApp.
+Great! You’ve already gone through two whole modules and understood the basics of using Cartesi. But as a web3 application, you still want to understand and implement the transfer and ownership of assets, right?
 
-This is as simple as it gets. To perform transference of assets from the dragon to the player's inventory after a successful quest you just have to adapt add a the assets to a collection from the user. Simple as that.
+The first concept we’ll learn to handle is native assets within your dApp.
+
+This is as simple as it gets. To transfer assets from the dragon to the player's inventory after a successful quest, you just need to add the assets to the user's collection. Simple as that.
 
 Implement the functionality that allows the adventurer to loot the dragon and add the items to their inventory. This involves coding the `lootDragon` function and updating the state of the dApp to reflect the new asset ownership.
 
 ## User Instructions
 
-- **Code Editing Guidelines**: Concentrate on coding the `lootDragon` function which will handle the asset transfer.
-- **Task**: Update the `lootDragon` when the corresponding action is called.
-- **Task**: Ensure that the looted assets are added to the player's inventory and the state update is recorded.
-- **Task**: Read the `handle_advance` to understand how the player wallet address is received from `message_sender` property of the request.
-
+- **Code Editing Guidelines**: Focus on coding the `lootDragon` function, which will handle the asset transfer.
+- **Task**: Update the `lootDragon` function when the corresponding action is called.
+- **Task**: Ensure that the looted assets are added to the player's inventory and that the state update is recorded.
+- **Task**: Review `handle_advance` to understand how the player’s wallet address is received from the `message_sender` property of the request.
 
 ## Required Modification
 
-Adapt the new function called `lootDragon`, to handle the new looting action. Here’s how you can structure this function:
+Adapt the new function called `lootDragon` to handle the looting action. Here’s how you can structure this function:
 
 ### The `lootDragon` Function
 
-- Check that the user has an entry for their wallet_id in the inventories data
+- Check if the user has an entry for their `wallet_id` in the inventories data:
 ```javascript
 if (!inventories[sender]) {
-  inventories[sender] = []
+  inventories[sender] = [];
 }
-let inventory = inventories[sender]
+let inventory = inventories[sender];
 ```
 
-- Remove the assets from the dragon and add to the user's
+- Remove the assets from the dragon and add them to the user's inventory:
 ```javascript
-let l = dragonAssets.length
-for (let i=0; i < l; i++) {
-  let asset = dragonAssets.pop()
-  console.log(asset)
-  inventory.push(asset)
+let l = dragonAssets.length;
+for (let i = 0; i < l; i++) {
+  let asset = dragonAssets.pop();
+  console.log(asset);
+  inventory.push(asset);
 }
 ```
 
-- Then return the adventurer inventory state
+- Then return the adventurer's inventory state:
 ```javascript
 return {
   player: sender,
   inventory: inventory
-}
+};
 ```
 
 ## Input
@@ -60,4 +61,4 @@ Input to trigger the `lootDragon` function, providing the necessary details:
 
 ## Conclusion
 
-Here you understand how easy is to attribute ownership of native assets to a user inside the dApp. it's just associanting their wallet id to the assets.
+Here you can see how easy it is to attribute ownership of native assets to a user within the dApp. It’s just about associating their wallet ID with the assets.

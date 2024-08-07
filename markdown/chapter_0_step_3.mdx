@@ -1,26 +1,25 @@
-# Chapter 4: Choosing Your Quest
+# Step 4: Choosing Your Quest
 
-Ok, so you did learn how to invoke advance requests through transactions in the blockchain and how to check the machine state through inspect calls. Let's go back to the advance requests and try to change the state of the machine so it will reflect some change in the inspect.
+Okay, so you’ve learned how to invoke advance requests through transactions on the blockchain and how to check the machine state through inspect calls. Let's go back to the advance requests and try to change the state of the machine so it will reflect some change in the inspect calls.
 
-
-## Changing the state
+## Changing the State
 
 Your task in this chapter is to extend the functionality of the `handle_advance` function. Unlike the `handle_inspect` function, which is passive, `handle_advance` can change the state of your dApp.
 
-Complete the function `acceptMission` that is called within `handle_advance` that handles the selection and removal of a quest from the available list based on user input.
+Complete the `acceptMission` function, which is called within `handle_advance`, to handle the selection and removal of a quest from the available list based on user input.
 
-This is the first time you will be altering some value held in the machines memory. By removing the mission from the mission list 
+This is the first time you will be altering a value held in the machine's memory by removing the mission from the mission list.
 
 ## Routing
 
-Sometimes you need your dApp to do more than one thing, handle more than one kind of transaction. For this you can and should implement routing, The simplest way to do so is to check for an element in the input. In this example it's called **route**. 
+Sometimes, you need your dApp to do more than one thing, handling multiple kinds of transactions. To achieve this, you can and should implement routing. The simplest way to do this is by checking for an element in the input. In this example, it's called **route**.
 
-See how it is being used inside the handle advance after the decoding of the input to decide which function will be called.
+See how it is being used inside the `handle_advance` function after decoding the input to decide which function will be called.
 
 ## User Instructions
 
 - **Code Editing Guidelines**: Focus your modifications on the `acceptMission` function. Ensure any changes preserve the rest of the application's functionality.
-- **Task**: Read `handle_advance` that handles the acceptance of a quest routes it to the correct function.
+- **Task**: Read through the `handle_advance` function to understand how it handles the acceptance of a quest and routes it to the correct function.
 - **Task**: Ensure this function can update the mission list by removing the chosen mission.
 
 ## Required Modification
@@ -49,4 +48,4 @@ The input to select a mission will be an object specifying the route and argumen
 }
 ```
 
-By completing this chapter, you will advance your understanding of state changes in Cartesi dApps. You'll learn how user actions can dynamically alter the state, preparing you for building more interactive and responsive dApps.
+By completing this chapter, you will advance your understanding of state changes in Cartesi dApps. You'll learn how user actions can dynamically alter the state, preparing you to build more interactive and responsive dApps.

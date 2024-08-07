@@ -1,37 +1,36 @@
-# Chapter 2: Proclaiming Presence with Power
+# Step 2: Proclaiming Presence with Power
 
-Great! If you are here it probably means that you completed last chapter (or skipped it, which is not recommended since we went through some important concepts there).
-Well, you did learn in the last chanpter how to get the input from the data object and how to return an element. Now, what if you want to see what is in the data element and return something else?
+Great! If you're here, it probably means you completed the last chapter (or skipped it, which is not recommended since we covered some important concepts there). In the previous chapter, you learned how to get the input from the data object and return an element. Now, what if you want to see what's in the data element and return something else?
 
-One of the simplest transformations or computations you can perform on top of a string is changing it's capitalization, that means, converting the string to uppercase.
+One of the simplest transformations or computations you can perform on a string is changing its capitalization, meaning converting the string to uppercase.
 
-So let's make the hero's voice resonate with strength and clarity. Let's get the input and change it to UPPERCASE VERSION.
+So, let's make the hero's voice resonate with strength and clarity. Let's take the input and change it to an UPPERCASE VERSION.
 
-**Important: the inputs just like the outputs need to be in a hex format (0xA1b2C...). So enconding and decoding is a crucial part of this chapter**
+**Important: The inputs, just like the outputs, need to be in a hex format (0xA1b2C...). So encoding and decoding are crucial parts of this chapter.**
 
 Your task in this chapter is to modify the code to not only send a message but to send it in a loud format.
 
 ## Objective
-You will learn how to decode the received input, transform it to uppercase, and then return the new encoded string.
+You will learn how to decode the received input, transform it to uppercase, and then return the newly encoded string.
 
-This way you will understanding how to manipulate data within the Cartesi Rollups framework. 
+This way, you will understand how to manipulate data within the Cartesi Rollups framework.
 
-You will not modify the `createNotice` function, but an auxiliar function *toUpperFromPayload* that will decode the incoming message, change it to uppercase, and return the encoded version of the modified message. 
+You will not modify the `createNotice` function, but instead, you will modify an auxiliary function, *toUpperFromPayload*, that will decode the incoming message, change it to uppercase, and return the encoded version of the modified message.
 
 ## User Instructions
 - **Code Editing Guidelines**: Focus your modifications on the designated sections of the code. Do not alter the overall structure to maintain the operational integrity of the application.
 - **Task**: Transform the input message to uppercase before sending it out as a notice.
 
 ## Required Modification
-To effectively uppercase your input, you will need to modify the `toUpperFromPayload` function as follows:
+To effectively convert your input to uppercase, you will need to modify the `toUpperFromPayload` function as follows:
 
-Use the auxiliar functions presented here (strToJson, jsonToStr, hex2str, str2hex) to 
-- decode the hex to string
-- convert the string to a json
-- edit the value of this json with a toUpperCase() function
-- convert this new object to a string
-- encode it to a hex again
-- return it.
+Use the auxiliary functions presented here (strToJson, jsonToStr, hex2str, str2hex) to:
+- Decode the hex to a string.
+- Convert the string to a JSON object.
+- Edit the value of this JSON object using the toUpperCase() function.
+- Convert this new object back to a string.
+- Encode it to hex again.
+- Return it.
 
 ## Input
 The input will continue to be:
@@ -46,5 +45,3 @@ But now, the output will be:
   "message": "I'M HERE, CARTESIA!"
 }
 ```
-
-By mastering this chapter, you will not only reinforce your presence in Cartesia but also learn the crucial skills of data manipulation and decentralized communication. Let your voice be heard far and wide, hero, as you shout your arrival and prepare for the adventures ahead in the lands of Cartesia.

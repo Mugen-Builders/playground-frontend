@@ -1,18 +1,18 @@
-# Chapter 10: Trading Treasure for Gold
+# Step 10: Trading Treasure for Gold
 
-Let's talk about how to deal with fungible assets then, just like token!
+Let’s talk about how to handle fungible assets, just like tokens!
 
-Think of it like this: After successfully looting the dragon's hoard, your adventurer is ready to convert these rare treasures into gold. So let's implement a function that would act like a vendor accepting to buy the assets.
+Think of it like this: After successfully looting the dragon's hoard, your adventurer is ready to convert these rare treasures into gold. So, let’s implement a function that would act like a vendor, accepting the assets for sale.
 
-Given all that you saw so far this exercise should be a simple one to complete. The same way you created a inventory collection, you can create a wallet object that hold different types of assets by user.
+Given all that you’ve learned so far, this exercise should be straightforward. Just like you created an inventory collection, you can create a wallet object that holds different types of assets by user.
 
-The main objective of this chapter is to develop the function `sellAssets` which will handle the conversion of looted items into gold, updating the hero's total gold balance. This involves creating a simple sale logic within your dApp where items can be assigned a value and sold.
+The main objective of this chapter is to develop the `sellAssets` function, which will handle the conversion of looted items into gold, updating the hero's total gold balance. This involves creating a simple sale logic within your dApp where items can be assigned a value and sold.
 
 ## User Instructions
 
-- **Code Editing Guidelines**: Focus on the `sellAssets` function that will manage the sale of the dragon's assets.
-- **Task**: See how the `sellAssets` function is integrated into the `handle_advance` function to process asset sales when invoked.
-- **Task**: Ensure that the transaction updates the hero's gold balance accurately and records the state change.
+- **Code Editing Guidelines**: Focus on the `sellAssets` function, which will manage the sale of the dragon's assets.
+- **Task**: Understand how the `sellAssets` function is integrated into the `handle_advance` function to process asset sales when invoked.
+- **Task**: Ensure that the transaction accurately updates the hero's gold balance and records the state change.
 
 ## Required Modification
 
@@ -20,26 +20,26 @@ Develop the `sellAssets` function to calculate the total gold received from sell
 
 ### The `sellAssets` Function
 
-- Initialize the wallet for the user in case it's not already done
+- Initialize the wallet for the user if it hasn’t been done already:
 ```javascript
 if (!wallet[sender]) {
-  wallet[sender] = { gold: 0 }
+  wallet[sender] = { gold: 0 };
 }
 ```
 
-- Add gold for each item sold
+- Add gold for each item sold:
 ```javascript
 inventory[sender].forEach(item => {
-  wallet[sender].gold += 50
-})
+  wallet[sender].gold += 50;
+});
 ```
 
-- Clear the inventory
+- Clear the inventory:
 ```javascript
-inventory[sender] = []
+inventory[sender] = [];
 ```
 
-- Return the adventurer wallet balances
+- Return the adventurer's wallet balance:
 ```javascript
 return {
   player: sender,
@@ -58,4 +58,4 @@ This will be the input to trigger the `sellAssets` function:
 }
 ```
 
-With all of these steps now you understand the basic concepts of asset management with native assets inside the dApp. Of course this can be specialized, extended to multiple types of token and there can be different interactions with these assets. It's all about your application logic and how you implement it!
+With all of these steps, you now understand the basic concepts of asset management with native assets inside the dApp. Of course, this can be specialized, extended to multiple types of tokens, and there can be different interactions with these assets. It’s all about your application logic and how you implement it!

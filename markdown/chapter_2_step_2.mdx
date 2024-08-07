@@ -1,35 +1,35 @@
-# Chapter 11: Treasure from another world!
+# Step 11: Treasure from Another World!
 
-Now, what about depositing assets inside you dApp, assets that are not native to it?
+Now, what about depositing assets inside your dApp, assets that are not native to it?
 
-The concept of wallet remains the same, but the implementation here is a little different.
+The concept of a wallet remains the same, but the implementation here is a little different.
 
-Remember that in the start of you dApp implementation where it was mentioned that the `handle_advance` was triggered by the input box smart contract hosted on the underlaying chain?
+Remember at the start of your dApp implementation where it was mentioned that the `handle_advance` function was triggered by the Input Box smart contract hosted on the underlying chain?
 
-It can also be triggered by another smart contract (or others). The portals! We have Ether, ERC20, ERC721 and ERC1155 portals contracts. Whenever one of those receive a deposit it triggers an input on your dApp with the information of who is depositing it and the amount deposited!
+It can also be triggered by another smart contract (or others): the portals! We have Ether, ERC20, ERC721, and ERC1155 portal contracts. Whenever one of these receives a deposit, it triggers an input on your dApp with information about who is depositing and the amount deposited.
 
-Let's implement this. The most important thing is to understand that this special trigger of the `handle_advance` comes with a different msg_sender. This sender is the address of the portals contract.
+Let's implement this. The most important thing to understand is that this special trigger of the `handle_advance` function comes with a different `msg_sender`. This sender is the address of the portals contract.
 
-For the sake of this example let's say the address of the **Ethers Portal Contract** is `0xFfdbe43d4c855BF7e0f105c400A50857f53AB044` So whenever we receive an input from this address we will know it is a deposit
+For the sake of this example, let's say the address of the **Ether Portal Contract** is `0xFfdbe43d4c855BF7e0f105c400A50857f53AB044`. So whenever we receive an input from this address, we will know it is a deposit.
 
 ## User Instructions
 
-- **Code Editing Guidelines**: Focus on the `deposit` function that will manage the token deposits. Change the balance of the wallet based on inputs.
-- **Task**: Check the `handle_advance` function to see how the routing is implemented for a deposit that comes from a portals contract.
+- **Code Editing Guidelines**: Focus on the `deposit` function, which will manage the token deposits. Adjust the wallet balance based on inputs.
+- **Task**: Review the `handle_advance` function to understand how routing is implemented for a deposit that comes from a portals contract.
 
 ### The `deposit` Function
 
-- Implement the rest of the function to change wallet balance
+- Implement the rest of the function to adjust the wallet balance:
 ```javascript
 if (!wallet[sender]) {
-  wallet[sender] = { ether: BigInt(0) }
+  wallet[sender] = { ether: BigInt(0) };
 }
 
-wallet[sender].ether += value
+wallet[sender].ether += value;
 ```
 
-Remember that the ether value uses BigInt Type and it cannot be stringified through JSON.stringify, so converting to a string is necessary.
+Remember that the Ether value uses the BigInt type, and it cannot be stringified through `JSON.stringify`, so converting it to a string is necessary.
 
 ## Input
 
-This input is a payable deposit to the ethers portal smart contract.
+This input is a payable deposit to the Ether portal smart contract.

@@ -63,7 +63,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                Enter Cartesia World
+                Step into Cartesia World
               </Text>
             </CardBody>
           </Stack>
@@ -100,7 +100,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                The start of the adventure
+                Set Forth on Your Quest 
               </Text>
             </CardBody>
           </Stack>
@@ -138,7 +138,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                The hoard, the vault, the prize
+                Conquer the Treasure Trove
               </Text>
             </CardBody>
           </Stack>

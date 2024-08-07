@@ -1,39 +1,38 @@
-# Welcome to Cartesia: A Hero's First Step
+# Chapter 1: Step into Cartesia World
+# Step 1: A Hero's First Step
 
 ## Introduction
-Welcome to the Jumpstart Playground dApp. A simple tutorial platform to learn the basic concepts of Cartesi and start building your solution. As you can see, your screen is shared in two parts, the left side is a markdown page with instructions and explanation of concepts you will be using, the right side is a code editor where you will perform changes and test your code. 
+Welcome to the Jumpstart Playground dApp, a simple tutorial platform designed to teach the basic concepts of Cartesi and help you start building your solution. As you can see, your screen is divided into two parts: the left side displays a markdown page with instructions and explanations of the concepts you will be using, while the right side features a code editor where you can make changes and test your code.
 
 ## Announcing Arrival
 
-Let's start by creating you first user interaction in your dApp. The code presented already has a few functions implemented. 'handle_advance' and 'handle_inspect'. These function are akin to POST and GET requests respectively if you are thinking of them as a web2 app or signed transactions and and node reads when you think in a more web3 oriented way.
+Let's start by creating your first user interaction in your dApp. The provided code already includes a few functions: 'handle_advance' and 'handle_inspect'. These functions are akin to POST and GET requests, respectively, if you are thinking of them in a web2 context, or signed transactions and node reads when you think in a more web3-oriented way.
 
-There are 3 types of outputs that the Cartesi Rollups framework generates by default *'notices'*, *'reports'* and *'vouchers'*. For this chapter we will start by learning and understanding the first one the *'notice'*
+There are three types of outputs that the Cartesi Rollups framework generates by default: *'notices'*, *'reports'*, and *'vouchers'*. In this chapter, we will begin by learning and understanding the first one: the *'notice'*.
 
-A notice is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof.
+A notice is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof. Notices provide a mechanism to communicate essential off-chain events in the execution layer to the base layer in a verifiable manner.
 
-Notices provide a mechanism to communicate essential off-chain events in the execution layer to the base layer in a verifiable manner.
+Let's say you are creating a game: the adventures of a character in a fantasy world called *"Cartesia"*. The first step is for the user to announce their arrival in this world by sending a message. To do that, let's create a function that takes an input from the user and returns it—an "ECHO" dApp.
 
-Let's say you are creating a game: the adventures of a character in a fantasy world: *"Cartesia"*. The first step is for the user to say they have arrived in this world by sending a message. To do that, let's create a function that takes an input from the user and returns it. An "ECHO" dApp.
-
-To send and input the user will sign a transaction directed to a very important smart contract hosted on the underlaying chain called *Input Box*. When this transaction is confirmed it will trigger the *handle_advance* function on the dApp and you have to return the same content
+To send an input, the user will sign a transaction directed to a very important smart contract hosted on the underlying chain called the *Input Box*. When this transaction is confirmed, it will trigger the *handle_advance* function in the dApp, and you will need to return the same content.
 
 ## Objective
-Modify the `createNotice` function to return the input message. This function is called inside the `handle_advance`. 
+Modify the `createNotice` function to return the input message. This function is called inside the `handle_advance`.
 
 ## User Instructions
 - **Code Editing Guidelines**: Only modify the sections of the code that are explicitly marked for changes. Keep the structure of the rest of the code intact to ensure the magic (code) works as intended.
 - **Task**: Implement the `createNotice` function to send the hero's arrival message to the Cartesi server.
 
 ## Required Modification
-To create a notice, you will have to perform a `fetch` to the `rollup_server` `/notice` endpoint.
+To create a notice, you will need to perform a `fetch` request to the `rollup_server` `/notice` endpoint.
 
-As the body, you can send an object with the property `payload` and for its value set the same payload the backend received.
+In the request body, send an object with the property `payload` and set its value to the same payload that the backend received.
 
 This means you will output to the notice whatever you received as input.
 
-For this first lesson let's make it easy and give you the answer for the `createNotice` function. Try to understand what is happening here. The node has an http api which it uses to generate outputs. It is as simple as sending a request to the endpoint finished in `/notice`. 
+For this first lesson, let's make it easy and provide you with the solution for the `createNotice` function. Try to understand what is happening here. The node has an HTTP API, which it uses to generate outputs. It is as simple as sending a request to the endpoint ending in `/notice`.
 
-Pay attention to where the payload object comes from. It comes from the *data* object in the *handle_advance* function, that's where the input sent by the user arrives. Also Pay attention that the body is a stringfied version of an object containing that payload. So the format that has to be returned is an object with the payload element containing the *notice*.
+Pay attention to where the payload object comes from. It comes from the *data* object in the *handle_advance* function, where the input sent by the user arrives. Also, note that the body is a stringified version of an object containing that payload. So the format that needs to be returned is an object with the payload element containing the *notice*.
 
 ```javascript
 async function createNotice(payload) {
@@ -56,4 +55,4 @@ The input that will be sent to your function is the following:
   "message": "I'm here, Cartesia!"
 }
 ```
-That means the output will be the same.
+This means the output will be the same.

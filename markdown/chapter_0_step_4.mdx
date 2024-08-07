@@ -1,8 +1,8 @@
-# Chapter 5: Handling Errors and Reporting
+# Step 5: Handling Errors and Reporting
 
-Encountering errors is a very natural thing, such as choosing a quest that does not exist. It is one of many scenarios that need proper handling in your cartesi dApp. 
+Encountering errors is a natural part of development, such as when a user chooses a quest that does not exist. Handling these scenarios properly is essential in your Cartesi dApp.
 
-This chapter will guide you through creating reports to handle errors. 
+This chapter will guide you through creating reports to handle errors.
 
 ## Objective
 
@@ -10,7 +10,7 @@ Your objective is to ensure that the dApp communicates effectively with users ab
 
 ## Concepts
 
-Remember what you did see about reports so far:
+Remember what you’ve learned about reports so far:
 
 Reports are stateless logs, offering a means to record read-only information without changing the state. Primarily used for logging and diagnostic purposes, reports provide valuable insights into the operation and performance of a dApp.
 
@@ -19,17 +19,15 @@ Unlike notices, reports lack any association with proof and are therefore unsuit
 ## User Instructions
 
 - **Code Editing Guidelines**: Modify only the `createReport` function.
-- **Task**: Read the modified implementation of `handle_advance` to handle errors and return appropriate messages to the user.
-- **Task**: Read the modified implementation of `acceptMission` to see how it returns null in case of error and how this is treated on the `handle_advance`
+- **Task**: Review the modified implementation of `handle_advance` to understand how it handles errors and returns appropriate messages to the user.
+- **Task**: Examine the modified implementation of `acceptMission` to see how it returns null in case of an error and how this is handled in `handle_advance`.
 
 ## Required Modification
 
-The `acceptMission` function logic was modified here to return `null` in case the mission was not selectable.
-If that happens, the handle advance will call the function `createReport`. Implement the function logic, it's similar to create notice, but the endpoint is changed.
-Also the response from the 'report' endpoint does not have a json body. So just return the response of the fetch function.
+The `acceptMission` function logic has been modified to return `null` if the mission is not selectable. If that happens, `handle_advance` will call the `createReport` function. Implement the function logic; it’s similar to creating a notice, but the endpoint is different. Also, the response from the 'report' endpoint does not have a JSON body, so just return the response of the fetch function.
 
 ## Input
-The input of last chapter was the following:
+The input from the last chapter was the following:
 
 ```json
 {
@@ -40,7 +38,7 @@ The input of last chapter was the following:
 }
 ```
 
-Now we want to actually create a report by provoking an error, so let's send a mission that is not in the list
+Now, to actually create a report by provoking an error, let’s send a mission that is not in the list:
 
 ```json
 {
