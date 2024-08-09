@@ -155,8 +155,6 @@ function Playground() {
 
         <Box
           className='class-container'
-          display={"flex"}
-          height={"calc(100vh - 184px)"}
           fontFamily={"'Inter Variable', sans-serif"}
         >
           <MdBox chapter={chapter} step={step} />

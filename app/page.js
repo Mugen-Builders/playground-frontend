@@ -27,25 +27,24 @@ export default function Home() {
       <Navbar />
 
       <Stack
-        width="1000px"
+        className="stack-home"
         alignItems="center"
         //mt="80px"
         margin={"10px auto auto auto"}
         spacing="0"
       >
         <Card
+          className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"520px"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
             "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/0.webp')"
           }
-          backgroundPosition="right 50% bottom -50px"
           color="white"
           borderRadius={"15px"}
           border="0px solid black"
@@ -58,10 +57,8 @@ export default function Home() {
               <Heading size="md">Chapter I:</Heading>
               <Text
                 py="2"
-                fontFamily={"Arial"}
-                fontWeight="800"
-                fontSize={"48"}
-                lineHeight="1.1"
+                className="stack-card-text"
+
               >
                 Step into Cartesia World
               </Text>
@@ -70,18 +67,17 @@ export default function Home() {
         </Card>
 
         <Card
+          className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"520"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
             "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/1.webp')"
           }
-          backgroundPosition="right 50% bottom -50px"
           color="white"
           borderRadius={"15px"}
           border="0px solid black"
@@ -95,10 +91,7 @@ export default function Home() {
               <Heading size="md">Chapter II:</Heading>
               <Text
                 py="2"
-                fontFamily={"Arial"}
-                fontWeight="800"
-                fontSize={"48"}
-                lineHeight="1.1"
+                className="stack-card-text"
               >
                 Set Forth on Your Quest 
               </Text>
@@ -107,18 +100,17 @@ export default function Home() {
         </Card>
 
         <Card
+          className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
           overflow="hidden"
           variant="outline"
-          height={"520px"}
           width="100%"
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
             "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/2.webp')"
           }
-          backgroundPosition="right 50% bottom -50px"
           color="white"
           borderRadius={"15px"}
           border="0px solid black"
@@ -132,11 +124,9 @@ export default function Home() {
             <CardBody>
               <Heading size="md">Chapter III:</Heading>
               <Text
+                className="stack-card-text"
                 py="2"
-                fontFamily={"Arial"}
-                fontWeight="800"
-                fontSize={"48"}
-                lineHeight="1.1"
+                
               >
                 Conquer the Treasure Trove
               </Text>
