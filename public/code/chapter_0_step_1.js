@@ -3,16 +3,9 @@ const { ethers } = require("ethers");
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 
-function strToJson(payload) {
-  return JSON.parse(payload);
-}
-
-function jsonToStr(jsonString) {
-  return JSON.stringify(jsonString);
-}
 
 function hex2str(hex) {
-  return ethers.utils.toUtf8String(hex);
+  return Buffer.from(hex.slice(2), "hex").toString("utf8");
 }
 
 function str2hex(str) {

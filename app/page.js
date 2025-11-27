@@ -43,7 +43,7 @@ export default function Home() {
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/0.webp')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/0.png')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
@@ -63,7 +63,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                Step into Cartesia World
+                Giving and receiving - Inputs and Outputs
               </Text>
             </CardBody>
           </Stack>
@@ -79,7 +79,7 @@ export default function Home() {
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/1.webp')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/1.png')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
@@ -100,7 +100,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                Set Forth on Your Quest 
+                Counting - Updating State 
               </Text>
             </CardBody>
           </Stack>
@@ -116,7 +116,7 @@ export default function Home() {
           backgroundRepeat={"no-repeat"}
           backgroundSize="cover"
           backgroundImage={
-            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/2.webp')"
+            "linear-gradient(180deg, #ffffff00, #000000da), url('/images/chapters/2.png')"
           }
           backgroundPosition="right 50% bottom -50px"
           color="white"
@@ -138,7 +138,7 @@ export default function Home() {
                 fontSize={"48"}
                 lineHeight="1.1"
               >
-                Conquer the Treasure Trove
+                Opening Gifts - Dealing with Assets
               </Text>
             </CardBody>
           </Stack>

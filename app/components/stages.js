@@ -46,7 +46,7 @@ export default function Stages() {
         backgroundSize="cover"
         boxShadow={"inset 0 0 0 2000px rgba(0, 0, 0, 0.85)"}
         backgroundPosition={"center bottom -70%"}
-        backgroundImage={`url('/images/chapters/${chapter}.webp')`}
+        backgroundImage={`url('/images/chapters/${chapter}.png')`}
       >
         <div className="hero-stage">
           <button className='prev-button' type="button" onClick={() => {
@@ -67,7 +67,7 @@ export default function Stages() {
               return (
                 <Image key={i}
                   height={"90px"}
-                  src='/images/character/walking-side.png' 
+                  src='/images/character/Penguin.svg' 
                   alt='hero' 
                 />
               )

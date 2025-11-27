@@ -46,7 +46,7 @@ function Playground() {
   function run() {
     test(`test${chapter}_${step}`, code).then(async (result) => {
       setOutput("Sending data to backend")
-      let realRes = await sendtoBackend();
+      let realRes = false //await sendtoBackend();
       console.log(realRes)
       setOutput(realRes ? realRes : result)
     }).catch((error) => {

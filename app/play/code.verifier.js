@@ -29,9 +29,15 @@ function removeNonUsedCode(codeString) {
 function createDynamicFunctionBuilder(functionString) {
     return function(overrides, ...args) {
       let overridesCode = "";
+      const trackedObjects = {};
+      
       for (const key in overrides) {
         if (typeof overrides[key] === 'function') {
             overridesCode += `let ${key} = ${overrides[key].toString()};\n`;
+        } else if (typeof overrides[key] === 'object' && overrides[key] !== null) {
+            // Pass objects by reference so mutations are visible outside
+            trackedObjects[key] = overrides[key];
+            overridesCode += `let ${key} = this.trackedObjects.${key};\n`;
         } else {
             overridesCode += `let ${key} = ${JSON.stringify(overrides[key])};\n`;
         }
@@ -41,13 +47,13 @@ function createDynamicFunctionBuilder(functionString) {
   
       try {
         const dynamicFn = eval(`(function() { ${fullFunctionCode} })`);
-        return dynamicFn.apply(this, args);
+        return dynamicFn.call({ trackedObjects }, ...args);
       } catch (error) {
         console.error(`Error executing function: ${error.message}`);
         return null;
       }
     };
-  }
+}
 
 async function runTests(functionName, functionReference) {
     console.log(":: Running Tests")

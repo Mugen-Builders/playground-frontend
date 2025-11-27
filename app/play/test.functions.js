@@ -1,24 +1,56 @@
 import { ethers } from "ethers";
 import { assert } from "./assert";
+import { Buffer } from "buffer";
 
 async function test0_0(functionGenerator) {
     let rollup_server = 'localhost:8080'
-    const fetch = async (str, body) => {
+    let outputs = []
+
+    let print = []
+    const originalLog = console.log
+    const customConsole = {
+        log: (...args) => {
+            print.push(args.map(arg => String(arg)).join(' '))
+            originalLog(...args)
+        }
+    }
+
+    const fetch = async (str, req) => {
+        if (req.method !== "POST" || !req.headers || req.headers["Content-Type"] !== "application/json") {
+            throw new Error("Invalid request format");
+        }
+
+        let data = JSON.parse(req.body)
+
+        if (!data || !data.payload ) {
+            throw new Error("Payload invalid");
+        }
+
+        console.log("vai consolar")
+        // console.log(Buffer.from(data.payload.slice(2), "hex").toString("utf8"))
+        console.log(" consolaou")
+
+        outputs.push({type: str.replace(rollup_server + "/", ""), payload: data.payload})
+
         return {
+            status : 200,
             json : ()=> {
                 return str
             }
         }
     }
 
-    let functionReference = functionGenerator({fetch, rollup_server })
-    let result = await functionReference("0x7b226d657373616765223a202249276d20686572652c20436172746573696121227da")
+    let functionReference = functionGenerator({outputs, fetch, rollup_server, console: customConsole})
+    let result = await functionReference({payload: "0x486170707920486f6c69646179732045766572796f6e6521"})
+
+    for (let output in outputs) {
+        console.log(outputs[output])
+    }
+
+    assert(outputs[0].type == "notice", "Output type mismatch, expected 'notice'")
+    assert(outputs[0].payload == "0x486170707920486f6c69646179732045766572796f6e6521", "Output payload mismatch, check if the output structure is correct")
     assert(result != null, "Nothing was returned")
-    assert(result == (rollup_server + "/notice"), "The route does not match. Are the requests to /notice endpoint?")
-    return  `Hex: 0x7b226d657373616765223a202249276d20686572652c20436172746573696121227da
-        \nBody: {
-        "message": "I'm here, Cartesia!"
-      }`
+    return  print.join('\n') + `\n---\nPayload: 0x486170707920486f6c69646179732045766572796f6e6521\nDecoded: Happy Holidays Everyone!`
 }
 
 async function test0_1(functionGenerator) {
