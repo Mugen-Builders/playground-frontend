@@ -1,5 +1,3 @@
-const { ethers } = require("ethers");
-
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 

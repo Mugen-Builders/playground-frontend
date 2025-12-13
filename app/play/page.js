@@ -57,10 +57,6 @@ function Playground() {
 
 
   const sendtoBackend = async (result) => {
-    if (!wallet) {
-      alert("Please connect your web3 wallet to proceed!")
-      return
-    }
     let response
     switch (chapter) {
       case 0:
@@ -72,8 +68,11 @@ function Playground() {
             // response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 2:
+              if (!wallet) {
+                alert("Please connect your web3 wallet to proceed!")
+                return
+              }
             response = await addInput(JSON.stringify({ result }));
-            console.log("only an inspect call")
             break;
           case 3:
             // response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Kill the dragon" } })); //* To-Do change this to a dynamic variable *//
