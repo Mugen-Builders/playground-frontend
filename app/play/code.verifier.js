@@ -33,7 +33,9 @@ function createDynamicFunctionBuilder(functionString) {
       
       for (const key in overrides) {
         if (typeof overrides[key] === 'function') {
-            overridesCode += `let ${key} = ${overrides[key].toString()};\n`;
+            // Store functions by reference to prevent minification issues
+            trackedObjects[key] = overrides[key];
+            overridesCode += `let ${key} = this.trackedObjects.${key};\n`;
         } else if (typeof overrides[key] === 'object' && overrides[key] !== null) {
             // Pass objects by reference so mutations are visible outside
             trackedObjects[key] = overrides[key];

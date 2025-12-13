@@ -46,9 +46,9 @@ let rollup_server = 'localhost:8080'
 let outputs = []
 let print = []
 
-const originalLog = console.log
+const originalLog = console.log.bind(console)
 const customConsole = {
-    log: (...args) => {
+    log: function(...args) {
         print.push(args.map(arg => String(arg)).join(' '))
         originalLog(...args)
     }
