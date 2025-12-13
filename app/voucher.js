@@ -6,7 +6,7 @@ import { getVoucher, getVouchers, executeVoucher, getUnexecutedVouchers } from "
 import { useWallets } from "@web3-onboard/react";
 import configFile from './config.json';
 const config = configFile;
-let apiURL = "http://localhost:8080/graphql";
+let apiURL = "https://jplayground.fly.dev/graphql";
 export const Voucher = (propos) => {
     const [connectedWallet] = useWallets();
 

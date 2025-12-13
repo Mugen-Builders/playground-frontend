@@ -28,7 +28,7 @@ function Playground() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
   const [dappAddress, setDappAddress] = useState(
-    "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
+    "0x9aac56Acda6168d33Ffa321C2Da43b505e4FFf32"
   );
   const router = useRouter()
 
@@ -156,8 +156,6 @@ function Playground() {
 
         <Box
           className='class-container'
-          display={"flex"}
-          height={"calc(100vh - 184px)"}
           fontFamily={"'Inter Variable', sans-serif"}
         >
           <MdBox chapter={chapter} step={step} />

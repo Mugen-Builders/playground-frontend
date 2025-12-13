@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import configFile from "./config.json";
 const config = configFile;
-let apiURL = "http://localhost:8080/graphql";
+let apiURL = "https://jplayground.fly.dev/graphql";
 export const Notice = (props) => {
     const connectedChain = props.chain;
     const [notices, setNotices] = useState([])

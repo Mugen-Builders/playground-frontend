@@ -321,3 +321,55 @@ a {
 .md pre {
   overflow-x: scroll;
 }
+
+
+.stack-home {
+  width: 1000px;
+}
+.stack-card {
+  height: 520px;
+  /* background-position: "right 50% bottom -50px" */
+
+}
+
+.stack-card-text {
+  font-family: Arial;
+  font-weight: 800;
+  font-size: 36pt;
+  line-height: 1.1;
+}
+.class-container {
+  height: calc(100vh - 184px);
+  display: flex;
+}
+@media only screen and (max-width:  768px) {
+  .stack-home {
+    width: 100%;
+  }
+  .stack-card {
+    height: 220px;
+    display: flex;
+    flex-direction: row!important;
+  }
+  .stack-card-text{
+    font-size: 18pt;
+  }
+
+  .hero-stage .line {
+    margin: 2px;
+    max-width: 1px;
+  }
+
+  .class-container {
+    height: auto;
+    flex-wrap: wrap;
+    display: block;
+  }
+
+  .md {
+    width: 100%!important;
+    /* flex: 100%!important; */
+  }
+
+
+}

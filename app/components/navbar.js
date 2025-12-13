@@ -32,7 +32,7 @@ init({
     ],
   },
 });
-let apiURL = "http://localhost:8080/graphql";
+let apiURL = "https://jplayground.fly.dev/graphql";
 
 export default function Navbar() {
   const router = useRouter()

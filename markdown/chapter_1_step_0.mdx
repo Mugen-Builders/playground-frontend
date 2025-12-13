@@ -8,18 +8,19 @@ But there’s something we haven’t covered yet—how to retrieve the outputs f
 
 One of the ways to check these outputs is through the GraphQL Playground. Another way is through the Cartesi Explorer.
 
-- **Access the GraphQL Playground**: Open a new window and navigate to the URL `http://localhost:8080/graphql`.
+- **Access the GraphQL Playground**: Open a new window and navigate to the URL `https://jplayground.fly.dev/graphql`.
     - Here, you can paste the provided commands, which will return a list of notices and vouchers.
-- **Access the Cartesi Explorer**: Open another window and navigate to the URL `http://localhost:8080/explorer`.
+- **Access the Cartesi Explorer**: Open another window and navigate to the URL `https://sepolia.cartesiscan.io/`.
     - Here, you can see the transactions that were made to Cartesi dApps deployed on various networks and view the outputs generated for each input.
-
+    - Link for direct access to this dApp is: https://sepolia.cartesiscan.io/applications/0x9aac56acda6168d33ffa321c2da43b505e4fff32
+    
 Of course, the best way to handle this information within your frontend is to use a GraphQL library or package and run the queries from there!
 
 The GraphQL API is exposed by the Cartesi Nodes hosting your dApp, so for it to work, you need to pass the dApp address and GraphQL endpoint from the node.
 
 The ones for this dApp are as follows:
-- dApp Address: 
-- GraphQL Endpoint: 
+- dApp Address: 0x9aac56acda6168d33ffa321c2da43b505e4fff32
+- GraphQL Endpoint: https://jplayground.fly.dev/graphql
 
 ## GraphQL API
  
