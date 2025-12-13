@@ -1,58 +1,63 @@
-# Chapter 1: Step into Cartesia World
-# Step 1: A Hero's First Step
-
 ## Introduction
-Welcome to the Jumpstart Playground dApp, a simple tutorial platform designed to teach the basic concepts of Cartesi and help you start building your solution. As you can see, your screen is divided into two parts: the left side displays a markdown page with instructions and explanations of the concepts you will be using, while the right side features a code editor where you can make changes and test your code.
 
-## Announcing Arrival
+Welcome to the **Mugen Builders Quests: Holiday Edition**, a tutorial platform designed to teach the core concepts of **Cartesi Rollups** while you build your first Cartesi Rollups application.
 
-Let's start by creating your first user interaction in your dApp. The provided code already includes a few functions: 'handle_advance' and 'handle_inspect'. These functions are akin to POST and GET requests, respectively, if you are thinking of them in a web2 context, or signed transactions and node reads when you think in a more web3-oriented way.
+# Chapter 1: Giving and Receiving - Inputs and outputs
 
-There are three types of outputs that the Cartesi Rollups framework generates by default: *'notices'*, *'reports'*, and *'vouchers'*. In this chapter, we will begin by learning and understanding the first one: the *'notice'*.
+## Step 1: Messaging
 
-A notice is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof. Notices provide a mechanism to communicate essential off-chain events in the execution layer to the base layer in a verifiable manner.
+### Echo Application
 
-Let's say you are creating a game: the adventures of a character in a fantasy world called *"Cartesia"*. The first step is for the user to announce their arrival in this world by sending a message. To do that, let's create a function that takes an input from the user and returns it—an "ECHO" dApp.
+Let’s kick off your first user interaction in the Application. The provided code already includes two key function: **`handle_advance`** and **`handle_inspect`**.
 
-To send an input, the user will sign a transaction directed to a very important smart contract hosted on the underlying chain called the *Input Box*. When this transaction is confirmed, it will trigger the *handle_advance* function in the dApp, and you will need to return the same content.
+For now we are going to use the **`handle_advance`** to perform **Advance Requests**:
 
-## Objective
-Modify the `createNotice` function to return the input message. This function is called inside the `handle_advance`.
+* In a web2 mindset, they’re like **POST** method
+* In a web3 mindset, they’re like **signed transactions**
 
-## User Instructions
-- **Code Editing Guidelines**: Only modify the sections of the code that are explicitly marked for changes. Keep the structure of the rest of the code intact to ensure the magic (code) works as intended.
-- **Task**: Implement the `createNotice` function to send the hero's arrival message to the Cartesi server.
+Cartesi Rollups is able to produce three kinds of messages: 
+- outupts called **notices** and **vouchers** 
+- logs called **reports**.
 
-## Required Modification
-To create a notice, you will need to perform a `fetch` request to the `rollup_server` `/notice` endpoint.
+In this chapter, we’ll start with the first one: the **notices**. A **notice** is a verifiable data declaration that attests to off-chain events or conditions and is accompanied by proof. It lets your execution layer “announce” important things in a way the base layer can trust.
 
-In the request body, send an object with the property `payload` and set its value to the same payload that the backend received.
+To send an input, the user signs a transaction to a super important smart contract called the **Input Box** and it triggers the **`handle_advance`** inside your application.
 
-This means you will output to the notice whatever you received as input.
+### Objective
 
-For this first lesson, let's make it easy and provide you with the solution for the `createNotice` function. Try to understand what is happening here. The node has an HTTP API, which it uses to generate outputs. It is as simple as sending a request to the endpoint ending in `/notice`.
+Modify the `handle_advance` function so it returns the same value as the input.
 
-Pay attention to where the payload object comes from. It comes from the *data* object in the *handle_advance* function, where the input sent by the user arrives. Also, note that the body is a stringified version of an object containing that payload. So the format that needs to be returned is an object with the payload element containing the *notice*.
+### User Instructions
+
+* **Code Editing Guidelines**: Only modify the sections explicitly marked for changes. Keep everything else intact.
+* **Task**: Add the notice creation snippet to test your code and hit run!
+
+To create a notice, perform a `fetch` request to the rollup node’s `/notice` endpoint.
+
+In the request body, send an object containing a `payload` property with the **same payload the contained in the incoming **data** object**.
+
+That’s it: **what comes in goes out**, it's like santa is reading your card!
+
+Pay attention to where `payload` comes from: it arrives in the `data` object inside `handle_advance`. Also, note the body must be a **stringified object** like `{ payload }`.
 
 ```javascript
-async function createNotice(payload) {
-  const advance_req = await fetch(rollup_server + "/notice", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ payload }),
-  });
-  const json = await advance_req.json();
-  return json; 
-}
+await fetch(rollup_server + "/notice", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ 
+    // Message content 
+  }),
+}); 
 ```
 
-## Input
-The input that will be sent to your function is the following:
-```json
-{
-  "message": "I'm here, Cartesia!"
-}
+### Input
+
+The input sent to your function will be:
+
+```js
+"Happy Holidays, Everyone!"
 ```
-This means the output will be the same.
+
+And the output will be the same—echoed back as a festive notice.

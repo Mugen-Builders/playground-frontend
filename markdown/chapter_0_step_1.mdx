@@ -1,47 +1,41 @@
-# Step 2: Proclaiming Presence with Power
+# Chapter 1: Giving and Receiving – Inputs and Outputs
 
-Great! If you're here, it probably means you completed the last chapter (or skipped it, which is not recommended since we covered some important concepts there). In the previous chapter, you learned how to get the input from the data object and return an element. Now, what if you want to see what's in the data element and return something else?
+## Step 2: Decoding the Message
 
-One of the simplest transformations or computations you can perform on a string is changing its capitalization, meaning converting the string to uppercase.
+### Decoding the Payload
 
-So, let's make the hero's voice resonate with strength and clarity. Let's take the input and change it to an UPPERCASE VERSION.
+In the previous step, you learned how to return an input as a notice.
+Now, we will focus on understanding **what the application actually receives**.
 
-**Important: The inputs, just like the outputs, need to be in a hex format (0xA1b2C...). So encoding and decoding are crucial parts of this chapter.**
+When a user sends an input to a Cartesi Rollups application, the payload arrives **hex-encoded**. Before you can use it, you must decode it into a readable string.
 
-Your task in this chapter is to modify the code to not only send a message but to send it in a loud format.
+The template already provides a helper function called `hex2str`, which converts a hex string into UTF-8 text. In this step, you will use it, or you can use `Buffer.from` just like the function do, to decode the incoming payload and print the result to the console.
 
-## Objective
-You will learn how to decode the received input, transform it to uppercase, and then return the newly encoded string.
+### Objective
 
-This way, you will understand how to manipulate data within the Cartesi Rollups framework.
+Decode the incoming `payload` and log the decoded message inside the `handle_advance` function.
 
-You will not modify the `createNotice` function, but instead, you will modify an auxiliary function, *toUpperFromPayload*, that will decode the incoming message, change it to uppercase, and return the encoded version of the modified message.
+### User Instructions
 
-## User Instructions
-- **Code Editing Guidelines**: Focus your modifications on the designated sections of the code. Do not alter the overall structure to maintain the operational integrity of the application.
-- **Task**: Transform the input message to uppercase before sending it out as a notice.
+* **Code Editing Guidelines**: Only modify the sections explicitly marked for changes. Keep everything else intact.
+* **Task**: Decode the payload using `hex2str` or `Buffer.from` and log the decoded value.
 
-## Required Modification
-To effectively convert your input to uppercase, you will need to modify the `toUpperFromPayload` function as follows:
+### Required Modification
 
-Use the auxiliary functions presented here (strToJson, jsonToStr, hex2str, str2hex) to:
-- Decode the hex to a string.
-- Convert the string to a JSON object.
-- Edit the value of this JSON object using the toUpperCase() function.
-- Convert this new object back to a string.
-- Encode it to hex again.
-- Return it.
+Inside `handle_advance`, the payload is available as:
 
-## Input
-The input will continue to be:
-```json
-{
-  "message": "I'm here, Cartesia!"
-}
+```js
+const payload = data["payload"];
 ```
-But now, the output will be:
-```json
-{
-  "message": "I'M HERE, CARTESIA!"
-}
+
+Use the `hex2str` function to decode it, then log the result using `console.log`.
+
+### Input
+
+The input sent to your function will be:
+
+```js
+"Happy Holidays, Everyone!"
 ```
+
+Internally, the application will receive this value as a hex-encoded string. After decoding, the logged output will be the original message.

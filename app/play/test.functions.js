@@ -1,139 +1,195 @@
 import { ethers } from "ethers";
 import { assert } from "./assert";
-import { Buffer } from "buffer";
 
-async function test0_0(functionGenerator) {
-    let rollup_server = 'localhost:8080'
-    let outputs = []
-
-    let print = []
-    const originalLog = console.log
-    const customConsole = {
-        log: (...args) => {
-            print.push(args.map(arg => String(arg)).join(' '))
-            originalLog(...args)
+// Browser-compatible Buffer polyfill
+const Buffer = {
+    from: (data, encoding) => {
+        if (encoding === 'hex') {
+            const hexWithoutPrefix = data.startsWith('0x') ? data.slice(2) : data;
+            const bytes = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
+            return {
+                toString: (outputEncoding) => {
+                    if (outputEncoding === 'hex') {
+                        return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+                    // Default to utf8
+                    return new TextDecoder().decode(bytes);
+                }
+            };
         }
+        // Handle string input (default encoding is utf8)
+        if (typeof data === 'string' || !encoding) {
+            const bytes = new TextEncoder().encode(data);
+            return {
+                toString: (outputEncoding) => {
+                    if (outputEncoding === 'hex') {
+                        return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+                    // Default to utf8
+                    return data;
+                }
+            };
+        }
+        return data;
+    }
+};
+
+function hex2str(hex) {
+  return Buffer.from(hex.slice(2), "hex").toString("utf8");
+}
+
+function str2hex(str) {
+  return "0x" + Buffer.from(str).toString("hex");
+}
+
+let rollup_server = 'localhost:8080'
+let outputs = []
+let print = []
+
+const originalLog = console.log
+const customConsole = {
+    log: (...args) => {
+        print.push(args.map(arg => String(arg)).join(' '))
+        originalLog(...args)
+    }
+}
+
+const fetch = async (str, req) => {
+    if (req.method !== "POST" || !req.headers || req.headers["Content-Type"] !== "application/json") {
+        throw new Error("Invalid request format");
     }
 
-    const fetch = async (str, req) => {
-        if (req.method !== "POST" || !req.headers || req.headers["Content-Type"] !== "application/json") {
-            throw new Error("Invalid request format");
-        }
+    let data = JSON.parse(req.body)
 
-        let data = JSON.parse(req.body)
-
-        if (!data || !data.payload ) {
-            throw new Error("Payload invalid");
-        }
-
-        console.log("vai consolar")
-        // console.log(Buffer.from(data.payload.slice(2), "hex").toString("utf8"))
-        console.log(" consolaou")
-
-        outputs.push({type: str.replace(rollup_server + "/", ""), payload: data.payload})
-
-        return {
-            status : 200,
-            json : ()=> {
-                return str
-            }
-        }
+    if (!data || !data.payload ) {
+        throw new Error("Payload invalid");
     }
 
-    let functionReference = functionGenerator({outputs, fetch, rollup_server, console: customConsole})
-    let result = await functionReference({payload: "0x486170707920486f6c69646179732045766572796f6e6521"})
+    outputs.push({
+        type: str.replace(rollup_server + "/", ""), 
+        payload: data.payload, 
+        decoded: Buffer.from(data.payload.slice(2), "hex").toString("utf8")
+    })
+    
+    return {
+        status : 200,
+        json : ()=> {
+            return data.payload
+        }
+    }
+}
+
+function resetFunctionContext(functionGenerator) {
+    rollup_server = 'localhost:8080'
+    outputs = []
+    print = []
+
+    return functionGenerator({
+        outputs, 
+        fetch, 
+        rollup_server, 
+        console: customConsole, 
+        Buffer, 
+        hex2str, 
+        str2hex
+    })
+
+}
+
+async function test0_0(rawFunction) {
+    let functionWithContext 
+
+    functionWithContext = resetFunctionContext(rawFunction)
+
+    let result
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x54657374636173652031"})
+    assert(outputs.length >= 1, "Expected at least one output")
+    assert(outputs[0].type == "notice", "Output type mismatch, expected 'notice'")
+    assert(outputs[0].payload == "0x54657374636173652031", 
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
+    assert(result != null, "Nothing was returned")
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x486170707920486f6c69646179732c2045766572796f6e6521"})
 
     for (let output in outputs) {
         console.log(outputs[output])
     }
 
+    assert(outputs.length >= 1, "Expected at least one output")
     assert(outputs[0].type == "notice", "Output type mismatch, expected 'notice'")
-    assert(outputs[0].payload == "0x486170707920486f6c69646179732045766572796f6e6521", "Output payload mismatch, check if the output structure is correct")
+    assert(outputs[0].payload == "0x486170707920486f6c69646179732c2045766572796f6e6521", 
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
     assert(result != null, "Nothing was returned")
-    return  print.join('\n') + `\n---\nPayload: 0x486170707920486f6c69646179732045766572796f6e6521\nDecoded: Happy Holidays Everyone!`
+    return  print.join('\n') + '\n---\n' + outputs.map(o => JSON.stringify(o)).join('\n')// + `\n---\nPayload: 0x486170707920486f6c69646179732045766572796f6e6521\nDecoded: Happy Holidays Everyone!`
 }
 
-async function test0_1(functionGenerator) {
-    let rollup_server = 'localhost:8080'
-    function strToJson(payload) {
-        return JSON.parse(payload);
-    }
-    
-    function jsonToStr(jsonString) {
-        return JSON.stringify(jsonString);
-    }
-    
-    function hex2str(hex) {
-        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
-        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
-        return new TextDecoder().decode(typedArray);
-    }
-    
-    function str2hex(str) {
-        const bytes = new TextEncoder().encode(str);
-        return "0x"+Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
+async function test0_1(rawFunction) {
+    let functionWithContext
 
-    let functionReference = functionGenerator({
-        strToJson, 
-        jsonToStr,
-        hex2str,
-        str2hex
-    })
+    functionWithContext = resetFunctionContext(rawFunction)
+    
+    let result
 
-    const expected = "0x7b226d657373616765223a2249274d20484552452c20434152544553494121227d"
-    let result = await functionReference("0x7b226d657373616765223a202249276d20686572652c20436172746573696121227d")
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x31323334"})
+    
+    assert(print.some(line => line.includes("1234")), "Expected log message not found, failed during test cases. Make sure to decode the payload before printing.")
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x54657374636173652031"})
+    assert(print.some(line => line.includes("Testcase 1")), "Expected log message not found, failed during test cases")
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x486170707920486f6c69646179732c2045766572796f6e6521"})
+    assert(print.some(line => line.includes("Happy Holidays, Everyone!")), "Expected log message not found")
+
     assert(result != null, "Nothing was returned")
-    assert(result == expected, 
-    `expected: ${expected} \n${hex2str(expected)} \n\n 
-    received: ${result}, \n${hex2str(result)}`)
-
-    return  `Hex: ${expected} \nBody: { "message": "I'M HERE, CARTESIA!" }`
+    return  print.join('\n') + '\n---\n' + "Test successful"
 }
 
-async function test0_2(functionGenerator) {
-
-    function strToJson(payload) {
-        return JSON.parse(payload);
-    }
+async function test0_2(rawFunction) {
+    let functionWithContext
     
-    function jsonToStr(jsonString) {
-        return JSON.stringify(jsonString);
-    }
-    
-    function hex2str(hex) {
-        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
-        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
-        return new TextDecoder().decode(typedArray);
-    }
-    
-    function str2hex(str) {
-        const bytes = new TextEncoder().encode(str);
-        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
+    functionWithContext = resetFunctionContext(rawFunction)
 
-    let missions = [
-        "Kill the dragon",
-        "Find a gnome",
-        "Make omellete"
-    ]
+    let result
 
-    let functionReference = functionGenerator({
-        missions,
-        strToJson, 
-        jsonToStr,
-        hex2str,
-        str2hex
-    })
-
-    const expected = "0x7b226d697373696f6e73223a5b224b696c6c2074686520647261676f6e222c2246696e64206120676e6f6d65222c224d616b65206f6d656c6c657465225d7d"
-    let result = await functionReference()
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x54657374636173652031"}) // Testcase 1
+    assert(outputs.length >= 1, "Expected at least one output")
+    assert(outputs[0].type == "notice", "Output type mismatch, expected 'notice'")
+    assert(outputs[0].payload == "0x54696d6520746f2065786368616e676520676966747321", // TESTCASE 1
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
     assert(result != null, "Nothing was returned")
-    assert(result == expected, 
-    `expected: ${expected} \n${hex2str(expected)} \n\n 
-    received: ${result}, \n${hex2str(result)}`)
 
-    return  `Hex: ${result} \nBody: ${hex2str(result)}`
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x4772696e6368"}) // Grinch
+    assert(outputs.length == 1, "Expected just one message, suposedly a report")
+    assert(outputs[0].type == "report", "Output type mismatch, expected 'report'")
+    assert(outputs[0].payload == "0x4e696365207472792c204772696e636821", // Nice try, Grinch!
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
+    assert(result != null, "Nothing was returned")
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x206865206973204772696e6368"}) // he is Grinch
+    assert(outputs.length == 1, "Expected just one message, suposedly a report")
+    assert(outputs[0].type == "report", "Output type mismatch, expected 'report'")
+    assert(outputs[0].payload == "0x4e696365207472792c204772696e636821", // Nice try, Grinch!
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
+    assert(result != null, "Nothing was returned")
+
+    functionWithContext = resetFunctionContext(rawFunction)
+    result = await functionWithContext({payload: "0x486170707920486f6c69646179732c2045766572796f6e6521"})
+
+    assert(outputs.length == 1, "Expected just one message, suposedly a notice")
+    assert(outputs[0].type == "notice", "Output type mismatch, expected 'notice'")
+    assert(outputs[0].payload == "0x54696d6520746f2065786368616e676520676966747321", // Time to exchange gifts!
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].decoded)
+    assert(result != null, "Nothing was returned")
+    return  print.join('\n') + '\n---\n' + outputs.map(o => JSON.stringify(o)).join('\n')
 }
 
 async function test0_3(functionGenerator) {

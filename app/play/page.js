@@ -46,16 +46,17 @@ function Playground() {
   function run() {
     test(`test${chapter}_${step}`, code).then(async (result) => {
       setOutput("Sending data to backend")
-      let realRes = false //await sendtoBackend();
+      let realRes = false
       console.log(realRes)
       setOutput(realRes ? realRes : result)
+      sendtoBackend(result)
     }).catch((error) => {
       setOutput(error)
     })
   }
 
 
-  const sendtoBackend = async () => {
+  const sendtoBackend = async (result) => {
     if (!wallet) {
       alert("Please connect your web3 wallet to proceed!")
       return
@@ -65,20 +66,20 @@ function Playground() {
       case 0:
         switch (step) {
           case 0:
-            response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
+            // response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 1:
-            response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
+            // response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 2:
-            // response = await addInput(JSON.stringify({ method: "signup_formission" }));
+            response = await addInput(JSON.stringify({ result }));
             console.log("only an inspect call")
             break;
           case 3:
-            response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Kill the dragon" } })); //* To-Do change this to a dynamic variable *//
+            // response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Kill the dragon" } })); //* To-Do change this to a dynamic variable *//
             break;
           case 4:
-            response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Fly on a pegasus" } })); //* To-do change this to a dynamic payload *//
+            // response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Fly on a pegasus" } })); //* To-do change this to a dynamic payload *//
             break;
         }
         console.log("response")

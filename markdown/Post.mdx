@@ -1,75 +1,32 @@
-# Last year’s snowfall
+### Code Snippet
 
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
+Add the following logic in the **“Your code logic goes here”** section:
 
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
+```js
+const payload = data["payload"];
+
+let plaintext = hex2str(payload);
+console.log("Decoded payload: " + plaintext);
+
+if (plaintext.includes("Grinch")) {
+  await fetch(rollup_server + "/report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      payload: str2hex("Nice try, Grinch!"),
+    }),
+  });
+} else {
+  await fetch(rollup_server + "/notice", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      payload: str2hex("Time to exchange gifts!"),
+    }),
+  });
+}
 ```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
-# Last year’s snowfall
-
-In , the snowfall was above average.
-It was followed by a warm spring which caused
-flood conditions in many of the nearby rivers.
-
-```python
-x = float(1)     # x will be 1.0
-y = float(2.8)   # y will be 2.8
-z = float("3")   # z will be 3.0
-w = float("4.2") # w will be 4.2
-```
-
-# Welcome to my MDX page!
- 
