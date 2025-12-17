@@ -30,6 +30,7 @@ function createDynamicFunctionBuilder(functionString) {
     return function(overrides, ...args) {
       let overridesCode = "";
       const trackedObjects = {};
+      const trackedPrimitives = [];
       
       for (const key in overrides) {
         if (typeof overrides[key] === 'function') {
@@ -41,15 +42,42 @@ function createDynamicFunctionBuilder(functionString) {
             trackedObjects[key] = overrides[key];
             overridesCode += `let ${key} = this.trackedObjects.${key};\n`;
         } else {
+            // Track primitive variable names so we can capture their values after execution
+            trackedPrimitives.push(key);
             overridesCode += `let ${key} = ${JSON.stringify(overrides[key])};\n`;
         }
       }
   
-      const fullFunctionCode = overridesCode + "return " + functionString;
+      // Create storage for captured values outside eval scope
+      const capturedStorage = {};
+      
+      // Create a wrapper that returns a function which captures primitive values after execution
+      const captureCode = trackedPrimitives.length > 0 
+        ? `Object.assign(__capturedStorage, {${trackedPrimitives.map(k => `${k}`).join(', ')}});`
+        : '';
+      
+      // Pass capturedStorage as a parameter to avoid context issues
+      const fullFunctionCode = 
+        `const __capturedStorage = arguments[0];\n` +
+        `const __trackedObjects = arguments[1];\n` +
+        overridesCode.replace(/this\.trackedObjects/g, '__trackedObjects') +
+        `const __userFunction = (${functionString});\n` +
+        `return async function(...fnArgs) {\n` +
+        `  const __result = await __userFunction(...fnArgs);\n` +
+        `  ${captureCode}\n` +
+        `  return __result;\n` +
+        `};`;
   
       try {
-        const dynamicFn = eval(`(function() { ${fullFunctionCode} })`);
-        return dynamicFn.call({ trackedObjects }, ...args);
+        const dynamicFn = new Function(fullFunctionCode);
+        const wrappedFunction = dynamicFn(capturedStorage, trackedObjects, ...args);
+        
+        // Attach getCaptured method to the function itself
+        wrappedFunction.getCaptured = (key) => {
+          return capturedStorage[key];
+        };
+        
+        return wrappedFunction;
       } catch (error) {
         console.error(`Error executing function: ${error.message}`);
         return null;
@@ -70,14 +98,11 @@ async function runTests(functionName, functionReference) {
         case 'test0_2':
             testResult = await testFunctions.test0_2(functionReference);
             break;
-        case 'test0_3':
-            testResult = await testFunctions.test0_3(functionReference);
-            break;
-        case 'test0_4':
-            testResult = await testFunctions.test0_4(functionReference);
-            break;
         case 'test1_0':
             testResult = await testFunctions.test1_0(functionReference);
+            break;
+        case 'test1_1':
+            testResult = await testFunctions.test1_1(functionReference);
             break;
         case 'test2_0':
             testResult = await testFunctions.test2_0(functionReference);

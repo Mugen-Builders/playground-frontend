@@ -65,8 +65,8 @@ export default function Home() {
             </CardBody>
           </Stack>
         </Card>
-{/* 
-        <Card
+ 
+        {/* <Card
           className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
@@ -132,7 +132,7 @@ export default function Home() {
               </Text>
             </CardBody>
           </Stack>
-        </Card> */}
+        </Card>  */}
       </Stack>
     </ChakraProvider>
   );

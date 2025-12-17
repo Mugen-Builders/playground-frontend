@@ -68,17 +68,11 @@ function Playground() {
             // response = await addInput(JSON.stringify({ message: "I'm here, Cartesia!" } ));
             break;
           case 2:
-              if (!wallet) {
-                alert("Please connect your web3 wallet to proceed!")
-                return
-              }
-            response = await addInput(JSON.stringify({ result }));
-            break;
-          case 3:
-            // response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Kill the dragon" } })); //* To-Do change this to a dynamic variable *//
-            break;
-          case 4:
-            // response = await addInput(JSON.stringify({ route: "accept_mission", args: { mission: "Fly on a pegasus" } })); //* To-do change this to a dynamic payload *//
+            // if (!wallet) {
+            //   alert("Please connect your web3 wallet to proceed!")
+            //   return
+            // }
+            // response = await addInput(JSON.stringify({ result }));
             break;
         }
         console.log("response")
@@ -87,28 +81,25 @@ function Playground() {
       case 1:
         switch (step) {
           case 0:
-            showallOutputs(true);
+            // response = await addInput(JSON.stringify({ route: "collect_gift" }));
             break;
           case 1:
-            showSingleOutput(true);
-            break;
-          case 2:
-            let response = await addInput(JSON.stringify({ route: "attack_dragon" }));
-            return JSON.stringify(response)
+              if (!wallet) {
+                alert("Please connect your web3 wallet to proceed!")
+                return
+              }
+            response = await addInput(JSON.stringify({ result }));
             break;
         }
         break;
       case 2:
         switch (step) {
           case 0:
-            await addInput(JSON.stringify({ route: "loot_dragon" }));
+            // await addInput(JSON.stringify({ route: "loot_dragon" }));
             break;
           case 1:
-            await addInput(JSON.stringify({ route: "sell_assets" }));
-            break;
-          case 2:
-            let response = await deposit("0.0001");
-            return JSON.stringify(response)
+            // await addInput(JSON.stringify({ route: "sell_assets" }));
+            response = await addInput(JSON.stringify({ result }));
             break;
         }
         break;
