@@ -33,7 +33,7 @@ export default function Home() {
         margin={"10px auto auto auto"}
         spacing="0"
       >
-        <Card
+        {/* <Card
           className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
@@ -64,9 +64,9 @@ export default function Home() {
               </Text>
             </CardBody>
           </Stack>
-        </Card>
+        </Card> 
  
-        {/* <Card
+        <Card
           className="stack-card"
           direction={{ base: "column", sm: "row" }}
           alignItems="end"
@@ -97,7 +97,7 @@ export default function Home() {
               </Text>
             </CardBody>
           </Stack>
-        </Card>
+        </Card>*/}
 
         <Card
           className="stack-card"
@@ -132,7 +132,7 @@ export default function Home() {
               </Text>
             </CardBody>
           </Stack>
-        </Card>  */}
+        </Card>
       </Stack>
     </ChakraProvider>
   );
