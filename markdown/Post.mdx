@@ -30,3 +30,29 @@ if (plaintext.includes("Grinch")) {
   });
 }
 ```
+
+```js
+  if (data["metadata"]["msg_sender"] == "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044") {
+    let userAddress = data["payload"].slice(2, 42);
+    let hexAmount = data["payload"].slice(42, 106);
+    wei += BigInt("0x" + hexAmount);
+    console.log("ETH wei deposited by " + userAddress + ": " + wei.toString());
+  }
+```
+
+```js
+  let amount = BigInt(data["payload"]);
+  wei -= amount;
+
+  const voucher = {
+    destination: destinationAddress,
+    payload: createEtherWithdrawlPayload(data["metadata"]["msg_sender"], amount),
+  };
+
+  await fetch(`${rollup_server}/voucher`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(voucher),
+  });
+
+```

@@ -9,7 +9,7 @@ function str2hex(str) {
   return "0x" +Buffer.from(str).toString("hex");
 }
 
-let eth = 0
+let wei = BigInt(0)
 
 /* Do not change anything above this line */
 
@@ -17,13 +17,6 @@ async function handle_advance(data) {
   console.log("Received advance request data " + JSON.stringify(data));
   
   // Your code logic goes here
-
-  if (data["msg_sender"] == "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044") {
-    let userAddress = data["payload"].slice(0, 40);
-    let hexAmount = data["payload"].slice(40, 102);
-    eth += BigInt(hexAmount);
-    console.log("ETH deposited by " + userAddress + ": " + eth.toString());
-  }
   
   return "accept";
 }

@@ -36,11 +36,15 @@ function createDynamicFunctionBuilder(functionString) {
         if (typeof overrides[key] === 'function') {
             // Store functions by reference to prevent minification issues
             trackedObjects[key] = overrides[key];
-            overridesCode += `let ${key} = this.trackedObjects.${key};\n`;
+            overridesCode += `let ${key} = __trackedObjects.${key};\n`;
+        } else if (typeof overrides[key] === 'bigint') {
+            // Handle BigInt - serialize as BigInt literal and track for capture
+            trackedPrimitives.push(key);
+            overridesCode += `let ${key} = ${overrides[key]}n;\n`;
         } else if (typeof overrides[key] === 'object' && overrides[key] !== null) {
             // Pass objects by reference so mutations are visible outside
             trackedObjects[key] = overrides[key];
-            overridesCode += `let ${key} = this.trackedObjects.${key};\n`;
+            overridesCode += `let ${key} = __trackedObjects.${key};\n`;
         } else {
             // Track primitive variable names so we can capture their values after execution
             trackedPrimitives.push(key);

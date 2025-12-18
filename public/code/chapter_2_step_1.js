@@ -1,103 +1,37 @@
-const { ethers } = require("ethers");
-
 const rollup_server = process.env.ROLLUP_HTTP_SERVER_URL;
 console.log("HTTP rollup_server url is " + rollup_server);
 
-function strToJson(payload) {
-  return JSON.parse(payload);
-}
-
-function jsonToStr(jsonString) {
-  return JSON.stringify(jsonString);
-}
-
 function hex2str(hex) {
-  return ethers.utils.toUtf8String(hex);
+  return Buffer.from(hex.slice(2), "hex").toString("utf8");
 }
 
 function str2hex(str) {
-  return ethers.utils.hexlify(ethers.utils.toUtf8Bytes(str));
+  return "0x" +Buffer.from(str).toString("hex");
 }
 
-async function createNotice(payload) {
-  const advance_req = await fetch(rollup_server + "/notice", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ payload }),
-  });
-  const json = await advance_req.json();
-  return json;
+function createEtherWithdrawlPayload(userAddress, amountWei) {
+  return "0x522f6815" + 
+    userAddress.slice(2).padStart(64, '0') + 
+    amountWei.toString(16).padStart(64, '0');
 }
 
-async function createReport(decoded_payload) {
-  let payload = str2hex(decoded_payload)
-  const advance_req = await fetch(rollup_server + "/report", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ payload }),
-  });
-  return advance_req
-}
-
-
-let inventories = {
-  "<playerID>": [
-    "Dragon Claw",
-    "Dragon Scale",
-    "Dragon Fang"
-  ]
-}
-let wallet = {}
+let wei = 1000000000000000000000n; // 1000 ETH initial balance
+let destinationAddress = "0xab7528bb862fB57E8A2BCd567a2e929a0Be56a5e";
 
 /* Do not change anything above this line */
 
-function sellAssets(sender, inventory, wallet) {
-
+async function handle_advance(data) {
+  console.log("Received advance request data " + JSON.stringify(data));
+  
+  // Your code logic goes here
+  
+  return "accept";
 }
 
 /* Do not change anything below this line */
 
-
-async function handle_advance(data) {
-  console.log("Received advance request data " + JSON.stringify(data));
-  const payload = data["payload"];
-  const metadata = data["metadata"];
-  const sender = metadata["msg_sender"];
-  const { route, args } = strToJson(hex2str(payload));
-
-  let responsePayload;
-  if (route === "sell_assets") {
-    let salesObject = sellAssets(sender, inventories, wallet);
-    responsePayload = str2hex(jsonToStr(salesObject));
-    await createNotice(responsePayload);
-  } else {
-    await createReport(jsonToStr({ error: "Invalid route" }));
-    return "reject";
-  }
-
-  console.log(`Received notice status with body `, JSON.stringify(json));
-  return "accept";
-}
-
 async function handle_inspect(data) {
   console.log("Received inspect request data " + JSON.stringify(data));
-  const payload = data["payload"];
-  const endpoint = hex2str(payload);
-  let responsePayload
-  if (endpoint == "list_missions") {
-    responsePayload = listMissions()
-  }
-
-  const inspect_req = await fetch(rollup_server + "/report", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", },
-    body: JSON.stringify({ payload: responsePayload }),
-  });
-  console.log("Received report status " + inspect_req.status);
   return "accept";
 }
 

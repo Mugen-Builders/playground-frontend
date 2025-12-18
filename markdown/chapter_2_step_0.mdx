@@ -1,64 +1,65 @@
-# Chapter 3: Conquer the Treasure Trove 
+## Introduction
 
-# Step 9: Looting the Dragon
+In the previous chapters, you learned how to process inputs, generate outputs, and manage application state.
+In this chapter, you will learn how to **deal with assets** and understand how value enters a Cartesi Rollups application.
 
-Great! You’ve already gone through two whole modules and understood the basics of using Cartesi. But as a web3 application, you still want to understand and implement the transfer and ownership of assets, right?
+# Chapter 3: Opening Gifts – Dealing with Assets
 
-The first concept we’ll learn to handle is native assets within your dApp.
+## Step 1: Handling Deposits
 
-This is as simple as it gets. To transfer assets from the dragon to the player's inventory after a successful quest, you just need to add the assets to the user's collection. Simple as that.
+### Deposits and Portals
 
-Implement the functionality that allows the adventurer to loot the dragon and add the items to their inventory. This involves coding the `lootDragon` function and updating the state of the dApp to reflect the new asset ownership.
+When a regular input is sent to a Cartesi Rollups application, the sender address contained in `data["metadata"]["msg_sender"]` is the account that signed the transaction.
 
-## User Instructions
+**Deposits are different.**
 
-- **Code Editing Guidelines**: Focus on coding the `lootDragon` function, which will handle the asset transfer.
-- **Task**: Update the `lootDragon` function when the corresponding action is called.
-- **Task**: Ensure that the looted assets are added to the player's inventory and that the state update is recorded.
-- **Task**: Review `handle_advance` to understand how the player’s wallet address is received from the `message_sender` property of the request.
+When assets are deposited, the transaction is sent to a **portal contract**. The portal contract then notifies the application, which means:
 
-## Required Modification
+* The `msg_sender` in the metadata is **the portal contract address**, not the user
+* The user’s address and the deposited value are encoded in the **payload**
 
-Adapt the new function called `lootDragon` to handle the looting action. Here’s how you can structure this function:
+Because of this, deposits must be identified by reading the **metadata**, not just the payload.
 
-### The `lootDragon` Function
+### Payload Format
 
-- Check if the user has an entry for their `wallet_id` in the inventories data:
-```javascript
-if (!inventories[sender]) {
-  inventories[sender] = [];
-}
-let inventory = inventories[sender];
+For ETH deposits, the payload has a fixed format:
+
+```
+[address][value]
 ```
 
-- Remove the assets from the dragon and add them to the user's inventory:
-```javascript
-let l = dragonAssets.length;
-for (let i = 0; i < l; i++) {
-  let asset = dragonAssets.pop();
-  console.log(asset);
-  inventory.push(asset);
-}
+* `address`: 20 bytes (40 hex characters)
+* `value`: 32 bytes (64 hex characters), encoded in **wei**
+
+Since the deposited value is expressed in wei, it must be handled as a **BigInt**.
+
+### Objective
+
+Detect ETH deposits, decode the payload, and update the application’s ETH balance.
+
+### User Instructions
+
+* **Code Editing Guidelines**: Only modify the sections explicitly marked for changes. Keep everything else intact.
+* **Task**: Check whether the advance request comes from the ETH portal and, if so, decode and process the deposit.
+
+### Required Modification
+
+Inside `handle_advance`, you must:
+
+1. Check the `msg_sender` field in the metadata - data["metadata"]["msg_sender"]
+  - You need `data["metadata"]["msg_sender"] == "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044"` to be truth
+2. Extract the user address and deposited amount from the payload
+  - You can use data["payload"].slice(2, 42) and data["payload"].slice(42, 106)
+3. Convert the deposited value to `BigInt`
+  - Remember the value you read does not have the "0x" prefix, you might need to add it.
+4. Update the application’s wei balance
+
+### State Variable
+
+The application already defines a balance variable:
+
+```js
+let wei = BigInt(0)
 ```
 
-- Then return the adventurer's inventory state:
-```javascript
-return {
-  player: sender,
-  inventory: inventory
-};
-```
-
-## Input
-Input to trigger the `lootDragon` function, providing the necessary details:
-
-```json
-{
-  "route": "loot_dragon",
-  "args": {}
-}
-```
-
-## Conclusion
-
-Here you can see how easy it is to attribute ownership of native assets to a user within the dApp. It’s just about associating their wallet ID with the assets.
+This variable persists across inputs and accumulates the total deposited ETH.

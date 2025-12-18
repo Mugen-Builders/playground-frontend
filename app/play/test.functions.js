@@ -42,9 +42,18 @@ function str2hex(str) {
   return "0x" + Buffer.from(str).toString("hex");
 }
 
+function createEtherWithdrawlPayload(userAddress, amountWei) {
+  return "0x522f6815" + 
+    userAddress.slice(2).padStart(64, '0') + 
+    amountWei.toString(16).padStart(64, '0');
+}
+
 let rollup_server = 'localhost:8080'
 let outputs = []
 let print = []
+let wei = 1000000000000000000000n; // 1000 ETH initial balance
+let destinationAddress = "0xab7528bb862fB57E8A2BCd567a2e929a0Be56a5e";
+
 
 let defaultInput = {
     "metadata" : {
@@ -76,11 +85,18 @@ const fetch = async (str, req) => {
         throw new Error("Payload invalid");
     }
 
-    outputs.push({
+    let out = {
         type: str.replace(rollup_server + "/", ""), 
         payload: data.payload, 
         decoded: Buffer.from(data.payload.slice(2), "hex").toString("utf8")
-    })
+    }
+
+    if (out.type === "voucher") {
+        out.destination = data.destination
+        delete out.decoded
+    }
+
+    outputs.push(out)
     
     return {
         status : 200,
@@ -94,6 +110,8 @@ function resetFunctionContext(functionGenerator) {
     rollup_server = 'localhost:8080'
     outputs = []
     print = []
+    wei = 1000000000000000000000n; // 1000 ETH initial balance
+    destinationAddress = "0xab7528bb862fB57E8A2BCd567a2e929a0Be56a5e";
 
     return functionGenerator({
         outputs, 
@@ -102,7 +120,8 @@ function resetFunctionContext(functionGenerator) {
         console: customConsole, 
         Buffer, 
         hex2str, 
-        str2hex
+        str2hex,
+        createEtherWithdrawlPayload
     })
 
 }
@@ -316,13 +335,13 @@ async function test1_1(rawFunction) {
 
 
 async function test2_0(rawFunction) {
-    let eth =  BigInt(0)
+    let wei = BigInt(0)
 
     function resetLocalFunctionContext(functionGenerator) {
         rollup_server = 'localhost:8080'
         outputs = []
         print = []
-        eth = 0
+        wei = BigInt(0)
 
         return functionGenerator({
             outputs, 
@@ -332,12 +351,12 @@ async function test2_0(rawFunction) {
             Buffer, 
             hex2str, 
             str2hex,
-            eth
+            wei
         })
     }
 
     const payloadTest = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
-    let ethTestHex
+    let weiTestHex
 
     let functionWithContext
 
@@ -347,76 +366,111 @@ async function test2_0(rawFunction) {
 
     functionWithContext = resetLocalFunctionContext(rawFunction)
 
-    ethTestHex = "0000000000000000000000000000000000000000000000000000000000000064"
-    result = await functionWithContext({...defaultInput, payload: payloadTest + ethTestHex})
-    eth = functionWithContext.getCaptured('eth')
-    assert((eth == BigInt(ethTestHex)), "ETH count did not increment to expected amount. Make sure to use the value deposited.")
+    let input = {
+        "metadata" : {
+            "epoch_index" : 0, 
+            "input_index" : 0, 
+            "block_number" : 64, 
+            "timestamp" : 1765979863
+        }, 
+        "payload" : "0x"
+    }
+
+    input.metadata.msg_sender = "0x0000000000000000000000000000000000000000"
+    weiTestHex = "0000000000000000000000000000000000000000000000000000000000000064" // 100
+    result = await functionWithContext({...input, payload: payloadTest + weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt(0)), "wei count incremented to unexpected amount. Make sure to check the msg_sender before adding to wei count.")
     
     functionWithContext = resetLocalFunctionContext(rawFunction)
 
-    ethTestHex = "00000000000000000000000000000000000000000000000000000000000000c8"
-    result = await functionWithContext({...defaultInput, payload: payloadTest + ethTestHex})
-    eth = functionWithContext.getCaptured('eth')
-    assert((eth == BigInt(ethTestHex)), "ETH count did not increment to expected amount. Make sure to use the value deposited.")
+    weiTestHex = "00000000000000000000000000000000000000000000000000000000000000c8" // 200
+    result = await functionWithContext({...input, payload: payloadTest + weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt(0)), "wei count incremented to unexpected amount. Make sure to check the msg_sender before adding to wei count.")
+
+    functionWithContext = resetLocalFunctionContext(rawFunction)
+
+    input.metadata.msg_sender = "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044"
+    weiTestHex = "0000000000000000000000000000000000000000000000000000000000000064"
+    result = await functionWithContext({...input, payload: payloadTest + weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt("0x" + weiTestHex)), "wei count did not increment to expected amount. Make sure to use the value deposited.")
     
+    functionWithContext = resetLocalFunctionContext(rawFunction)
+
+    input.metadata.msg_sender = "0xFfdbe43d4c855BF7e0f105c400A50857f53AB044"
+    weiTestHex = "00000000000000000000000000000000000000000000000000000000000000c8"
+    result = await functionWithContext({...input, payload: payloadTest + weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt("0x" + weiTestHex)), "wei count did not increment to expected amount. Make sure to use the value deposited.")
+
     assert(result != null, "Nothing was returned")
 
-    return  print.join('\n') + '\n---\n' + "Test successful. ETH deposited in the Application: " + eth
+    return  print.join('\n') + '\n---\n' + "Test successful. wei deposited in the Application: " + wei
 }
 
 async function test2_1(rawFunction) {
+    let initialWei = 10000000000000000000n; // 1000 ETH initial balance    
+    function resetLocalFunctionContext(functionGenerator) {
+        rollup_server = 'localhost:8080'
+        outputs = []
+        print = []
+        wei = 10000000000000000000n;
+        destinationAddress = "0xab7528bb862fB57E8A2BCd567a2e929a0Be56a5e";
 
-    function strToJson(payload) {
-        return JSON.parse(payload);
+        return functionGenerator({
+            outputs, 
+            fetch, 
+            rollup_server, 
+            console: customConsole, 
+            Buffer, 
+            hex2str, 
+            str2hex,
+            wei,
+            destinationAddress,
+            createEtherWithdrawlPayload
+        })
     }
+
+    const payloadTest = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+    let weiTestHex
+
+    let functionWithContext
+
+    functionWithContext = resetLocalFunctionContext(rawFunction)
     
-    function jsonToStr(jsonString) {
-        return JSON.stringify(jsonString);
-    }
-    
-    function hex2str(hex) {
-        const hexWithoutPrefix = hex.startsWith('0x') ? hex.substring(2) : hex;
-        const typedArray = new Uint8Array(hexWithoutPrefix.match(/[\da-f]{2}/gi).map(h => parseInt(h, 16)));
-        return new TextDecoder().decode(typedArray);
-    }
-    
-    function str2hex(str) {
-        const bytes = new TextEncoder().encode(str);
-        return "0x" + Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
-    }
+    let result
 
-    let inventories = { 
-        "sender" : [
-            "Dragon Claw",
-            "Dragon Scale",
-            "Dragon Fang"
-        ]
-    }
-    let wallet = {}
+    functionWithContext = resetLocalFunctionContext(rawFunction)
 
-    let functionReference = functionGenerator({
-        strToJson, 
-        jsonToStr,
-        hex2str,
-        str2hex
-    })
+    weiTestHex = "0x0000000000000000000000000000000000000000000000000000000000000064"
+    result = await functionWithContext({...defaultInput, payload: weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt(initialWei) - BigInt(weiTestHex)), "wei count did not decrement to expected amount. Make sure to decode the input, subtract from wei count and send voucher with correct fields.")
+    assert(outputs.length >= 1, "Expected at least one output")
+    assert(outputs[0].type == "voucher", "Output type mismatch, expected 'voucher'")
+    assert(outputs[0].payload == "0x522f6815000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb922660000000000000000000000000000000000000000000000000000000000000064", 
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].payload + 
+        "\nExpected 0x522f6815000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb922660000000000000000000000000000000000000000000000000000000000000064",)
+    assert(outputs[0].destination.toLowerCase() == destinationAddress.toLowerCase(), "Voucher destination address mismatch. Make sure to set the correct destination address in the voucher.")
 
-    let result = await functionReference("sender", inventories, wallet)
-    let inventory = result.inventory
+    functionWithContext = resetLocalFunctionContext(rawFunction)
 
-    let playerAssets = inventories["sender"]
+    weiTestHex = "0x00000000000000000000000000000000000000000000000000000000000000c8"
+    result = await functionWithContext({...defaultInput, payload: weiTestHex})
+    wei = functionWithContext.getCaptured('wei')
+    assert((wei == BigInt(initialWei) - BigInt(weiTestHex)), "wei count did not decrement to expected amount. Make sure to decode the input, subtract from wei count and send voucher with correct fields.")
+    assert(outputs[0].payload == "0x522f6815000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb9226600000000000000000000000000000000000000000000000000000000000000c8", 
+        "Output payload mismatch, check if the output structure is correct. \nReceived: " + outputs[0].payload + 
+        "\nExpected 0x522f6815000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb9226600000000000000000000000000000000000000000000000000000000000000c8",)
+    assert(outputs[0].destination.toLowerCase() == destinationAddress.toLowerCase(), "Voucher destination address mismatch. Make sure to set the correct destination address in the voucher.")
+
+    console.log(outputs)
+
     assert(result != null, "Nothing was returned")
-    assert(!playerAssets.includes("Dragon Claw"), "Player still has it's claw")
-    assert(!playerAssets.includes("Dragon Scale"), "Player still has it's scale")
-    assert(!playerAssets.includes("Dragon Fang"), "Player still has it's fang")
-    console.log(wallet)
-    assert(wallet["sender"]["gold"] == 150, `Gold does not match`)
-  
-    assert(result.player == "sender", `player id not added on return`)
 
-
-    return `received: ${jsonToStr(result)}  
-    \n\n`
+    return  print.join('\n') + '\n---\n' + "Test successful. wei withdrawn from the Application: " + BigInt(weiTestHex)
 }
 
 

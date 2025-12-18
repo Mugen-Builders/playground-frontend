@@ -99,6 +99,10 @@ function Playground() {
             break;
           case 1:
             // await addInput(JSON.stringify({ route: "sell_assets" }));
+            if (!wallet) {
+                alert("Please connect your web3 wallet to proceed!")
+                return
+              }
             response = await addInput(JSON.stringify({ result }));
             break;
         }

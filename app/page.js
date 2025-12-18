@@ -128,7 +128,7 @@ export default function Home() {
                 py="2"
                 
               >
-                Opening Gifts - Dealing with Assets
+                Opening Gifts - Dealing with assets
               </Text>
             </CardBody>
           </Stack>
